@@ -6,6 +6,7 @@
     {% set link_to_home = '../' %}
     {% include 'templates/navbar.html.twig' %}
 
+    <!--Begin log in Area-->
     <div class="login-wrap group">
 
         <header class="signup-header">
@@ -17,9 +18,7 @@
 
         <div class="login-area">
 
-
-
-            <!--<form accept-charset="UTF-8" action="/login" class="login-form top-label-form" id="login-login-form" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="authenticity_token" type="hidden" value="ACWHQXaY6EsSjAIxwCTkStJHcME221HJTA1O6Qm+uUw=" /></div>-->
+                <!-- begin log in text fields-->
                 <div align="center" >
                     <div id="login-email" class="field"  >
                         <label for="login-email-field">Username or Email</label>
@@ -36,9 +35,11 @@
                         <label class="small-inline" for="show-password">Show Password</label>
                     </div>
                 </div>
+                <!-- end log in text fields-->
 
 
                 <div id="login-error" align="center"></div>
+
 
                 <div  align="center">
                     <label class="spacing-label">&nbsp;</label>
@@ -57,7 +58,7 @@
 
 
 
-
+                <!--start reset password section-->
                 <div align="center" >
                     <h4><br>Reset Your Password</h4>
 
@@ -74,15 +75,18 @@
                         <div id="sent-message-message"></div>
                     </div>
                 </div>
+            <!--end reset password section-->
 
 
-
+            <!--Start create new account-->
             <div class="signup-callout" >
                 Need an account? <a href="./signup">Sign up now!</a>
             </div>
+            <!--end create new account-->
 
         </div>
 
     </div>
+    <!--end of log in area-->
 
 {% endblock %}
