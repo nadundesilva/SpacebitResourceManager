@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin{% endblock %}
+
+{% block body %}
+    {% set link_to_home = '../' %}
+    {% set active = {link:'Admin'} %}
+    {% include 'templates/navbar.html.twig' %}
+{% endblock %}

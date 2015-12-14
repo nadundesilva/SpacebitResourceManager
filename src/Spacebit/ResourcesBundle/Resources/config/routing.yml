@@ -1,0 +1,11 @@
+spacebit_resources_home:
+    path:     /
+    defaults: { _controller: SpacebitResourcesBundle:Default:home }
+
+spacebit_resources_equipment:
+    path:     /equipment
+    defaults: { _controller: SpacebitResourcesBundle:Default:equipment }
+
+spacebit_resources_locations:
+    path:     /locations
+    defaults: { _controller: SpacebitResourcesBundle:Default:locations }

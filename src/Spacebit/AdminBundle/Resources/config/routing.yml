@@ -1,0 +1,3 @@
+spacebit_admin_home:
+    path:     /
+    defaults: { _controller: SpacebitAdminBundle:Default:home }

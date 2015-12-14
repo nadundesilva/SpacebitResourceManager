@@ -1,0 +1,11 @@
+spacebit_user_home:
+    path:     /
+    defaults: { _controller: SpacebitUserBundle:Default:home }
+
+login:
+    path:     /login
+    defaults: { _controller: SpacebitUserBundle:Default:login }
+
+signup:
+    path:     /signup
+    defaults: { _controller: SpacebitUserBundle:Default:signup }

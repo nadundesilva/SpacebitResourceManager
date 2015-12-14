@@ -1,0 +1,3 @@
+spacebit_vehicles_homepage:
+    path:     /
+    defaults: { _controller: SpacebitVehiclesBundle:Default:vehicles }
