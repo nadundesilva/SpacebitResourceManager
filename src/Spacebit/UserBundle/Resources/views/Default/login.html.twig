@@ -3,5 +3,8 @@
 {% block title %}Login{% endblock %}
 
 {% block body %}
+    {% set link_to_home = '../' %}
+    {% set active = {link:'My Profile'} %}
+    {% include 'templates/navbar.html.twig' %}
 
 {% endblock %}
