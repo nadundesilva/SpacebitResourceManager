@@ -6,4 +6,10 @@
     {% set link_to_home = '../../' %}
     {% set active = {link:'Resources', sub_link:'Vehicles'} %}
     {% include 'templates/navbar.html.twig' %}
+
+    {% set table_headers = ['plate_no', 'model', 'capacity', 'driver_first_name', 'driver_last_name'] %}
+    {% set table = [
+        []
+    ] %}
+    {% include 'templates/table.html.twig' %}
 {% endblock %}

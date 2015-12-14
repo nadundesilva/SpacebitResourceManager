@@ -13,7 +13,12 @@ class DefaultController extends Controller
 
     public function equipmentAction()
     {
-        return $this->render('SpacebitResourcesBundle:Default:equipment.html.twig');
+        $name = 'Achini';
+        $age = 43;
+        return $this->render('SpacebitResourcesBundle:Default:equipment.html.twig', array(
+            'myName'=>$name,
+            'myAge'=>$age,
+        ));
     }
 
     public function locationsAction()

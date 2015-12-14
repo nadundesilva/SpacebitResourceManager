@@ -8,6 +8,11 @@ class DefaultController extends Controller
 {
     public function vehiclesAction()
     {
-        return $this->render('SpacebitVehiclesBundle:Default:vehicles.html.twig');
+        $conn = $this->get('database_connection');
+        $stmt = $conn->prepare('SELECT * FROM vehicle;');
+        $vehicles = $stmt->execute();
+        return $this->render('SpacebitVehiclesBundle:Default:vehicles.html.twig', array(
+            'vehicles'=>$vehicles,
+        ));
     }
 }
