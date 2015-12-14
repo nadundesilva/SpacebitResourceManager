@@ -1,0 +1,72 @@
+{#
+    Need two variables
+        active : A dictionary indicating the active link and sub link
+        link_to_home : The relative link from the current page to the index page of the site
+#}
+{#
+    * Adding the links to the pages relative to the home page
+    * Each page will set the link to the home page from it's location
+#}
+{% set pages = [
+    {name:'Home', link:'./', active:true},
+    {name:'Resources', link:'resources', active:false,
+        sub_menu:[
+            {name:'Equipment', link:'resources/equipment', active:false},
+            {name:'Locations', link:'resources/locations', active:false},
+            {name:'Vehicles', link:'resources/vehicles', active:false}
+        ]
+    },
+    {name:'My Profile', link:'user', active:false},
+
+] %}
+{# Merging with admin pages if the user have required level of access #}
+{% if app.session.get('access_level') is defined and app.session.get('access_level') > 2 %}
+    {% set pages = pages | merge([
+        {name:'Admin', link:'admin', active:false,
+            sub_menu:[
+                {name:'Departments', link:'admin/department', active:false}
+            ]
+        }]
+    )%}
+{% endif %}
+
+<style>
+    .sub-menu .dropdown-menu {
+        visibility: hidden;
+    }
+
+    .dropdown-menu li:hover .sub-menu .dropdown-menu li:hover {
+        visibility: visible;
+    }
+
+    .dropdown:hover .dropdown-menu {
+        display: block;
+    }
+</style>
+
+<nav class="navbar navbar-default">
+    <ul class="nav navbar-nav">
+        {% for page in pages %}
+            <li class="{% if page.sub_menu is defined %}dropdown{% endif %} {% if active.link is defined and active.link == page.name %}active{% endif %}">
+                {% set link = link_to_home ~ page.link %}
+                <a {% if page.sub_menu is defined %}class="dropdown-toggle disabled" data-toggle="dropdown"{% endif %} href="{{ link }}">{{ page.name }}{% if page.sub_menu is defined %} <span class="caret"></span>{% endif %}</a>
+
+                {% if page.sub_menu is defined %}
+                    <ul class="dropdown-menu">
+                        {% for sub_page in page.sub_menu %}
+                            <li class="dropdown {% if active.sub_link is defined and active.sub_link == sub_page.name %}active{% endif %}">
+                                {% set link = link_to_home ~ sub_page.link %}
+                                <a href="{{ link }}">{{ sub_page.name }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+    <ul class="nav navbar-nav pull-right">
+        <li>
+            <a href="#">Logout</a>
+        </li>
+    </ul>
+</nav>

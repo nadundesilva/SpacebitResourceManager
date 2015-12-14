@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Spacebit Resource Manager - {% block title %}{% endblock %}</title>
+
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+        <style>
+            body{
+                height: 100%;
+            }
+
+            .page-header {
+                margin: 0px;
+            }
+
+            ul.footer{
+                margin-top:10px;
+                text-align:center;
+            }
+
+            ul.footer li{
+                color:#333;
+                display:inline-block;
+            }
+
+
+            #footer{
+                bottom: 0px;
+                height: 50px;
+                left: 0;
+                right: 0;
+                position: absolute;
+                outline: 1px solid #dfdfdf;
+            }
+
+            #footer, .page-header {
+                background-color: #e3e8e8;
+            }
+        </style>
+
+        {% block javascripts %}{% endblock %}
+        {% block stylesheets %}{% endblock %}
+    </head>
+    <body>
+        <div class="page-header">
+            <div class="container">
+                <h1>
+                    Spacebit Resource Manager<br>
+                    <small>{{ block('title') }}</small>
+                </h1>
+            </div>
+        </div>
+
+        {% block body %}{% endblock %}
+
+        <div id="footer">
+            <ul class="footer">
+                <li>Website Designed By &#169; Spacebit</li>
+            </ul>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,23 @@
+app:
+    resource: "@AppBundle/Controller/"
+    type:     annotation
+
+spacebit_index:
+    pattern:  /
+    defaults: { _controller: AppBundle:Default:home }
+
+spacebit_user:
+    resource: "@SpacebitUserBundle/Resources/config/routing.yml"
+    prefix:   /user
+
+spacebit_admin:
+    resource: "@SpacebitAdminBundle/Resources/config/routing.yml"
+    prefix:   /admin
+
+spacebit_vehicles:
+    resource: "@SpacebitVehiclesBundle/Resources/config/routing.yml"
+    prefix:   /resources/vehicles
+
+spacebit_resources:
+    resource: "@SpacebitResourcesBundle/Resources/config/routing.yml"
+    prefix:   /resources
