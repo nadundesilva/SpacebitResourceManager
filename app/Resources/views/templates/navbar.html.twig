@@ -20,7 +20,7 @@
 
 ] %}
 {# Merging with admin pages if the user have required level of access #}
-{% if app.session.get('access_level') is defined and app.session.get('access_level') > 2 %}
+{% if app.session.get('access_level') is defined and app.session.get('access_level') >= 0 %}
     {% set pages = pages | merge([
         {name:'Admin', link:'admin', active:false,
             sub_menu:[
