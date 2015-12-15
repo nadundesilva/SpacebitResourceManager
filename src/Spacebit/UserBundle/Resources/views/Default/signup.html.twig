@@ -15,33 +15,54 @@
                 <div class="col-lg-8">
                     <div class="well well-sm"><strong><span class="glyphicon glyphicon-asterisk"></span>Required Field</strong></div>
                     <div class="form-group">
-                        <label for="InputName">Enter Name</label>
+                        <label for="firstName">First Name</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" name="InputName" id="InputName" placeholder="Enter Name" required>
+                            <input type="text" class="form-control" name="firstName" id="InputFirstName" placeholder="First Name" required>
                             <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="InputEmail">Enter Email</label>
+                        <label for="middleName">Middle Name (optional)</label>
+                        <div class="input-group col-lg-12">
+                            <input type="text" class="form-control" name="middleName" id="InputMiddleName" placeholder="Middle Name">
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
                         <div class="input-group">
-                            <input type="email" class="form-control" id="InputEmailFirst" name="InputEmail" placeholder="Enter Email" required>
+                            <input type="text" class="form-control" name="lastName" id="InputLastName" placeholder="Last Name" required>
                             <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="InputEmail">Confirm Email</label>
+                        <label for="InputEmail">Email Address</label>
                         <div class="input-group">
-                            <input type="email" class="form-control" id="InputEmailSecond" name="InputEmail" placeholder="Confirm Email" required>
+                            <input type="text" class="form-control" id="InputEmailFirst" name="InputEmail" placeholder="Email Address" required>
                             <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="InputMessage">Enter Message</label>
+                        <label for="inputtelephonenumber">Telephone Number</label>
                         <div class="input-group">
-                            <textarea name="InputMessage" id="InputMessage" class="form-control" rows="5" required></textarea>
+                            <input type="number" class="form-control" id="InputTelephoneNumber" name="inputtelephonenumber" placeholder="Telephone Number" required>
                             <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label for="passwordOne">Password</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="InputPasswordFirst" name="passwordOne" placeholder="Password" required>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                        </div>
+                        <label for="passwordTwo">Re-enter Password</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="InputPasswordSecond" name="passwordTwo" placeholder="Confirm Password" required>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                        </div>
+                    </div>
+
+
                     <input type="submit" name="submit" id="submit" value="Submit" class="btn btn-info pull-right">
                 </div>
             </form>
