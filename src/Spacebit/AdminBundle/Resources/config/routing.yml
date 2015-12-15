@@ -1,3 +1,9 @@
 spacebit_admin_home:
     path:     /
     defaults: { _controller: SpacebitAdminBundle:Default:home }
+
+
+spacebit_admin_sample:
+    path:     /sample
+    defaults: { _controller: SpacebitAdminBundle:Default:sample }
+

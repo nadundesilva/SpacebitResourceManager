@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vehicles{% endblock %}
+
+{% block body %}
+    {% set link_to_home = '../../' %}
+    {% set active = {link:'Admin', sub_link:'Sample'} %}
+    {% include 'templates/navbar.html.twig' %}
+    <p>Pissu Nadun</p>
+{% endblock %}
