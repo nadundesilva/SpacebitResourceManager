@@ -1,3 +1,8 @@
 spacebit_vehicles_homepage:
     path:     /
     defaults: { _controller: SpacebitVehiclesBundle:Default:vehicles }
+
+spacebit_vehicles_get_vehicles_by_category:
+    path:     /category
+    defaults: { _controller: SpacebitVehiclesBundle:Default:getVehiclesByCategory }
+    methods:  ['POST']

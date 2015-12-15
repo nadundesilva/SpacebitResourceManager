@@ -2,14 +2,97 @@
 
 {% block title %}Vehicles{% endblock %}
 
+{% block javascripts %}
+    <script>
+        function loadVehiclesByCategory(category) {
+            var obj;
+
+            if (window.XMLHttpRequest) {
+                obj = new XMLHttpRequest();
+            } else if (window.ActiveXObject) {
+                obj = new ActiveXObject("Microsoft.XMLHTTP");
+            } else {
+                alert("Browser Doesn't Support AJAX!");
+            }
+
+            if (obj !== null) {
+                obj.onreadystatechange = function () {
+                    if (obj.readyState < 4) {
+                        // progress
+                    } else if (obj.readyState === 4) {
+                        var res = obj.responseText;
+                        var rows = JSON.parse(res).rows;
+
+                        alert(rows);
+
+                        var table = '<table class="table table-hover">';
+                        table += '<tr><th>Model</th><th>Capacity</th><th></th></tr>'
+                        for(row in rows) {
+                            table += '<tr>';
+                            table += '<td>' + row['model'] + '</td>';
+                            table += '<td>' + row['capacity'] + '</td>';
+                            table += '<td><button class="btn btn-sm btn-info">Request Vehicle</button></td>'
+                            table += '</tr>';
+                        }
+                        table += '</table>';
+
+                        document.getElementById('vehiclesModalContent').innerHTML = table;
+                        $('#vehiclesModal').modal();
+                    }
+                }
+
+                obj.open("POST", "./category", true);
+                obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                obj.send("category=" + category);
+            }
+        }
+    </script>
+{% endblock %}
+
 {% block body %}
     {% set link_to_home = '../../' %}
     {% set active = {link:'Resources', sub_link:'Vehicles'} %}
     {% include 'templates/navbar.html.twig' %}
 
-    {% set table_headers = ['plate_no', 'model', 'capacity', 'driver_first_name', 'driver_last_name'] %}
-    {% set table = [
-        []
-    ] %}
-    {% include 'templates/table.html.twig' %}
+    <div class="row" id="Container">
+        {% for vehicles_category in vehicles_categories %}
+            <div class="col-lg-3 portfolio-item" style="margin: 30px;">
+                <div class="portfolio-wrapper">
+                    <div class="img-portfolio">
+                        {% set url = 'bundles/spacebitvehicles/images/vehicle_category_' ~ vehicles_category.name ~ '.jpg' %}
+                        <img src="{{ asset(url) }}" alt="{{ vehicles_category.name }}" onclick="loadVehiclesByCategory('{{ vehicles_category.name }}');" />
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div id="vehiclesModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content" id="vehiclesModalContent">
+
+            </div>
+        </div>
+    </div>
+
+    <div id="vehicleModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form role="form">
+                    <div class="form-group">
+                        <label for="plate_no">License Plate No:</label>
+                        <label name="plate_no"></label>
+                    </div>
+                    <div class="form-group">
+                        <label for="pwd">Password:</label>
+                        <input type="password" class="form-control" id="pwd">
+                    </div>
+                    <div class="checkbox">
+                        <label><input type="checkbox"> Remember me</label>
+                    </div>
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock %}
