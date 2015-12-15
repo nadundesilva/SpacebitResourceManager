@@ -8,176 +8,66 @@
     {% include 'templates/navbar.html.twig' %}
 
     <body>
-    <div id="signup-user-details">
+    <div class="container">
+        <div class="row">
+            <form role="form-horizontal">
+                <div class="col-lg-2"></div>
+                <div class="col-lg-8">
+                    <div class="well well-sm"><strong><span class="glyphicon glyphicon-asterisk"></span>Required Field</strong></div>
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="firstName" id="InputFirstName" placeholder="First Name" required>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="middleName">Middle Name (optional)</label>
+                        <div class="input-group col-lg-12">
+                            <input type="text" class="form-control" name="middleName" id="InputMiddleName" placeholder="Middle Name">
 
-        <div id="signup-name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="lastName" id="InputLastName" placeholder="Last Name" required>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="InputEmail">Email Address</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="InputEmailFirst" name="InputEmail" placeholder="Email Address" required>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputtelephonenumber">Telephone Number</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="InputTelephoneNumber" name="inputtelephonenumber" placeholder="Telephone Number" required>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="passwordOne">Password</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="InputPasswordFirst" name="passwordOne" placeholder="Password" required>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                        </div>
+                        <label for="passwordTwo">Re-enter Password</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="InputPasswordSecond" name="passwordTwo" placeholder="Confirm Password" required>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                        </div>
+                    </div>
 
 
-
-            <div class="field">
-                <label for="signup-name-field"> Name</label>
-
-                <input id="signup-name-field" name="name" required="required" type="text" />
-            </div>
-
-        </div>
-
-        <div id="signup-username" class="field">
-            <label for="signup-username-field">Your Username</label>
-            <input id="signup-username-field" name="username" required="required" spellcheck="false" type="text" />
-            <small>codepen.io/<span id="url-preview">username</span></small>
-        </div>
-
-        <div id="signup-email" class="field">
-            <label for="signup-email-field">Email</label>
-            <input id="signup-email-field" maxlength="55" name="email" required="required" type="text" />
-        </div>
-
-        <div id="signup-password" class="field field-half">
-            <label for="signup-password-field_">Choose Password</label>
-            <input id="signup-password-field_" name="password" required="required" size="30" type="password" />
-        </div>
-        <div id="signup-password-1" class="field field-half">
-            <label for="signup-password-field-1_">Password Again</label>
-            <input id="signup-password-field-1_" name="password_confirmation" required="required" size="30" type="password" />
-        </div>
-
-        <div id="signup-phone" class="field push hide">
-            <label for="signup-phone-field">Phone</label>
-            <input id="signup-phone-field" name="phone" type="text" value="" />
-        </div>
-
-        <div id="signup-business" class="field push hide">
-            <label for="signup-business-field">Business</label>
-            <input id="signup-business-field" name="business" type="text" value="" />
-        </div>
-
-        <input id="github_details" name="github_details" type="hidden" />
-
-    </div>
-
-    </div>
-    </fieldset>
-
-
-
-
-
-
-    <label>Pricing Choice</label>
-    <div class="field">
-        <fieldset class="field-group field-monthly-or-yearly">
-            <div id="monthly-or-yearly" class="field radio-group">
-                <div class="price-choice-half">
-                    <input checked="checked" id="subscription_pro-monthly-or-yearly_yearly" name="subscription[pro-monthly-or-yearly]" type="radio" value="yearly" />
-                    <label for="subscription_pro-monthly-or-yearly_yearly">$75 / year</label>
+                    <input type="submit" name="submit" id="submit" value="Submit" class="btn btn-info pull-right">
                 </div>
-                <div class="price-choice-half">
-                    <input id="subscription_pro-monthly-or-yearly_monthly" name="subscription[pro-monthly-or-yearly]" type="radio" value="monthly" />
-                    <label for="subscription_pro-monthly-or-yearly_monthly">$9 / month</label>
-                </div>
-            </div>
-
-        </fieldset>
-    </div>
-
-
-    <fieldset class="field-group fields-payment">
-        <div class="form-meta">
-            <h3>Need to pay with PayPal?</h3>
-
-            <p style="margin-bottom: 150px;">You can <a href="/signup/paypal">do that</a>.</p>
-
-            <h3>
-                <span class="force-default-ff">★</span>
-            </h3>
-
-            <p style="margin-bottom: 150px;">No hidden fees.<br>
-                Cancel anytime.</p>
-
-            <h3>Thank you</h3>
-
-            <p>You're about to become our new favorite person.</p>
-        </div>
-
-        <div class="form-fields">
-            <div id="stripe_error" class="form-message form-message-error"></div>
-
-
-            <input id="subscription_stripe_card_token" name="subscription[stripe_card_token]" type="hidden" />
-            <input id="subscription_plan_type" name="subscription[plan_type]" type="hidden" value="pro" />
-
-            <div class="field" id="pro-name">
-                <label for="card_name">Name on Card</label>
-                <input id="card_name" required="required" type="text" />
-            </div>
-
-            <div class="field field-credit-card-number" id="pro-credit-card">
-                <label for="card_number">Credit Card Number</label>
-                <input id="card_number" pattern="[0-9]*" required="required" type="text" />
-            </div>
-
-
-            <div class="field field-half" id="pro-cvc">
-                <label for="card_code">CVC</label>
-                <input id="card_code" pattern="[0-9]*" required="required" type="text" />
-            </div>
-
-            <div class="field field-half" id="pro-expiration">
-                <label for="card_month">Card Expiration</label>
-                <select id="card_month">
-                    <option value="1">1 - January</option>
-                    <option value="2">2 - February</option>
-                    <option value="3">3 - March</option>
-                    <option value="4">4 - April</option>
-                    <option value="5">5 - May</option>
-                    <option value="6">6 - June</option>
-                    <option value="7">7 - July</option>
-                    <option value="8">8 - August</option>
-                    <option value="9">9 - September</option>
-                    <option value="10">10 - October</option>
-                    <option value="11">11 - November</option>
-                    <option value="12">12 - December</option>
-                </select>
-
-                <select id="card_year">
-                    <option value="2015">2015</option>
-                    <option value="2016">2016</option>
-                    <option value="2017">2017</option>
-                    <option value="2018">2018</option>
-                    <option value="2019">2019</option>
-                    <option value="2020">2020</option>
-                    <option value="2021">2021</option>
-                    <option value="2022">2022</option>
-                    <option value="2023">2023</option>
-                    <option value="2024">2024</option>
-                    <option value="2025">2025</option>
-                    <option value="2026">2026</option>
-                    <option value="2027">2027</option>
-                    <option value="2028">2028</option>
-                    <option value="2029">2029</option>
-                    <option value="2030">2030</option>
-                </select>
-
-            </div>
-
-            <div class="field" id="pro-other">
-            </div>
+            </form>
 
         </div>
-    </fieldset>
-
-
-
-    <div id="signup-error">
-    </div>
-
-    <div>
-        <input id="signup-submit" type="submit" data-orig-text="Sign Up" data-disabled-text="Hold On To Your Butts." value="Sign Up" class="button big green">
-
-    </div>
-
-    </form>
     </div>
     </body>
 

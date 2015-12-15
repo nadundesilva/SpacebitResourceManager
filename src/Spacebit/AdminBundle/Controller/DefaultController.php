@@ -10,4 +10,9 @@ class DefaultController extends Controller
     {
         return $this->render('SpacebitAdminBundle:Default:home.html.twig');
     }
+
+    public function sampleAction()
+    {
+        return $this->render('SpacebitAdminBundle:Default:sample.html.twig');
+    }
 }
