@@ -13,18 +13,16 @@ class DefaultController extends Controller
         return $this->render('SpacebitAdminBundle:Default:home.html.twig');
     }
 
-    public function sampleAction()
+    public function equipmentAction()
     {
-        return $this->render('SpacebitAdminBundle:Default:sample.html.twig');
+        return $this->render('SpacebitAdminBundle:Default:equipment.html.twig');
     }
-    public function resourceAction()
-    {
-        return $this->render('SpacebitAdminBundle:Default:resource.html.twig');
-    }
-    public function vehiclesAction(){
-        return $this->render('SpacebitAdminBundle:Default:vehicles.html.twig');
 
+    public function vehiclesAction()
+    {
+        return $this->render('SpacebitAdminBundle:Default:vehicles.html.twig');
     }
+
     public function getVehicleByPlateNoAction()
     {
         $request = Request::createFromGlobals();
@@ -41,17 +39,7 @@ class DefaultController extends Controller
 
         return $response;
     }
-//    public function addEquipmentAction()
-//    {
-//        $request = Request::createFromGlobals();
-//        $category = $request->request->get('category');
-//
-//        $conn = $this->get('database_connection');
-//        $stmt = $conn->prepare('SELECT * FROM vehicle WHERE type = :category;');
-//        $stmt->bindValue(':category', $category);
-//        $stmt->execute();
-//        $result = $stmt->fetchAll();
-//    }
+
     public function addEquipmentAction()
     {
         $request = Request::createFromGlobals();
@@ -92,10 +80,6 @@ class DefaultController extends Controller
         $availability = $availability =='on'? true : false;
         $value = $request->request->get('value');
 
-
-
-
-
         $conn = $this->get('database_connection');
         $stmt = $conn->prepare('INSERT into vehicle values(:plate_no , :type, :model , :capacity ,:driver_first_name , :driver_last_name , :availability , :value);');
         $stmt->bindValue(':plate_no', $plate_no);
@@ -109,8 +93,6 @@ class DefaultController extends Controller
 
         $stmt->execute();
 
-
         return new Response('success');
     }
-
 }

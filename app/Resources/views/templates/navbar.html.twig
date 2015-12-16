@@ -24,7 +24,8 @@
     {% set pages = pages | merge([
         {name:'Admin', link:'admin', active:false,
             sub_menu:[
-                {name:'Manage Vehicles', link:'admin/vehicles', active:false}
+                {name:'Manage Vehicles', link:'admin/vehicles', active:false},
+                {name:'Manage Equipment', link:'admin/equipment', active:false}
             ]
         }]
     )%}
