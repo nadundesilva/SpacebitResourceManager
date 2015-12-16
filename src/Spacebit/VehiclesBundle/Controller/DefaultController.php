@@ -15,6 +15,8 @@ class DefaultController extends Controller
         $stmt->execute();
         $vehicle_categories = $stmt->fetchAll();
 
+
+
         return $this->render('SpacebitVehiclesBundle:Default:vehicles.html.twig', array(
             'vehicles_categories'=>$vehicle_categories,
         ));
@@ -23,15 +25,32 @@ class DefaultController extends Controller
     public function getVehiclesByCategoryAction()
     {
         $request = Request::createFromGlobals();
-        $category = $request->query->get('category');
+        $category = $request->request->get('category');
 
         $conn = $this->get('database_connection');
         $stmt = $conn->prepare('SELECT * FROM vehicle WHERE type = :category;');
         $stmt->bindValue(':category', $category);
         $stmt->execute();
-        $resiil = $stmt->fetchAll();
+        $result = $stmt->fetchAll();
 
-        $response = new Response(json_encode(array('rows' => $rows)));
+        $response = new Response(json_encode(array('result' => $result)));
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
+    }
+
+    public function getVehicleByPlateNoAction()
+    {
+        $request = Request::createFromGlobals();
+        $plate_no = $request->request->get('plateNo');
+
+        $conn = $this->get('database_connection');
+        $stmt = $conn->prepare('SELECT * FROM vehicle WHERE plate_no = :plateNo;');
+        $stmt->bindValue(':plateNo', $plate_no);
+        $stmt->execute();
+        $result = $stmt->fetch();
+
+        $response = new Response(json_encode(array('result' => $result)));
         $response->headers->set('Content-Type', 'application/json');
 
         return $response;
