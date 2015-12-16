@@ -24,33 +24,63 @@ class DefaultController extends Controller
     }
     public function validateUserAction()
     {
-        $request = Request::createFromGlobals();
-        $name = $request->request->get('name');
-        $password = $request->request->get('password');
+//        $request = Request::createFromGlobals();
+//        $name = $request->request->get('name');
+//        $password = $request->request->get('password');
 
 //        $conn = $this->get('database_connection');
-//        $stmt = $conn->prepare('SELECT into resource values(:resource_id , :availability , :description);');
-
-//        echo $name."<br>";
-//        echo $password."<br>";
-
-
-
-//        $availability = $availability =='on'? true : false;
-
-//
-//        $stmt = $conn->prepare('INSERT into resource values(:resource_id , :availability , :description);');
-//        $stmt->bindValue(':resource_id', $resource_id);
-//        $stmt->bindValue(':availability', $availability);
-//        $stmt->bindValue(':description',$description );
+//        $stmt = $conn->prepare('SELECT user_id,password FROM login WHERE user_id = :name;');
+//        $stmt->bindValue(':name', $name);
 //        $stmt->execute();
+//        $result = $stmt->fetchall();
 //
-//        $stmt = $conn->prepare('INSERT into equipment values(:resource_id , :value1);');
-//        $stmt->bindValue(':resource_id', $resource_id);
-//        $stmt->bindValue(':value1', $value1);
+//        if ( $result == false){
+//            return new Response("fail");
+//        }
+//        else{
 //
-//        $stmt->execute();
+//
+//        }
+//
+//        $response = new Response(json_encode(array('result' => $result)));
+//        $response->headers->set('Content-Type', 'application/json');
 
-        return new Response('success');
+        return new Response("Keet");
+
+
+    }
+
+
+    public function addUserAction()
+    {
+        $request = Request::createFromGlobals();
+        $userId = $request->request->get('userId');
+        $firstName = $request->request->get('firstName');
+        $middleName = $request->request->get('middleName');
+        $lastName = $request->request->get('lastName');
+        $email = $request->request->get('email');
+        $telephoneNumber = $request->request->get('telephoneNumber');
+        $accessLevelNo = $request->request->get('accessLevelNo');
+        $password1 = $request->request->get('password1');
+
+
+        $conn = $this->get('database_connection');
+        $stmt = $conn->prepare('INSERT INTO user VALUES (:userId ,:firstName,:middleName,:lastName,:email, :telephoneNumber,:accessLevelNo,1  );');
+        $stmt->bindValue(':userId', $userId);
+        $stmt->bindValue(':firstName', $firstName);
+        $stmt->bindValue(':middleName', $middleName);
+        $stmt->bindValue(':lastName', $lastName);
+        $stmt->bindValue(':email', $email);
+        $stmt->bindValue(':telephoneNumber', $telephoneNumber);
+        $stmt->bindValue(':accessLevelNo', $accessLevelNo);
+
+        $stmt->execute();
+
+        $stmt = $conn->prepare('INSERT INTO login VALUES (:userId ,:password1);');
+        $stmt->bindValue(':userId', $userId);
+        $stmt->bindValue(':password1', $password1);
+
+        $stmt->execute();
+
     }
 }

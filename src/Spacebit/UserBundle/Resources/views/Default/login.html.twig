@@ -7,6 +7,8 @@
     function validateUser(name , password) {
         var obj;
 
+
+
         if (window.XMLHttpRequest) {
             obj = new XMLHttpRequest();
         } else if (window.ActiveXObject) {
@@ -17,12 +19,13 @@
 
         if (obj !== null) {
             obj.onreadystatechange = function () {
+
                 if (obj.readyState < 4) {
                     // progress
                 } else if (obj.readyState === 4) {
                     var res = obj.responseText;
-                    //var rows = JSON.parse(res).result;
-                    window.alert(res);
+                    var rows = JSON.parse(res).result;
+                    window.alert("Keet")
                 }
             }
 
@@ -61,8 +64,8 @@
                 <fieldset>
 
                     <h2 class="logIn" style="text-align: center">Sign In</h2>
-                    <label for="inputEmail" class="sr-only">Email address</label>
-                    <input name="name" type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+                    <label for="UserID" class="sr-only">User ID</label>
+                    <input name="userID" type="text" id="userID" class="form-control" placeholder="User ID" required autofocus>
                     <label for="inputPassword" class="sr-only">Password</label>
                     <input name="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
                     <div class="checkbox">
@@ -71,7 +74,8 @@
                         </label>
                     </div>
 
-                    <button class="btn btn-lg btn-primary btn-block" onclick="validateUser(document.getElementsByName(name).value,document.getElementsByName(password).value)">Sign in</button>
+
+                    <button class="btn btn-lg btn-primary btn-block" onclick="validateUser(document.getElementsByName(userID).value,document.getElementsByName(password).value)">Sign in</button>
 
                 </fieldset>
 

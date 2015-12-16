@@ -14,3 +14,8 @@ validate_user:
     path:     /validateUser
     defaults: { _controller: SpacebitUserBundle:Default:validateUser }
     methods:  ['GET']
+
+add_user:
+    path:     /addUser
+    defaults: { _controller: SpacebitUserBundle:Default:addUser }
+    methods:  ['GET']
