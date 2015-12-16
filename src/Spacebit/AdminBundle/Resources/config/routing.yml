@@ -16,3 +16,20 @@ spacebit_admin_resource_add_equipment:
     path:     /addEquipment
     defaults: { _controller: SpacebitAdminBundle:Default:addEquipment}
     methods:  ['POST']
+
+spacebit_admin_resource_add_vehicle:
+    path:     /addVehicle
+    defaults: { _controller: SpacebitAdminBundle:Default:addVehicle}
+    methods:  ['POST']
+
+
+spacebit_admin_vehicle:
+    path:     /vehicle
+    defaults: { _controller: SpacebitAdminBundle:Default:vehicle}
+
+
+
+spacebit_admin_resource_view_vehicle:
+    path:     /getVehicleByPlateNo
+    defaults: { _controller: SpacebitAdminBundle:Default:getVehicleByPlateNo}
+    methods:  ['POST']

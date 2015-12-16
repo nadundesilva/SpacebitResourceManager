@@ -1,9 +1,60 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Locations{% endblock %}
+
+
+{% block title %}Locations{%endblock%}
 
 {% block body %}
     {% set link_to_home = '../' %}
     {% set active = {link:'Resources', sub_link:'Locations'} %}
     {% include 'templates/navbar.html.twig' %}
+
+    {% block content %}
+    <div class="dropdown">
+        <a>Name</a>
+        <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">Tutorials
+            <span class="caret"></span></button>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">HTML</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">CSS</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">JavaScript</a></li>
+            <li role="presentation" class="divider"></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">About Us</a></li>
+        </ul>
+    </div>
+
+
+
+
+
+
+
+
+  {% endblock %}
+
 {% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
