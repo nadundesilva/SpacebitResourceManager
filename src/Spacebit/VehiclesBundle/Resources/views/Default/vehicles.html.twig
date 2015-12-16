@@ -100,22 +100,22 @@
     {% set active = {link:'Resources', sub_link:'Vehicles'} %}
     {% include 'templates/navbar.html.twig' %}
 
-    <div class="container row">
+    <div style="width: 100%; text-align: center; padding: 50px;">
         {% for vehicles_category in vehicles_categories %}
-            <div class="col-lg-3 portfolio-item">
+            <div class="col-lg-4 portfolio-item" style="margin: 0 auto;">
                 <div class="portfolio-wrapper">
                     <div class="img-portfolio" style="margin: 10px;">
                         {% set url = 'bundles/spacebitvehicles/images/vehicle_category_' ~ vehicles_category.name ~ '.jpg' %}
-                        <img src="{{ asset(url) }}" alt="{{ vehicles_category.name }}" onclick="loadVehiclesByCategory('{{ vehicles_category.name }}');" />
+                        <img src="{{ asset(url) }}" alt="{{ vehicles_category.name }}" onclick="loadVehiclesByCategory('{{ vehicles_category.name }}');" style="width: 270px; height: 250px;" />
                     </div>
                 </div>
             </div>
         {% endfor %}
     </div>
 
-    <span>
+    <div style="width: 100%; text-align: center;">
         <button class="btn btn-md btn-info" style="margin: 10px;" onclick="$('#requestModal').modal();">Request a Vehicle</button>
-    </span>
+    </div>
 
     <div id="vehiclesModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
