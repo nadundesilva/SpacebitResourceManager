@@ -1,12 +1,11 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: KeetMalin
- * Date: 12/16/2015
- * Time: 7:10 AM
- */
+
+<html>
+<body>
+
+Welcome <?php echo $_GET["name"]; ?><br>
+Your email address is: <?php echo $_GET["email"]; ?>
+
+</body>
+</html>
 
 
-
-
-?>

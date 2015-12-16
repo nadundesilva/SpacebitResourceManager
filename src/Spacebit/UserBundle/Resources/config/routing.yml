@@ -10,6 +10,7 @@ signup:
     path:     /signup
     defaults: { _controller: SpacebitUserBundle:Default:signup }
 
-signup:
-    path:     /sign_in_process.php
-    defaults: { _controller: SpacebitUserBundle:Default:signinprocess }
+validate_user:
+    path:     /validateUser
+    defaults: { _controller: SpacebitUserBundle:Default:validateUser }
+    methods:  ['GET']

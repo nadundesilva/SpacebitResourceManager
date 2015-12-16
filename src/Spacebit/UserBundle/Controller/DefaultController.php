@@ -3,6 +3,8 @@
 namespace Spacebit\UserBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use \Symfony\Component\HttpFoundation\Response;
+use \Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends Controller
 {
@@ -20,8 +22,28 @@ class DefaultController extends Controller
     {
         return $this->render('SpacebitUserBundle:Default:signup.html.twig');
     }
-    public function signinprocess()
+    public function validateUserAction()
     {
-        return $this->render('SpacebitUserBundle:Default:sign_in_process.php');
+        $request = Request::createFromGlobals();
+        $name = $request->query->get('name');
+        $password = $request->query->get('password');
+
+        echo $name."<br>";
+        echo $password."<br>";
+
+
+        //post - request
+        //get - query
+
+//        $conn = $this->get('database_connection');
+//        $stmt = $conn->prepare('SELECT * FROM vehicle WHERE type = :category;');
+//        $stmt->bindValue(':category', $category);
+//        $stmt->execute();
+//        $resiil = $stmt->fetchAll();
+//
+//        $response = new Response(json_encode(array('rows' => $rows)));
+//        $response->headers->set('Content-Type', 'application/json');
+//
+//        return $response;
     }
 }
