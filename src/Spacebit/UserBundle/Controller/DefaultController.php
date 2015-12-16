@@ -20,4 +20,8 @@ class DefaultController extends Controller
     {
         return $this->render('SpacebitUserBundle:Default:signup.html.twig');
     }
+    public function signinprocess()
+    {
+        return $this->render('SpacebitUserBundle:Default:sign_in_process.php');
+    }
 }

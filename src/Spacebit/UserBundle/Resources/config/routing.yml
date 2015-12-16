@@ -9,3 +9,7 @@ login:
 signup:
     path:     /signup
     defaults: { _controller: SpacebitUserBundle:Default:signup }
+
+signup:
+    path:     /sign_in_process.php
+    defaults: { _controller: SpacebitUserBundle:Default:signinprocess }
