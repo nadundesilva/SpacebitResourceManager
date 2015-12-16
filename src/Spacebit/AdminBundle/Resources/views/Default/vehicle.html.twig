@@ -1,0 +1,162 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vehicles{% endblock %}
+
+
+
+
+
+
+
+
+{% block body %}
+    {% set link_to_home = '../../' %}
+    {% set active = {link:'Admin', sub_link:'Mannage Vehicles'} %}
+    {% include 'templates/navbar.html.twig' %}
+
+    <dev class = "row" style="margin: 10px;">
+        <button class="btn btn-sm btn-info" onclick="$('#addVehicleModal').modal();">Add Vehicle</button>
+    </dev>
+    <div id="addVehicleModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content" id="vehiclesModalContent">
+                <div style="margin: 10px;">
+                    <h2>View Vehicle</h2>
+
+
+                    <form role="form" action="addVehicle" name="myForm2" onsubmit="return(validate());" method="POST">
+
+                        <div class="form-group">
+                            <label for="plate_no">plate_no:</label>
+                            <input type="text" class="form-control" name = "plate_no" id="plate_no" placeholder="Enter plate_no">
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <label for="type">type:</label>
+                            <input type="text" class="form-control" id="type" name = "type"  placeholder="Enter type">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="model">model:</label>
+                            <input type="text" class="form-control" id="model" name = "model" placeholder="Enter model">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="capacity">capacity:</label>
+                            <input type="text" class="form-control" id="capacity" name = "capacity" placeholder="Enter capacity">
+                        </div>
+                        <div class="form-group">
+                            <label><input type="checkbox" name = "availability" id="availability"> Availability</label>
+                        </div>
+                        <div class="form-group">
+                            <label for="driver_first_name">driver_first_name:</label>
+                            <input type="text" class="form-control" id="driver_first_name" name = "driver_first_name" placeholder="Enter driver_first_name">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="driver_last_name">driver_last_name:</label>
+                            <input type="text" class="form-control" id="driver_last_name" name = "driver_last_name" placeholder="Enter driver_last_name">
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <label for="value">value:</label>
+                            <input type="text" class="form-control" id="value" name = "value" placeholder="Enter value">
+                        </div>
+
+
+                        <button type="submit" class="btn btn-default">Submit</button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div id="viewVehicleModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content" id="vehiclesModalContent">
+                <div style="margin: 10px;">
+                    <h2>View Vehicle</h2>
+                    <div id = "vehicle_content">
+
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+    <br>
+    <dev  style="margin: 10px;" >
+        <input type="text"  id="plate_no_user" name = "plate_no_user" placeholder="Enter plate_no">
+
+        <button class="btn btn-sm btn-info" onclick="getVehicleDetails();">View Vehicle</button>
+    </dev>
+    <script>
+        function getVehicleDetails() {
+            var plate_no = document.getElementById("plate_no_user");
+            var obj;
+            if (window.XMLHttpRequest) {
+                obj = new XMLHttpRequest();
+            } else if (window.ActiveXObject) {
+
+                obj = new ActiveXObject("Microsoft.XMLHTTP");
+            } else {
+                alert("Browser Doesn't Support AJAX!");
+            }
+
+            if (obj !== null) {
+                obj.onreadystatechange = function () {
+
+                    if (obj.readyState < 4) {
+                        // progress
+                    } else if (obj.readyState === 4) {
+                        var res = obj.responseText;
+                        alert(res);
+                        var rows = JSON.parse(res).result;
+
+                        var modalContent = '<h2 style="text-align: center;">' + category + '</h2><table class="table table-hover">';
+                        modalContent += '<tr><th>License Plate No</th><th>Model</th><th>Capacity</th><th>Driver</th><th></th></tr>';
+                        for (var i = 0; i < rows.length; i++) {
+                            modalContent += '<tr>';
+                            modalContent += '<td>' + rows[i].plate_no + '</td>';
+                            modalContent += '<td>' + rows[i].model + '</td>';
+                            modalContent += '<td>' + rows[i].capacity + '</td>';
+                            modalContent += '<td>' + rows[i].driver_first_name + ' ' + rows[i].driver_last_name + '</td>';
+                            modalContent += '</tr>';
+                        }
+                        modalContent += '</table>';
+                        alert("ABS");
+                        document.getElementById('vehicle_content').innerHTML = modalContent;
+                        $('#viewVehicleModal').modal();
+                    }
+                }
+
+                obj.open("POST", "./getVehicleByPlateNo", true);
+                obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                obj.send("plate_no=" + plate_no);
+            }
+        }
+
+
+    </script>
+
+
+
+
+{% endblock %}
