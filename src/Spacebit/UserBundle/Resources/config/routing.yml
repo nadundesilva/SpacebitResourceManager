@@ -13,4 +13,9 @@ signup:
 validate_user:
     path:     /validateUser
     defaults: { _controller: SpacebitUserBundle:Default:validateUser }
+    methods:  ['POST']
+
+add_user:
+    path:     /addUser
+    defaults: { _controller: SpacebitUserBundle:Default:addUser }
     methods:  ['GET']
