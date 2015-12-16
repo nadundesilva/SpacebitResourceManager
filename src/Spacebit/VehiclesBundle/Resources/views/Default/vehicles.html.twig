@@ -46,9 +46,51 @@
             }
         }
 
+        function addRequest() {
+            var obj;
+
+            if (window.XMLHttpRequest) {
+                obj = new XMLHttpRequest();
+            } else if (window.ActiveXObject) {
+                obj = new ActiveXObject("Microsoft.XMLHTTP");
+            } else {
+                alert("Browser Doesn't Support AJAX!");
+            }
+
+            if (obj !== null) {
+                obj.onreadystatechange = function () {
+                    if (obj.readyState < 4) {
+                        // progress
+                    } else if (obj.readyState === 4) {
+                        var res = obj.responseText;
+
+                        var modalContent = '<div style="margin: 10px;"><p>';
+                        if(res == 'success') {
+                            modalContent += 'You request was added successfully. An admin will review your request and accept it if possible</p><button class="btn btn-sm btn-success"';
+                        } else {
+                            modalContent += 'An error occured in adding your request. Sorry for the inconvenience.</p><button class="btn btn-sm btn-danger"';
+                        }
+                        modalContent += ' onclick=\'$("#vehiclesModal").modal("hide");\'>Ok</button></div>';
+                        document.getElementById('vehiclesModalContent').innerHTML = modalContent;
+
+                        $('#requestModal').modal('hide');
+                        $('#vehiclesModal').modal();
+                    }
+                }
+
+                obj.open("POST", "./addRequest", true);
+                obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                var date = document.forms["request-form"]["request-date"].value;
+                var time = document.forms["request-form"]["request-time"].value;
+                var vehicleType = document.forms["request-form"]["request-vehicle-type"].value;
+                var passengerCount = document.forms["request-form"]["request-passenger-count"].value;
+                var parameter = "date=" + date + '&time=' + time + '&vehicle-type=' + vehicleType + '&passenger-count=' + passengerCount;
+                obj.send(parameter);
+            }
+        }
+
         function loadRequestVehicleForm() {
             $('#vehiclesModal').modal('hide');
-            $('#requestModal').modal();
         }
     </script>
 {% endblock %}
@@ -72,7 +114,7 @@
     </div>
 
     <span>
-        <button class="btn btn-md btn-info" style="margin: 10px;" onclick="loadRequestVehicleForm();">Request a Vehicle</button>
+        <button class="btn btn-md btn-info" style="margin: 10px;" onclick="$('#requestModal').modal();">Request a Vehicle</button>
     </span>
 
     <div id="vehiclesModal" class="modal fade" role="dialog">
@@ -87,22 +129,30 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div style="margin: 20px;">
-                    <form role="form" method="POST">
+                    <form role="form" method="POST" name="request-form">
                         <div class="form-group">
-                            <label for="date">Date :</label>
-                            <input name="date" class="form-control">
+                            <label for="request-date">Date :</label>
+                            <input name="request-date" class="form-control" required />
                         </div>
                         <div class="form-group">
-                            <label for="vehicle-type" class="control-label">Select the vehicle type you want to request :</label>
+                            <label for="request-time">Time :</label>
+                            <input name="request-time" class="form-control" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="request-vehicle-type" class="control-label">Select the vehicle type you want to request :</label>
                             <div>
-                                <select name="vehicle-type" class="form-control">
+                                <select name="request-vehicle-type" class="form-control" required>
                                     {% for vehicle_category in vehicles_categories %}
                                         <option>{{ vehicle_category.name }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
                         </div>
-                        <button type="button" class="btn btn-sm btn-success">Request</button>
+                        <div class="form-group">
+                            <label for="request-passenger-count">No of passengers :</label>
+                            <input name="request-passenger-count" class="form-control" required />
+                        </div>
+                        <button type="button" class="btn btn-sm btn-success" onclick="addRequest();">Request</button>
                     </form>
                 </div>
             </div>

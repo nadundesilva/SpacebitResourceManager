@@ -47,9 +47,6 @@ class DefaultController extends Controller
 
         return $response;
 
-//        return new Response($password);
-
-
     }
 
 

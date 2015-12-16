@@ -2,11 +2,9 @@ spacebit_admin_home:
     path:     /
     defaults: { _controller: SpacebitAdminBundle:Default:home }
 
-
 spacebit_admin_sample:
     path:     /sample
     defaults: { _controller: SpacebitAdminBundle:Default:sample }
-
 
 spacebit_admin_resource:
     path:     /resource
@@ -22,12 +20,9 @@ spacebit_admin_resource_add_vehicle:
     defaults: { _controller: SpacebitAdminBundle:Default:addVehicle}
     methods:  ['POST']
 
-
 spacebit_admin_vehicle:
-    path:     /vehicle
-    defaults: { _controller: SpacebitAdminBundle:Default:vehicle}
-
-
+    path:     /vehicles
+    defaults: { _controller: SpacebitAdminBundle:Default:vehicles}
 
 spacebit_admin_resource_view_vehicle:
     path:     /getVehicleByPlateNo

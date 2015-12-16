@@ -26,8 +26,15 @@
                 } else if (obj.readyState === 4) {
 
                     var res = obj.responseText;
-                    //var rows = JSON.parse(res).result;
-                    window.alert(res);
+                    var rows = JSON.parse(res).result;
+
+                    //window.alert(rows[0].user_id);
+                    if (rows[0].password != password){
+                        window.alert("Log in failed");
+                    }
+                    else{
+
+                    }
 
                 }
             }
@@ -60,11 +67,10 @@
     <div class="container">
 
 
-        <form class="form-signin">
+
             <div class="col-lg-4"></div>
             <div class="col-lg-4">
 
-                <fieldset>
 
                     <h2 class="logIn" style="text-align: center">Sign In</h2>
                     <label for="UserID" class="sr-only">User ID</label>
@@ -80,7 +86,7 @@
 
                     <button class="btn btn-lg btn-primary btn-block" onclick="validateUser()">Sign in</button>
 
-                </fieldset>
+
 
                 <div>
                     <a href="#"><br>Forgot Password?</a>
@@ -91,7 +97,7 @@
                 </div>
             </div>
 
-        </form>
+
 
 
 
