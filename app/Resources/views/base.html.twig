@@ -2,6 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8" />
+        <meta name="viewport" content="width = device-width, initial-scale = 1">
         <title>Spacebit Resource Manager - {% block title %}{% endblock %}</title>
 
         <link rel="icon" type="image/x-icon" href="{{ 'home/web' }}" />
@@ -10,51 +11,15 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
-        <style>
-            body{
-                height: 100%;
-                overflow-y: auto;
-                background-color: lightblue;
-            }
-
-            .page-header {
-                font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
-                font-size: 20px;
-                top: 0px;
-                left: 0px;
-                right: 0px;
-                margin: 0px;
-            }
-
-            ul.footer {
-                margin-top:10px;
-                text-align:center;
-            }
-
-            ul.footer li {
-                color:#333;
-                display:inline-block;
-            }
-
-
-            #footer {
-                bottom: 0px;
-                height: 50px;
-                left: 0;
-                right: 0;
-                outline: 1px solid #dfdfdf;
-            }
-
-            #footer, .page-header {
-                background-color: #e3e8e8;
-            }
-        </style>
+        <link rel="stylesheet" href="{{ asset('bundles/app/css/main-theme.css') }}">
+        <link rel="stylesheet" href="{{ asset('bundles/app/css/bootstrap-datetimepicker.min.css') }}">
+        <script src="{{ asset('bundles/app/js/bootstrap-datetimepicker.min.js') }}"></script>
 
         {% block javascripts %}{% endblock %}
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
-        <div class="page-header">
+        <div class="page-header row">
             <div class="container">
                 <h1>
                     Spacebit Resource Manager<br>
@@ -63,9 +28,8 @@
             </div>
         </div>
 
-        <div>
-            {% block body %}{% endblock %}
-        </div>
+        {% block body %}{% endblock %}
+
 
 
 
@@ -74,5 +38,6 @@
                 {#<li>Website Designed By &#169; Spacebit</li>#}
             {#</ul>#}
         {#</div>#}
+
     </body>
 </html>

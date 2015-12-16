@@ -1,0 +1,37 @@
+body{
+    height: 100%;
+    overflow-y: auto;
+    background-color: lightblue;
+}
+
+.page-header {
+    font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
+    font-size: 20px;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    margin: 0px;
+}
+
+ul.footer {
+    margin-top:10px;
+    text-align:center;
+}
+
+ul.footer li {
+    color:#333;
+    display:inline-block;
+}
+
+
+#footer {
+    bottom: 0px;
+    height: 50px;
+    left: 0;
+    right: 0;
+    outline: 1px solid #dfdfdf;
+}
+
+#footer, .page-header {
+    background-color: #e3e8e8;
+}

@@ -21,30 +21,34 @@
                         // progress
                     } else if (obj.readyState === 4) {
                         var res = obj.responseText;
-                        var rows = JSON.parse(res).rows;
+                        var rows = JSON.parse(res).result;
 
-                        alert(rows);
-
-                        var table = '<table class="table table-hover">';
-                        table += '<tr><th>Model</th><th>Capacity</th><th></th></tr>'
-                        for(row in rows) {
-                            table += '<tr>';
-                            table += '<td>' + row['model'] + '</td>';
-                            table += '<td>' + row['capacity'] + '</td>';
-                            table += '<td><button class="btn btn-sm btn-info">Request Vehicle</button></td>'
-                            table += '</tr>';
+                        var modalContent = '<h2 style="text-align: center;">' + category + '</h2><table class="table table-hover">';
+                        modalContent += '<tr><th>License Plate No</th><th>Model</th><th>Capacity</th><th>Driver</th><th></th></tr>';
+                        for (var i = 0; i < rows.length; i++) {
+                            modalContent += '<tr>';
+                            modalContent += '<td>' + rows[i].plate_no + '</td>';
+                            modalContent += '<td>' + rows[i].model + '</td>';
+                            modalContent += '<td>' + rows[i].capacity + '</td>';
+                            modalContent += '<td>' + rows[i].driver_first_name + ' ' + rows[i].driver_last_name + '</td>';
+                            modalContent += '</tr>';
                         }
-                        table += '</table>';
+                        modalContent += '</table>';
 
-                        document.getElementById('vehiclesModalContent').innerHTML = table;
+                        document.getElementById('vehiclesModalContent').innerHTML = modalContent;
                         $('#vehiclesModal').modal();
                     }
                 }
 
-                obj.open("POST", "./category", true);
+                obj.open("POST", "./getVehicleByCategory", true);
                 obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 obj.send("category=" + category);
             }
+        }
+
+        function loadRequestVehicleForm() {
+            $('#vehiclesModal').modal('hide');
+            $('#requestModal').modal();
         }
     </script>
 {% endblock %}
@@ -54,11 +58,11 @@
     {% set active = {link:'Resources', sub_link:'Vehicles'} %}
     {% include 'templates/navbar.html.twig' %}
 
-    <div class="row" id="Container">
+    <div class="container row">
         {% for vehicles_category in vehicles_categories %}
-            <div class="col-lg-3 portfolio-item" style="margin: 30px;">
+            <div class="col-lg-3 portfolio-item">
                 <div class="portfolio-wrapper">
-                    <div class="img-portfolio">
+                    <div class="img-portfolio" style="margin: 10px;">
                         {% set url = 'bundles/spacebitvehicles/images/vehicle_category_' ~ vehicles_category.name ~ '.jpg' %}
                         <img src="{{ asset(url) }}" alt="{{ vehicles_category.name }}" onclick="loadVehiclesByCategory('{{ vehicles_category.name }}');" />
                     </div>
@@ -66,6 +70,10 @@
             </div>
         {% endfor %}
     </div>
+
+    <span>
+        <button class="btn btn-md btn-info" style="margin: 10px;" onclick="loadRequestVehicleForm();">Request a Vehicle</button>
+    </span>
 
     <div id="vehiclesModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
@@ -75,23 +83,28 @@
         </div>
     </div>
 
-    <div id="vehicleModal" class="modal fade" role="dialog">
+    <div id="requestModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form role="form">
-                    <div class="form-group">
-                        <label for="plate_no">License Plate No:</label>
-                        <label name="plate_no"></label>
-                    </div>
-                    <div class="form-group">
-                        <label for="pwd">Password:</label>
-                        <input type="password" class="form-control" id="pwd">
-                    </div>
-                    <div class="checkbox">
-                        <label><input type="checkbox"> Remember me</label>
-                    </div>
-                    <button type="submit" class="btn btn-default">Submit</button>
-                </form>
+                <div style="margin: 20px;">
+                    <form role="form" method="POST">
+                        <div class="form-group">
+                            <label for="date">Date :</label>
+                            <input name="date" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="vehicle-type" class="control-label">Select the vehicle type you want to request :</label>
+                            <div>
+                                <select name="vehicle-type" class="form-control">
+                                    {% for vehicle_category in vehicles_categories %}
+                                        <option>{{ vehicle_category.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-success">Request</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

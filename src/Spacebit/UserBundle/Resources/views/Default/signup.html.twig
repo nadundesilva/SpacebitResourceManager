@@ -2,6 +2,78 @@
 
 {% block title %}Sign Up{% endblock %}
 
+{% block javascripts %}
+    <script>
+
+        function showDiv(){
+
+            var elem = document.getElementById("accessLevel");
+            if(elem.value == "student") {
+                document.getElementById('studentDivision').style.display = "block";
+
+            }
+            if(elem.value == "staff") {
+                document.getElementById('staffDivision').style.display = "block";
+            }
+            if(elem.value == "guest") {
+                document.getElementById('guestDivision').style.display = "block";
+            }
+        }
+
+        function addNewUser() {
+            var obj;
+
+            var userId = document.getElementsByName("userID").value;
+            var firstName = document.getElementsByName("firstName").value;
+            var middleName = document.getElementsByName("middleName").value;
+            var lastName = document.getElementsByName("lastName").value;
+            var email = document.getElementsByName("email").value;
+            var telephoneNumber = document.getElementsByName("telephoneNumber").value;
+            var accessLevel = document.getElementsByName("accessLevel").value;
+            var password1 = document.getElementsByName("password1").value;
+            var password2 = document.getElementsByName("password2").value;
+
+            window.alert(firstName);
+
+            if (password1 == password2){
+                if (window.XMLHttpRequest) {
+                    obj = new XMLHttpRequest();
+                } else if (window.ActiveXObject) {
+                    obj = new ActiveXObject("Microsoft.XMLHTTP");
+                } else {
+                    alert("Browser Doesn't Support AJAX!");
+                }
+
+                if (obj !== null) {
+                    obj.onreadystatechange = function () {
+                        if (obj.readyState < 4) {
+                            // progress
+                        } else if (obj.readyState === 4) {
+                            var res = obj.responseText;
+                            var rows = JSON.parse(res).result;
+                            window.alert(res);
+                        }
+                    }
+
+                    obj.open("POST", "./addUser", true);
+                    obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                    obj.send("userId=" + userId & "firstName=" + firstName &
+                    "middleName=" + middleName & "lastName=" + lastName &
+                    "email=" + email & "telephoneNumber=" + telephoneNumber &
+                    "accessLevel=" + accessLevel & "password1=" + password1
+                    );
+                }
+            }
+            else{
+                window.alert("Passwords do not match");
+            }
+
+
+        }
+
+    </script>
+{% endblock %}
+
 {% block body %}
 
     {% set link_to_home = '../' %}
@@ -10,62 +82,144 @@
     <body>
     <div class="container">
         <div class="row">
-            <form role="form-horizontal">
+
+
                 <div class="col-lg-2"></div>
-                <div class="col-lg-8">
-                    <div class="well well-sm"><strong><span class="glyphicon glyphicon-asterisk"></span>Required Field</strong></div>
-                    <div class="form-group">
-                        <label for="firstName">First Name</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" name="firstName" id="InputFirstName" placeholder="First Name" required>
-                            <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="middleName">Middle Name (optional)</label>
-                        <div class="input-group col-lg-12">
-                            <input type="text" class="form-control" name="middleName" id="InputMiddleName" placeholder="Middle Name">
+                    <div class="col-lg-8">
+                        <form role="form-horizontal" target="_blank">
+                        <fieldset>
+                                <div>
+                                    <div class="well well-sm"><strong><span class="glyphicon glyphicon-asterisk"></span>Required Field</strong></div>
+                                    <div class="form-group">
+                                        <label for="userID">User ID</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" name="userID" id="userID" placeholder="User ID" required>
+                                            <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="firstName">First Name</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" name="firstName" id="firstName" placeholder="First Name" required>
+                                            <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="middleName">Middle Name (optional)</label>
+                                        <div class="input-group col-lg-12">
+                                            <input type="text" class="form-control" name="middleName" id="middleName" placeholder="Middle Name">
 
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="lastName">Last Name</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" name="lastName" id="InputLastName" placeholder="Last Name" required>
-                            <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="InputEmail">Email Address</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" id="InputEmailFirst" name="InputEmail" placeholder="Email Address" required>
-                            <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="inputtelephonenumber">Telephone Number</label>
-                        <div class="input-group">
-                            <input type="number" class="form-control" id="InputTelephoneNumber" name="inputtelephonenumber" placeholder="Telephone Number" required>
-                            <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="passwordOne">Password</label>
-                        <div class="input-group">
-                            <input type="password" class="form-control" id="InputPasswordFirst" name="passwordOne" placeholder="Password" required>
-                            <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
-                        </div>
-                        <label for="passwordTwo">Re-enter Password</label>
-                        <div class="input-group">
-                            <input type="password" class="form-control" id="InputPasswordSecond" name="passwordTwo" placeholder="Confirm Password" required>
-                            <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
-                        </div>
-                    </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="lastName">Last Name</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Last Name" required>
+                                            <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email">Email Address</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="email" name="email" placeholder="Email Address" required>
+                                            <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="telephoneNumber">Telephone Number</label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="telephoneNumber" name="telephoneNumber" placeholder="Telephone Number" required>
+                                            <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="passwordOne">Password</label>
+                                        <div class="input-group">
+                                            <input type="password" class="form-control" id="InputPasswordFirst" name="passwordOne" placeholder="Password" required>
+                                            <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                                        </div>
+                                        <label for="passwordTwo">Re-enter Password</label>
+                                        <div class="input-group">
+                                            <input type="password" class="form-control" id="InputPasswordSecond" name="passwordTwo" placeholder="Confirm Password" required>
+                                            <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label for="accessLevel">Select User Category:</label>
+                                        <select class="form-control" id="accessLevel" name="accessLevel" onchange="showDiv(this)">
+                                            <option value="student">Student</option>
+                                            <option value="staff">Staff</option>
+                                            <option value="guest">Guest</option>
+                                        </select>
+                                        <br>
+                                    </div>
+                                </div>
+                                <div id="studentDivision" style="display: none;">
+                                    <div class="form-group">
+                                        <label for="batch">Batch</label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="batch" name="batch" placeholder="Batch" required>
+                                            <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="staffDivision" style="display: none;">
+                                    <div class="form-group">
+                                        <label for="designation">Designation</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="designation" name="designation" placeholder="Designation" required>
+                                            <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="guestDivision" style="display: none;">
+                                    <h4>Organization Details</h4>
+                                    <div class="form-group">
+                                        <label for="title">Organization Title</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="title" name="title" placeholder="Organization Title" required>
+                                            <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="organizationEmail">Organization Email</label>
+                                        <div class="input-group">
+                                            <input type="email" class="form-control" id="organizationEmail" name="organizationEmail" placeholder="Organization Email" required>
+                                            <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="organizationTelephone">Organization Telephone</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="organizationTelephone" name="organizationTelephone" placeholder="Organization Telephone" required>
+                                            <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="nic">National ID Card Number (NIC)</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="nic" name="nic" placeholder="National ID Card Number" required>
+                                            <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="organizationAddress">Organization Address</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="organizationAddress" name="organizationAddress" placeholder="Organization Address" required>
+                                            <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                                        </div>
+                                    </div>
+                                </div>
 
 
-                    <input type="submit" name="submit" id="submit" value="Submit" class="btn btn-info pull-right">
+
+                                <button class="btn btn-lg btn-primary btn-block" onclick="addNewUser()">Sign Up</button>
+                        </fieldset>
+                        </form>
+                    <br><br>
                 </div>
-            </form>
+
 
         </div>
     </div>
