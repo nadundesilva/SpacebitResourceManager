@@ -4,10 +4,12 @@
 
 {% block javascripts %}
 <script>
-    function validateUser(name , password) {
+    function validateUser() {
         var obj;
 
 
+        var name =document.getElementById("userID").value;
+        var password = document.getElementById("password").value;
 
         if (window.XMLHttpRequest) {
             obj = new XMLHttpRequest();
@@ -19,19 +21,20 @@
 
         if (obj !== null) {
             obj.onreadystatechange = function () {
-
                 if (obj.readyState < 4) {
                     // progress
                 } else if (obj.readyState === 4) {
+
                     var res = obj.responseText;
-                    var rows = JSON.parse(res).result;
-                    window.alert("Keet")
+                    //var rows = JSON.parse(res).result;
+                    window.alert(res);
+
                 }
             }
 
             obj.open("POST", "./validateUser", true);
             obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            obj.send("name=" + name & "password=" + password);
+            obj.send("name=" + name + "& password=" + password);
         }
     }
 
@@ -57,7 +60,7 @@
     <div class="container">
 
 
-        <form class="form-signin" target="_blank">
+        <form class="form-signin">
             <div class="col-lg-4"></div>
             <div class="col-lg-4">
 
@@ -67,7 +70,7 @@
                     <label for="UserID" class="sr-only">User ID</label>
                     <input name="userID" type="text" id="userID" class="form-control" placeholder="User ID" required autofocus>
                     <label for="inputPassword" class="sr-only">Password</label>
-                    <input name="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+                    <input name="password" type="password" id="password" class="form-control" placeholder="Password" required>
                     <div class="checkbox">
                         <label>
                             <input type="checkbox" value="remember-me"> Remember me
@@ -75,7 +78,7 @@
                     </div>
 
 
-                    <button class="btn btn-lg btn-primary btn-block" onclick="validateUser(document.getElementsByName(userID).value,document.getElementsByName(password).value)">Sign in</button>
+                    <button class="btn btn-lg btn-primary btn-block" onclick="validateUser()">Sign in</button>
 
                 </fieldset>
 

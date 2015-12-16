@@ -24,28 +24,30 @@ class DefaultController extends Controller
     }
     public function validateUserAction()
     {
-//        $request = Request::createFromGlobals();
-//        $name = $request->request->get('name');
-//        $password = $request->request->get('password');
+        $request = Request::createFromGlobals();
+        $name = $request->request->get('name');
+        $password = $request->request->get('password');
 
-//        $conn = $this->get('database_connection');
-//        $stmt = $conn->prepare('SELECT user_id,password FROM login WHERE user_id = :name;');
-//        $stmt->bindValue(':name', $name);
-//        $stmt->execute();
-//        $result = $stmt->fetchall();
-//
-//        if ( $result == false){
-//            return new Response("fail");
-//        }
-//        else{
-//
-//
-//        }
-//
-//        $response = new Response(json_encode(array('result' => $result)));
-//        $response->headers->set('Content-Type', 'application/json');
+        $conn = $this->get('database_connection');
+        $stmt = $conn->prepare('SELECT user_id,password FROM login WHERE user_id = :name;');
+        $stmt->bindValue(':name', $name);
+        $stmt->execute();
+        $result = $stmt->fetchall();
 
-        return new Response("Keet");
+        if ( $result == false){
+            return new Response("fail");
+        }
+        else{
+
+
+        }
+
+        $response = new Response(json_encode(array('result' => $result)));
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
+
+//        return new Response($password);
 
 
     }
