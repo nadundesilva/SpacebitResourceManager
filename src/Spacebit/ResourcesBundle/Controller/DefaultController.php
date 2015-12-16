@@ -13,16 +13,31 @@ class DefaultController extends Controller
 
     public function equipmentAction()
     {
-        $name = 'Achini';
-        $age = 43;
+
         return $this->render('SpacebitResourcesBundle:Default:equipment.html.twig', array(
-            'myName'=>$name,
-            'myAge'=>$age,
+
         ));
     }
 
     public function locationsAction()
     {
         return $this->render('SpacebitResourcesBundle:Default:locations.html.twig');
+    }
+
+
+    public function venuesAction()
+    {
+        //$request = Request::createFromGlobals();
+        //$category = $request->query->get('category');
+
+        $conn = $this->get('database_connection');
+        $stmt = $conn->prepare('SELECT * FROM venue');
+        //$stmt->bindValue(':category', $category);
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+
+        return $this->render('SpacebitResourcesBundle:Default:venues.html.twig', array(
+            'venue_categories'=>$result,
+        ));
     }
 }
