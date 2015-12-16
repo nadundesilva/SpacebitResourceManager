@@ -2,6 +2,39 @@
 
 {% block title %}Login{% endblock %}
 
+{% block javascripts %}
+<script>
+    function validateUser(name , password) {
+        var obj;
+
+        if (window.XMLHttpRequest) {
+            obj = new XMLHttpRequest();
+        } else if (window.ActiveXObject) {
+            obj = new ActiveXObject("Microsoft.XMLHTTP");
+        } else {
+            alert("Browser Doesn't Support AJAX!");
+        }
+
+        if (obj !== null) {
+            obj.onreadystatechange = function () {
+                if (obj.readyState < 4) {
+                    // progress
+                } else if (obj.readyState === 4) {
+                    var res = obj.responseText;
+                    //var rows = JSON.parse(res).result;
+                    window.alert(res);
+                }
+            }
+
+            obj.open("POST", "./validateUser", true);
+            obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            obj.send("name=" + name & "password=" + password);
+        }
+    }
+
+</script>
+{% endblock %}
+
 {% block body %}
     {% set link_to_home = '../' %}
     {% include 'templates/navbar.html.twig' %}
@@ -21,7 +54,7 @@
     <div class="container">
 
 
-        <form class="form-signin" action="validateUser" target="_blank">
+        <form class="form-signin" target="_blank">
             <div class="col-lg-4"></div>
             <div class="col-lg-4">
 
@@ -29,7 +62,7 @@
 
                     <h2 class="logIn" style="text-align: center">Sign In</h2>
                     <label for="inputEmail" class="sr-only">Email address</label>
-                    <input name="userName" type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+                    <input name="name" type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
                     <label for="inputPassword" class="sr-only">Password</label>
                     <input name="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
                     <div class="checkbox">
@@ -37,7 +70,8 @@
                             <input type="checkbox" value="remember-me"> Remember me
                         </label>
                     </div>
-                    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+
+                    <button class="btn btn-lg btn-primary btn-block" onclick="validateUser(document.getElementsByName(name).value,document.getElementsByName(password).value)">Sign in</button>
 
                 </fieldset>
 

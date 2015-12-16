@@ -25,25 +25,32 @@ class DefaultController extends Controller
     public function validateUserAction()
     {
         $request = Request::createFromGlobals();
-        $name = $request->query->get('name');
-        $password = $request->query->get('password');
-
-        echo $name."<br>";
-        echo $password."<br>";
-
-
-        //post - request
-        //get - query
+        $name = $request->request->get('name');
+        $password = $request->request->get('password');
 
 //        $conn = $this->get('database_connection');
-//        $stmt = $conn->prepare('SELECT * FROM vehicle WHERE type = :category;');
-//        $stmt->bindValue(':category', $category);
+//        $stmt = $conn->prepare('SELECT into resource values(:resource_id , :availability , :description);');
+
+//        echo $name."<br>";
+//        echo $password."<br>";
+
+
+
+//        $availability = $availability =='on'? true : false;
+
+//
+//        $stmt = $conn->prepare('INSERT into resource values(:resource_id , :availability , :description);');
+//        $stmt->bindValue(':resource_id', $resource_id);
+//        $stmt->bindValue(':availability', $availability);
+//        $stmt->bindValue(':description',$description );
 //        $stmt->execute();
-//        $resiil = $stmt->fetchAll();
 //
-//        $response = new Response(json_encode(array('rows' => $rows)));
-//        $response->headers->set('Content-Type', 'application/json');
+//        $stmt = $conn->prepare('INSERT into equipment values(:resource_id , :value1);');
+//        $stmt->bindValue(':resource_id', $resource_id);
+//        $stmt->bindValue(':value1', $value1);
 //
-//        return $response;
+//        $stmt->execute();
+
+        return new Response('success');
     }
 }
