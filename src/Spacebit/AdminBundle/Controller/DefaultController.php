@@ -26,13 +26,13 @@ class DefaultController extends Controller
     public function getVehicleByPlateNoAction()
     {
         $request = Request::createFromGlobals();
-        $plate_no = $request->query->get('plate_no');
+        $plate_no = $request->request->get('plate_no');
 
         $conn = $this->get('database_connection');
-        $stmt = $conn->prepare('SELECT * FROM vehicle WHERE plate_no = :plateNo;');
-        $stmt->bindValue(':plateNo', $plate_no);
+        $stmt = $conn->prepare('SELECT * FROM vehicle WHERE plate_no LIKE :plateNo;');
+        $stmt->bindValue(':plateNo', '%' . trim($plate_no) . '%');
         $stmt->execute();
-        $result = $stmt->fetch();
+        $result = $stmt->fetchAll();
 
         $response = new Response(json_encode(array('result' => $result)));
         $response->headers->set('Content-Type', 'application/json');
