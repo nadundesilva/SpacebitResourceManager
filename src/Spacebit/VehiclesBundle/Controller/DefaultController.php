@@ -15,8 +15,6 @@ class DefaultController extends Controller
         $stmt->execute();
         $vehicle_categories = $stmt->fetchAll();
 
-
-
         return $this->render('SpacebitVehiclesBundle:Default:vehicles.html.twig', array(
             'vehicles_categories'=>$vehicle_categories,
         ));
@@ -39,20 +37,28 @@ class DefaultController extends Controller
         return $response;
     }
 
-    public function getVehicleByPlateNoAction()
+    public function addRequestAction()
     {
         $request = Request::createFromGlobals();
-        $plate_no = $request->request->get('plateNo');
+        $date = $request->request->get('date');
+        $time = $request->request->get('time');
+        $passenger_count = $request->request->get('passenger-count');
+        $vehicle_type = $request->request->get('vehicle-type');
 
         $conn = $this->get('database_connection');
-        $stmt = $conn->prepare('SELECT * FROM vehicle WHERE plate_no = :plateNo;');
-        $stmt->bindValue(':plateNo', $plate_no);
-        $stmt->execute();
-        $result = $stmt->fetch();
+        $stmt = $conn->prepare('INSERT INTO vehicle_request(user_id, date, time, status, number_of_passengers, requested_type) VALUES(:user_id, :date, :time, :status, :number_of_passengers, :requested_type);');
+        $stmt->bindValue(':user_id', '130109V');
+        $stmt->bindValue(':date', $date);
+        $stmt->bindValue(':time', $time);
+        $stmt->bindValue(':status', 1);
+        $stmt->bindValue(':number_of_passengers', $passenger_count);
+        $stmt->bindValue(':requested_type', $vehicle_type);
 
-        $response = new Response(json_encode(array('result' => $result)));
-        $response->headers->set('Content-Type', 'application/json');
+        $response = 'success';
+        if(!$stmt->execute()) {
+            $response = $stmt->errorCode();
+        }
 
-        return $response;
+        return new Response($response);;
     }
 }

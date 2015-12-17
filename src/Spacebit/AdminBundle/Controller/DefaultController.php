@@ -21,8 +21,8 @@ class DefaultController extends Controller
     {
         return $this->render('SpacebitAdminBundle:Default:resource.html.twig');
     }
-    public function vehicleAction(){
-        return $this->render('SpacebitAdminBundle:Default:vehicle.html.twig');
+    public function vehiclesAction(){
+        return $this->render('SpacebitAdminBundle:Default:vehicles.html.twig');
 
     }
     public function getVehicleByPlateNoAction()

@@ -13,17 +13,8 @@ class DefaultController extends Controller
 
     public function equipmentAction()
     {
-
-        return $this->render('SpacebitResourcesBundle:Default:equipment.html.twig', array(
-
-        ));
+        return $this->render('SpacebitResourcesBundle:Default:equipment.html.twig');
     }
-
-    public function locationsAction()
-    {
-        return $this->render('SpacebitResourcesBundle:Default:locations.html.twig');
-    }
-
 
     public function venuesAction()
     {
