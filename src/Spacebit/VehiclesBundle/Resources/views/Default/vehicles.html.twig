@@ -23,7 +23,7 @@
                         var res = obj.responseText;
                         var rows = JSON.parse(res).result;
 
-                        var modalContent = '<h2 style="text-align: center;">' + category + '</h2><table class="table table-hover">';
+                        var modalContent = '<h2 style="text-align: center;">' + category.charAt(0).toUpperCase() + category.slice(1) + '</h2><table class="table table-hover">';
                         modalContent += '<tr><th>License Plate No</th><th>Model</th><th>Capacity</th><th>Driver</th><th></th></tr>';
                         for (var i = 0; i < rows.length; i++) {
                             modalContent += '<tr>';
@@ -95,6 +95,41 @@
     </script>
 {% endblock %}
 
+{% block stylesheets %}
+    <style>
+        @keyframes img-in {
+            0%   {width: 0px; height: 0px; opacity: 0.0; transform: translate(50%, 50%);}
+            100% {width: 270px; height: 250px; opacity: 1.0;}
+        }
+
+        .img-portfolio {
+            width: 270px;
+            height: 250px;
+            border-radius: 50%;
+            animation-name: img-in;
+            animation-duration: 1s;
+            animation-timing-function: ease-out;
+        }
+
+        .img-portfolio:hover {
+            opacity: 0.75;
+            cursor: pointer;
+        }
+
+        @keyframes button-h2--in {
+            0%   {opacity: 0.0;}
+            50%  {opacity: 0.0}
+            100% {opacity: 1.0;}
+        }
+
+        #request-button, .text-label {
+            animation-name: button-h2--in;
+            animation-duration: 1s;
+            animation-timing-function: ease-out;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
     {% set link_to_home = '../../' %}
     {% set active = {link:'Resources', sub_link:'Vehicles'} %}
@@ -104,17 +139,16 @@
         {% for vehicles_category in vehicles_categories %}
             <div class="col-lg-4 portfolio-item" style="margin: 0 auto;">
                 <div class="portfolio-wrapper">
-                    <div class="img-portfolio" style="margin: 10px;">
-                        {% set url = 'bundles/spacebitvehicles/images/vehicle_category_' ~ vehicles_category.name ~ '.jpg' %}
-                        <img src="{{ asset(url) }}" alt="{{ vehicles_category.name }}" onclick="loadVehiclesByCategory('{{ vehicles_category.name }}');" style="width: 270px; height: 250px;" />
-                    </div>
+                    {% set url = 'bundles/spacebitvehicles/images/vehicle_category_' ~ vehicles_category.name ~ '.jpg' %}
+                    <img class="img-portfolio" src="{{ asset(url) }}" alt="{{ vehicles_category.name | capitalize }}" onclick="loadVehiclesByCategory('{{ vehicles_category.name }}');" style="width: 270px; height: 250px;" />
+                    <h2 class="text-label">{{ vehicles_category.name | capitalize }}</h2>
                 </div>
             </div>
         {% endfor %}
     </div>
 
     <div style="width: 100%; text-align: center;">
-        <button class="btn btn-md btn-info" style="margin: 10px;" onclick="$('#requestModal').modal();">Request a Vehicle</button>
+        <button id="request-button" class="btn btn-md btn-info" style="margin: 10px;" onclick="$('#requestModal').modal();">Request a Vehicle</button>
     </div>
 
     <div id="vehiclesModal" class="modal fade" role="dialog">
