@@ -65,12 +65,12 @@
                         var res = obj.responseText;
 
                         var modalContent = '<div style="margin: 10px;"><p>';
-                        if(res == 'success') {
+                        if (res == 'success') {
                             modalContent += 'You request was added successfully. An admin will review your request and accept it if possible</p><button class="btn btn-sm btn-success"';
                         } else {
-                            modalContent += 'An error occured in adding your request. Sorry for the inconvenience.</p><button class="btn btn-sm btn-danger"';
+                            modalContent += 'An error occured in adding your request. Sorry for the inconvenience.</p><div style="text-align: center;"><button class="btn btn-sm btn-danger"';
                         }
-                        modalContent += ' onclick=\'$("#vehiclesModal").modal("hide");\'>Ok</button></div>';
+                        modalContent += ' onclick=\'$("#vehiclesModal").modal("hide");\'>Ok</button><div></div>';
                         document.getElementById('vehiclesModalContent').innerHTML = modalContent;
 
                         $('#requestModal').modal('hide');
@@ -89,8 +89,12 @@
             }
         }
 
-        function loadRequestVehicleForm() {
-            $('#vehiclesModal').modal('hide');
+        function onAddRequestFormKeyPress(e) {
+            if(e.keyCode == 13) {
+                addRequest();
+            } else {
+                clearAddRequestForm();
+            }
         }
     </script>
 {% endblock %}
@@ -163,14 +167,15 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div style="margin: 20px;">
-                    <form role="form" method="POST" name="request-form">
+                    <h2 style="text-align: center;">Request a Vehicle</h2>
+                    <form id="request-form" role="form" method="POST" name="request-form" onsubmit="addRequest(); return false;">
                         <div class="form-group">
                             <label for="request-date">Date :</label>
-                            <input name="request-date" class="form-control" required />
+                            <input id="request-date" type="date" min="{{ 'now' | date('Y-m-d') }}" name="request-date" class="form-control" onkeypress="onAddRequestFormKeyPress(event);" required />
                         </div>
                         <div class="form-group">
                             <label for="request-time">Time :</label>
-                            <input name="request-time" class="form-control" required />
+                            <input type="time" name="request-time" class="form-control" onkeypress="onAddRequestFormKeyPress(event);" required />
                         </div>
                         <div class="form-group">
                             <label for="request-vehicle-type" class="control-label">Select the vehicle type you want to request :</label>
@@ -184,9 +189,9 @@
                         </div>
                         <div class="form-group">
                             <label for="request-passenger-count">No of passengers :</label>
-                            <input name="request-passenger-count" class="form-control" required />
+                            <input type="number" name="request-passenger-count" min="1" class="form-control" placeholder="Enter the number of passengers" onkeypress="onAddRequestFormKeyPress(event);" required />
                         </div>
-                        <button type="button" class="btn btn-sm btn-success" onclick="addRequest();">Request</button>
+                        <input type="submit" class="btn btn-sm btn-success" value="Request">
                     </form>
                 </div>
             </div>
