@@ -8,15 +8,15 @@
     * Each page will set the link to the home page from it's location
 #}
 {% set pages = [
-    {name:'Home', link:'./', active:true},
-    {name:'Resources', link:'resources', active:false,
+    {name:'Home', link:'./'},
+    {name:'Resources', link:'resources',
         sub_menu:[
-            {name:'Equipment', link:'resources/equipment', active:false},
-            {name:'Venues', link:'resources/venues', active:false},
-            {name:'Vehicles', link:'resources/vehicles', active:false}
+            {name:'Equipment', link:'resources/equipment'},
+            {name:'Venues', link:'resources/venues'},
+            {name:'Vehicles', link:'resources/vehicles'}
         ]
     },
-    {name:'My Profile', link:'user', active:false},
+    {name:'My Profile', link:'user'},
 
 ] %}
 {# Merging with admin pages if the user have required level of access #}
@@ -24,8 +24,9 @@
     {% set pages = pages | merge([
         {name:'Admin', link:'admin', active:false,
             sub_menu:[
-                {name:'Manage Vehicles', link:'admin/vehicles', active:false},
-                {name:'Manage Equipment', link:'admin/equipment', active:false}
+                {name:'Manage Equipment', link:'admin/equipment'},
+                {name:'Manage Venues', link:'admin/venues'},
+                {name:'Manage Vehicles', link:'admin/vehicles'}
             ]
         }]
     )%}
