@@ -2,9 +2,17 @@ spacebit_admin_home:
     path:     /
     defaults: { _controller: SpacebitAdminBundle:Default:home }
 
-spacebit_admin_resource:
+spacebit_admin_equipment:
     path:     /equipment
     defaults: { _controller: SpacebitAdminBundle:Default:equipment}
+
+spacebit_admin_venues:
+    path:     /venues
+    defaults: { _controller: SpacebitAdminBundle:Default:venues}
+
+spacebit_admin_vehicles:
+    path:     /vehicles
+    defaults: { _controller: SpacebitAdminBundle:Default:vehicles}
 
 spacebit_admin_resource_add_equipment:
     path:     /addEquipment
@@ -15,10 +23,6 @@ spacebit_admin_resource_add_vehicle:
     path:     /addVehicle
     defaults: { _controller: SpacebitAdminBundle:Default:addVehicle}
     methods:  ['POST']
-
-spacebit_admin_vehicle:
-    path:     /vehicles
-    defaults: { _controller: SpacebitAdminBundle:Default:vehicles}
 
 spacebit_admin_resource_view_vehicle:
     path:     /getVehicleByPlateNo
