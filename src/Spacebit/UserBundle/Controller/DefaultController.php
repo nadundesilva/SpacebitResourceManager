@@ -2,9 +2,13 @@
 
 namespace Spacebit\UserBundle\Controller;
 
+<<<<<<< HEAD
+
+=======
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use \Symfony\Component\HttpFoundation\Response;
 use \Symfony\Component\HttpFoundation\Request;
+>>>>>>> 8c805e30d01b479bc6e1361dbaa36d119f8624b2
 
 class DefaultController extends Controller
 {

@@ -2,7 +2,43 @@
 
 {% block title %}Vehicles{% endblock %}
 
+{% block stylesheets %}
+    <style>
+        @keyframes img-in {
+            0%   {width: 0px; height: 0px; opacity: 0.0; transform: translate(50%, 50%);}
+            100% {width: 270px; height: 250px; opacity: 1.0;}
+        }
+
+        .img-portfolio {
+            width: 270px;
+            height: 250px;
+            border-radius: 50%;
+            animation-name: img-in;
+            animation-duration: 1s;
+            animation-timing-function: ease-out;
+        }
+
+        .img-portfolio:hover {
+            opacity: 0.75;
+            cursor: pointer;
+        }
+
+        @keyframes button-h2--in {
+            0%   {opacity: 0.0;}
+            50%  {opacity: 0.0}
+            100% {opacity: 1.0;}
+        }
+
+        #request-button, .text-label {
+            animation-name: button-h2--in;
+            animation-duration: 1s;
+            animation-timing-function: ease-out;
+        }
+    </style>
+{% endblock %}
+
 {% block javascripts %}
+    <script src="http://maps.googleapis.com/maps/api/js"></script>
     <script>
         function loadVehiclesByCategory(category) {
             var obj;
@@ -23,14 +59,17 @@
                         var res = obj.responseText;
                         var rows = JSON.parse(res).result;
 
-                        var modalContent = '<h2 style="text-align: center;">' + category + '</h2><table class="table table-hover">';
-                        modalContent += '<tr><th>License Plate No</th><th>Model</th><th>Capacity</th><th>Driver</th><th></th></tr>';
+                        var modalContent = '<h2 style="text-align: center;">' + category.charAt(0).toUpperCase() + category.slice(1) + '</h2><table class="table table-hover">';
+                        modalContent += '<tr><th>License Plate No</th><th>Model</th><th>Capacity</th><th>Driver</th>' + (category == 'Other' ? '<th>Type</th>' : '') + '</tr>';
                         for (var i = 0; i < rows.length; i++) {
                             modalContent += '<tr>';
                             modalContent += '<td>' + rows[i].plate_no + '</td>';
                             modalContent += '<td>' + rows[i].model + '</td>';
                             modalContent += '<td>' + rows[i].capacity + '</td>';
                             modalContent += '<td>' + rows[i].driver_first_name + ' ' + rows[i].driver_last_name + '</td>';
+                            if(category == 'Other') {
+                                modalContent += '<td>' + rows[i].type + '</td>';
+                            }
                             modalContent += '</tr>';
                         }
                         modalContent += '</table>';
@@ -65,12 +104,12 @@
                         var res = obj.responseText;
 
                         var modalContent = '<div style="margin: 10px;"><p>';
-                        if(res == 'success') {
+                        if (res == 'success') {
                             modalContent += 'You request was added successfully. An admin will review your request and accept it if possible</p><button class="btn btn-sm btn-success"';
                         } else {
-                            modalContent += 'An error occured in adding your request. Sorry for the inconvenience.</p><button class="btn btn-sm btn-danger"';
+                            modalContent += 'An error occured in adding your request. Sorry for the inconvenience.</p><div style="text-align: center;"><button class="btn btn-sm btn-danger"';
                         }
-                        modalContent += ' onclick=\'$("#vehiclesModal").modal("hide");\'>Ok</button></div>';
+                        modalContent += ' onclick=\'$("#vehiclesModal").modal("hide");\'>Ok</button><div></div>';
                         document.getElementById('vehiclesModalContent').innerHTML = modalContent;
 
                         $('#requestModal').modal('hide');
@@ -84,13 +123,79 @@
                 var time = document.forms["request-form"]["request-time"].value;
                 var vehicleType = document.forms["request-form"]["request-vehicle-type"].value;
                 var passengerCount = document.forms["request-form"]["request-passenger-count"].value;
-                var parameter = "date=" + date + '&time=' + time + '&vehicle-type=' + vehicleType + '&passenger-count=' + passengerCount;
+                var destination = document.forms["request-form"]["request-map-search"].value;
+                var parameter = "date=" + date + '&time=' + time + '&vehicle-type=' + vehicleType + '&passenger-count=' + passengerCount + '&destination=' + destination;
                 obj.send(parameter);
             }
         }
 
-        function loadRequestVehicleForm() {
-            $('#vehiclesModal').modal('hide');
+        function onAddRequestFormKeyPress(e) {
+            if(e.keyCode == 13) {
+                addRequest();
+            }
+        }
+
+        var mapCanvas;
+        var map;
+        function initialize() {
+            mapCanvas = document.getElementById("google-map");
+            var mapOptions = {
+                center:new google.maps.LatLng(10, 78),
+                zoom:7,
+                mapTypeId:google.maps.MapTypeId.ROADMAP
+            };
+            var map = new google.maps.Map(mapCanvas, mapOptions);
+
+            $("#requestModal").on('shown.bs.modal', function(){
+                google.maps.event.trigger(map, 'resize')
+            });
+        }
+        google.maps.event.addDomListener(window, 'load', initialize);
+
+        function search() {
+            var address = document.forms["request-form"]["request-map-search"].value;
+            var obj;
+
+            if (window.XMLHttpRequest) {
+                obj = new XMLHttpRequest();
+            } else if (window.ActiveXObject) {
+                obj = new ActiveXObject("Microsoft.XMLHTTP");
+            } else {
+                alert("Browser Doesn't Support AJAX!");
+            }
+
+            if (obj !== null) {
+                obj.onreadystatechange = function () {
+                    if (obj.readyState < 4) {
+                        // progress
+                    } else if (obj.readyState === 4) {
+                        var res = obj.responseText;
+                        var result = JSON.parse(res);
+                        if(result.status == 'OK') {
+                            var longitude = result.results[0].geometry.location.lng;
+                            var latitude = result.results[0].geometry.location.lat;
+
+                            var mapOptions = {
+                                center: new google.maps.LatLng(latitude, longitude),
+                                zoom: 10,
+                                mapTypeId: google.maps.MapTypeId.ROADMAP
+                            }
+                            var map = new google.maps.Map(mapCanvas, mapOptions);
+
+                            var iconBase = 'https://maps.google.com/mapfiles/kml/paddle/';
+                            var marker = new google.maps.Marker({
+                                position: new google.maps.LatLng(latitude, longitude),
+                                map: map,
+                                icon: iconBase + 'red-circle.png'
+                            });
+                        }
+                    }
+                }
+
+                obj.open("GET", "https://maps.googleapis.com/maps/api/geocode/json?address=" + address, true);
+                obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                obj.send();
+            }
         }
     </script>
 {% endblock %}
@@ -100,21 +205,21 @@
     {% set active = {link:'Resources', sub_link:'Vehicles'} %}
     {% include 'templates/navbar.html.twig' %}
 
-    <div style="width: 100%; text-align: center; padding: 50px;">
-        {% for vehicles_category in vehicles_categories %}
-            <div class="col-lg-4 portfolio-item" style="margin: 0 auto;">
+    {% set categories = ['Cars', 'Vans', 'Busses', 'Other'] %}
+    <div class="row" style="width: 100%; text-align: center; padding: 50px;">
+        {% for category in categories %}
+            <div class="col-lg-3 portfolio-item" style="margin: 0 auto;">
                 <div class="portfolio-wrapper">
-                    <div class="img-portfolio" style="margin: 10px;">
-                        {% set url = 'bundles/spacebitvehicles/images/vehicle_category_' ~ vehicles_category.name ~ '.jpg' %}
-                        <img src="{{ asset(url) }}" alt="{{ vehicles_category.name }}" onclick="loadVehiclesByCategory('{{ vehicles_category.name }}');" style="width: 270px; height: 250px;" />
-                    </div>
+                    {% set url = 'bundles/spacebitvehicles/images/vehicle_category_' ~ category ~ '.jpg' %}
+                    <img class="img-portfolio" src="{{ asset(url) }}" alt="{{ category }}" onclick="loadVehiclesByCategory('{{ category }}');" />
+                    <h2 class="text-label">{{ category }}</h2>
                 </div>
             </div>
         {% endfor %}
     </div>
 
     <div style="width: 100%; text-align: center;">
-        <button class="btn btn-md btn-info" style="margin: 10px;" onclick="$('#requestModal').modal();">Request a Vehicle</button>
+        <button id="request-button" class="btn btn-md btn-info" style="margin: 10px;" onclick="$('#requestModal').modal();">Request a Vehicle</button>
     </div>
 
     <div id="vehiclesModal" class="modal fade" role="dialog">
@@ -129,14 +234,15 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div style="margin: 20px;">
-                    <form role="form" method="POST" name="request-form">
+                    <h2 style="text-align: center;">Request a Vehicle</h2>
+                    <form id="request-form" role="form" method="POST" name="request-form" onsubmit="addRequest(); return false;">
                         <div class="form-group">
                             <label for="request-date">Date :</label>
-                            <input name="request-date" class="form-control" required />
+                            <input id="request-date" type="date" min="{{ 'now' | date('Y-m-d') }}" name="request-date" class="form-control" onkeypress="onAddRequestFormKeyPress(event);" required />
                         </div>
                         <div class="form-group">
                             <label for="request-time">Time :</label>
-                            <input name="request-time" class="form-control" required />
+                            <input type="time" name="request-time" class="form-control" onkeypress="onAddRequestFormKeyPress(event);" required />
                         </div>
                         <div class="form-group">
                             <label for="request-vehicle-type" class="control-label">Select the vehicle type you want to request :</label>
@@ -150,9 +256,16 @@
                         </div>
                         <div class="form-group">
                             <label for="request-passenger-count">No of passengers :</label>
-                            <input name="request-passenger-count" class="form-control" required />
+                            <input type="number" name="request-passenger-count" min="1" class="form-control" placeholder="Enter the number of passengers" onkeypress="onAddRequestFormKeyPress(event);" required />
                         </div>
-                        <button type="button" class="btn btn-sm btn-success" onclick="addRequest();">Request</button>
+                        <div class="form-group">
+                            <label for="request-passenger-count">Your Destination :</label>
+                            <input type="text" id="request-map-search" name="request-destination" class="form-control" placeholder="Enter the destination of you wish to go to" onkeyup="search();" required />
+                            <div class="container" style="padding: 25px">
+                                <div id="google-map" class="container col-sm-5" style="width: 500px; height: 400px; background-color: #CCC;"></div>
+                            </div>
+                        </div>
+                        <input type="submit" class="btn btn-sm btn-success" value="Request">
                     </form>
                 </div>
             </div>

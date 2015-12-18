@@ -1,16 +1,48 @@
+@keyframes body-in {
+    0%   {background-color: #ffffff;}
+    100% {background-color: #ddd6e6;}
+}
+
 body{
-    height: 100%;
     overflow-y: auto;
-    background-color: lightblue;
+    background-color: #e6e6e6;
+    animation-name: body-in;
+    animation-duration: 1s;
+}
+
+@keyframes page-header-in {
+    0%   {height: 0px; opacity: 0.0;}
+    100% {height: 109px; opacity: 1.0;}
 }
 
 .page-header {
-    font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
+    font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
     font-size: 20px;
     top: 0px;
     left: 0px;
     right: 0px;
     margin: 0px;
+    padding: 0px;
+    color: #dcedff;
+    animation-name: page-header-in;
+    animation-duration: 1s;
+    animation-timing-function: ease-out;
+}
+
+@keyframes nav-in {
+    0%   {opacity: 0.0;}
+    30%  {opacity: 0.0}
+    100% {opacity: 1.0;}
+}
+
+nav {
+    animation-name: nav-in;
+    animation-duration: 1.5s;
+    animation-timing-function: ease-out;
+}
+
+.form-control {
+    background-color: #aea6ff;
 }
 
 ul.footer {
@@ -32,6 +64,8 @@ ul.footer li {
     outline: 1px solid #dfdfdf;
 }
 
+
+
 #footer, .page-header {
-    background-color: #e3e8e8;
+    background-color: #020414;
 }

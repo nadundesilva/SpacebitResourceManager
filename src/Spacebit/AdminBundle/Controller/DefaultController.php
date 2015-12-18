@@ -10,48 +10,61 @@ class DefaultController extends Controller
 {
     public function homeAction()
     {
-        return $this->render('SpacebitAdminBundle:Default:home.html.twig');
+        $conn = $this->get('database_connection');
+
+        $stmt = $conn->prepare('SELECT COUNT(request_id) AS count FROM ((resource_request INNER JOIN resource USING(resource_id)) INNER JOIN resource_administration USING(resource_id)) INNER JOIN equipment USING(resource_id) WHERE status = 1 AND resource_administration.user_id = :user_id;');
+        $stmt->bindValue(':user_id', $_SESSION['user_id']);
+        $stmt->execute();
+        $equipment_request_count = $stmt->fetch();
+
+        $stmt = $conn->prepare('SELECT COUNT(request_id) AS count FROM ((resource_request INNER JOIN resource USING(resource_id)) INNER JOIN resource_administration USING(resource_id)) INNER JOIN venue USING(resource_id) WHERE status = 1 AND resource_administration.user_id = :user_id;');
+        $stmt->bindValue(':user_id', $_SESSION['user_id']);
+        $stmt->execute();
+        $venues_request_count = $stmt->fetch();
+
+        $stmt = $conn->prepare('SELECT COUNT(request_id) AS count FROM vehicle_request WHERE status = 1;');
+        $stmt->execute();
+        $vehicle_request_count = $stmt->fetch();
+
+        return $this->render('SpacebitAdminBundle:Default:home.html.twig', array(
+            'equipment_request_count'=>$equipment_request_count['count'],
+            'venues_request_count'=>$venues_request_count['count'],
+            'vehicles_request_count'=>$vehicle_request_count['count'],
+        ));
     }
 
-    public function sampleAction()
+    public function equipmentAction()
     {
-        return $this->render('SpacebitAdminBundle:Default:sample.html.twig');
+        return $this->render('SpacebitAdminBundle:Default:equipment.html.twig');
     }
-    public function resourceAction()
+
+    public function venuesAction()
     {
-        return $this->render('SpacebitAdminBundle:Default:resource.html.twig');
+        return $this->render('SpacebitAdminBundle:Default:venues.html.twig');
     }
-    public function vehiclesAction(){
+
+    public function vehiclesAction()
+    {
         return $this->render('SpacebitAdminBundle:Default:vehicles.html.twig');
-
     }
+
     public function getVehicleByPlateNoAction()
     {
         $request = Request::createFromGlobals();
-        $plate_no = $request->query->get('plate_no');
+        $plate_no = $request->request->get('plate_no');
 
         $conn = $this->get('database_connection');
-        $stmt = $conn->prepare('SELECT * FROM vehicle WHERE plate_no = :plateNo;');
-        $stmt->bindValue(':plateNo', $plate_no);
+        $stmt = $conn->prepare('SELECT * FROM vehicle WHERE plate_no LIKE :plateNo;');
+        $stmt->bindValue(':plateNo', '%' . trim($plate_no) . '%');
         $stmt->execute();
-        $result = $stmt->fetch();
+        $result = $stmt->fetchAll();
 
         $response = new Response(json_encode(array('result' => $result)));
         $response->headers->set('Content-Type', 'application/json');
 
         return $response;
     }
-//    public function addEquipmentAction()
-//    {
-//        $request = Request::createFromGlobals();
-//        $category = $request->request->get('category');
-//
-//        $conn = $this->get('database_connection');
-//        $stmt = $conn->prepare('SELECT * FROM vehicle WHERE type = :category;');
-//        $stmt->bindValue(':category', $category);
-//        $stmt->execute();
-//        $result = $stmt->fetchAll();
-//    }
+
     public function addEquipmentAction()
     {
         $request = Request::createFromGlobals();
@@ -60,8 +73,6 @@ class DefaultController extends Controller
         $availability = $availability =='on'? true : false;
         $description = $request->request->get('description');
         $value1 = $request->request->get('value1');
-
-
 
         $conn = $this->get('database_connection');
         $stmt = $conn->prepare('INSERT into resource values(:resource_id , :availability , :description);');
@@ -92,10 +103,6 @@ class DefaultController extends Controller
         $availability = $availability =='on'? true : false;
         $value = $request->request->get('value');
 
-
-
-
-
         $conn = $this->get('database_connection');
         $stmt = $conn->prepare('INSERT into vehicle values(:plate_no , :type, :model , :capacity ,:driver_first_name , :driver_last_name , :availability , :value);');
         $stmt->bindValue(':plate_no', $plate_no);
@@ -109,8 +116,6 @@ class DefaultController extends Controller
 
         $stmt->execute();
 
-
         return new Response('success');
     }
-
 }

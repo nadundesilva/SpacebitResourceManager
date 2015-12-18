@@ -30,9 +30,6 @@
         .modal-dialog {
             width:1250px;
         }
-
-
-
     </style>
 
 
@@ -46,7 +43,6 @@
     {% include 'templates/navbar.html.twig' %}
 
     {% block content %}
-
 
 <div class="container col-lg-6">
     <form role="form">
@@ -75,11 +71,14 @@
             </form>
         </div>
 
-        <div class="container" style="display: inline" >
-
+        <div style="display: inline;">
             <!-- Trigger the modal with a button -->
             <button type="button" class="btn btn-info btn-lg btn-padding" data-toggle="modal" data-target="#myModal">Computer Labs</button>
+            <!-- Trigger the modal with a button -->
+            <button type="button" class="btn btn-info btn-lg btn-padding" data-toggle="modal" data-target="#myModal1">Tutorial Halls</button>
+        </div>
 
+        <div class="container" style="display: inline" >
             <!-- Modal -->
             <div class="modal fade" id="myModal" role="dialog">
                 <div class="modal-dialog  modal-dialog modal-lg">
@@ -140,9 +139,6 @@
         </div>
 
         <div class="container" style="display: inline">
-
-            <!-- Trigger the modal with a button -->
-            <button type="button" class="btn btn-info btn-lg btn-padding" data-toggle="modal" data-target="#myModal1">Tutorial Halls</button>
 
             <!-- Modal -->
             <div class="modal fade" id="myModal1" role="dialog">

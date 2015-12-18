@@ -26,8 +26,12 @@ class DefaultController extends Controller
         $category = $request->request->get('category');
 
         $conn = $this->get('database_connection');
-        $stmt = $conn->prepare('SELECT * FROM vehicle WHERE type = :category;');
-        $stmt->bindValue(':category', $category);
+        if($category == 'Other') {
+            $stmt = $conn->prepare('SELECT * FROM vehicle WHERE type != "Cars" AND type != "Vans" AND type != "Busses";');
+        } else {
+            $stmt = $conn->prepare('SELECT * FROM vehicle WHERE type = :category;');
+            $stmt->bindValue(':category', $category);
+        }
         $stmt->execute();
         $result = $stmt->fetchAll();
 
@@ -44,15 +48,17 @@ class DefaultController extends Controller
         $time = $request->request->get('time');
         $passenger_count = $request->request->get('passenger-count');
         $vehicle_type = $request->request->get('vehicle-type');
+        $destination = $request->request->get('destination');
 
         $conn = $this->get('database_connection');
-        $stmt = $conn->prepare('INSERT INTO vehicle_request(user_id, date, time, status, number_of_passengers, requested_type) VALUES(:user_id, :date, :time, :status, :number_of_passengers, :requested_type);');
-        $stmt->bindValue(':user_id', '130109V');
+        $stmt = $conn->prepare('INSERT INTO vehicle_request(user_id, date, time, status, number_of_passengers, requested_type, requested_town) VALUES(:user_id, :date, :time, :status, :number_of_passengers, :requested_type, :requested_town);');
+        $stmt->bindValue(':user_id', $_SESSION['user_id']);
         $stmt->bindValue(':date', $date);
         $stmt->bindValue(':time', $time);
         $stmt->bindValue(':status', 1);
         $stmt->bindValue(':number_of_passengers', $passenger_count);
         $stmt->bindValue(':requested_type', $vehicle_type);
+        $stmt->bindValue(':requested_town', $destination);
 
         $response = 'success';
         if(!$stmt->execute()) {
