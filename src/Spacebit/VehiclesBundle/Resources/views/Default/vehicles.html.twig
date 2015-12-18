@@ -3,6 +3,7 @@
 {% block title %}Vehicles{% endblock %}
 
 {% block javascripts %}
+    <script src="https://maps.googleapis.com/maps/api/js"></script>
     <script>
         function loadVehiclesByCategory(category) {
             var obj;
@@ -92,9 +93,30 @@
         function onAddRequestFormKeyPress(e) {
             if(e.keyCode == 13) {
                 addRequest();
-            } else {
-                clearAddRequestForm();
             }
+        }
+
+        function setMap() {
+            var latitude = 7.0;
+            var longitude = 81.0;
+            var mapCanvas = document.getElementById('map');
+            var mapOptions = {
+                center: new google.maps.LatLng(latitude, longitude),
+                zoom: 10,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            }
+            var map = new google.maps.Map(mapCanvas, mapOptions);
+
+
+        }
+
+        function setMapMarker(latitude, longitude) {
+            var iconBase = 'https://maps.google.com/mapfiles/kml/paddle/';
+            var marker = new google.maps.Marker({
+                position: new google.maps.LatLng(latitude, longitude),
+                map: map,
+                icon: iconBase + 'red-circle.png'
+            });
         }
     </script>
 {% endblock %}
@@ -152,7 +174,7 @@
     </div>
 
     <div style="width: 100%; text-align: center;">
-        <button id="request-button" class="btn btn-md btn-info" style="margin: 10px;" onclick="$('#requestModal').modal();">Request a Vehicle</button>
+        <button id="request-button" class="btn btn-md btn-info" style="margin: 10px;" onclick="$('#requestModal').modal(); setMap();">Request a Vehicle</button>
     </div>
 
     <div id="vehiclesModal" class="modal fade" role="dialog">
@@ -190,6 +212,15 @@
                         <div class="form-group">
                             <label for="request-passenger-count">No of passengers :</label>
                             <input type="number" name="request-passenger-count" min="1" class="form-control" placeholder="Enter the number of passengers" onkeypress="onAddRequestFormKeyPress(event);" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="request-passenger-count">Your Destination :</label>
+                            <input type="text" name="request-destination" class="form-control" placeholder="Enter the destination of you wish to go to" required />
+                            <div class="container" style="padding: 25px">
+                                <div class="container col-sm-5" id="map" style="width: 500px; height: 400px; background-color: #CCC;">
+
+                                </div>
+                            </div>
                         </div>
                         <input type="submit" class="btn btn-sm btn-success" value="Request">
                     </form>
