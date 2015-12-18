@@ -70,11 +70,11 @@
     <!----This part was edited by Keet--->
     <!----Added Sign up and Log in Buttons--->
     <ul class="nav navbar-nav pull-right">
-        <li>
+        <li {% if active.link is defined and active.link == 'Sign Up' %}class="active"{% endif %}>
             {% set link = link_to_home ~ "user/signup" %}
             <a href="{{ link }}">Sign Up</a>
         </li>
-        <li>
+        <li {% if active.link is defined and active.link == 'Log In' %}class="active"{% endif %}>
             {% set link = link_to_home ~ "user/login" %}
             <a href="{{ link }}">Log In</a>
 

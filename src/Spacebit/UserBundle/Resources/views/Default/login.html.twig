@@ -2,120 +2,103 @@
 
 {% block title %}Login{% endblock %}
 
-{% block javascripts %}
-<script>
-    function validateUser() {
-        var obj;
-
-
-        var name =document.getElementById("userID").value;
-        var password = document.getElementById("password").value;
-
-        if (window.XMLHttpRequest) {
-            obj = new XMLHttpRequest();
-        } else if (window.ActiveXObject) {
-            obj = new ActiveXObject("Microsoft.XMLHTTP");
-        } else {
-            alert("Browser Doesn't Support AJAX!");
+{% block stylesheets %}
+    <style>
+        @keyframes division-in {
+            0%   {opacity: 0.0; transform: translate(-25%, 0);}
+            50%  {opacity: 0.0; transform: translate(-25%, 0);}
+            100% {opacity: 1.0;}
         }
 
-        if (obj !== null) {
-            obj.onreadystatechange = function () {
-                if (obj.readyState < 4) {
-                    // progress
-                } else if (obj.readyState === 4) {
+        .division {
+            animation-name: division-in;
+            animation-duration: 2s;
+            animation-timing-function: ease-out;
+        }
+    </style>
+{% endblock %}
 
-                    var res = obj.responseText;
-                    if (res == "fail"){
-                        window.alert("***Please enter correct username and password***");
-                        document.getElementById("password").value = "";
-                    }
-                    else{
-                        var rows = JSON.parse(res).result;
-                        //window.alert(rows[0].user_id);
-                        if (rows[0].password != password){
-                            window.alert("Log in failed");
-                            document.getElementById("password").value = "";
+{% block javascripts %}
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+    <script>
+        function validateUser() {
+            var obj;
 
-                        }
-                        else{
-                            window.alert("Log in successful");
-                        }
+            var name =document.getElementById("userID").value;
+            var password = document.getElementById("password").value;
 
-                    }
-
-                }
+            if (window.XMLHttpRequest) {
+                obj = new XMLHttpRequest();
+            } else if (window.ActiveXObject) {
+                obj = new ActiveXObject("Microsoft.XMLHTTP");
+            } else {
+                alert("Browser Doesn't Support AJAX!");
             }
 
-            obj.open("POST", "./validateUser", true);
-            obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            obj.send("name=" + name + "& password=" + password);
-        }
-    }
+            if (obj !== null) {
+                obj.onreadystatechange = function () {
+                    if (obj.readyState < 4) {
+                        // progress
+                    } else if (obj.readyState === 4) {
 
-</script>
+                        var res = obj.responseText;
+                        if (res == "fail"){
+                            window.alert("***Please enter correct username and password***");
+                            document.getElementById("password").value = "";
+                        }
+                        else{
+                            var rows = JSON.parse(res).result;
+                            //window.alert(rows[0].user_id);
+                            if (rows[0].password != password){
+                                window.alert("Log in failed");
+                                document.getElementById("password").value = "";
+
+                            }
+                            else{
+                                window.alert("Log in successful");
+                            }
+
+                        }
+
+                    }
+                }
+
+                obj.open("POST", "./validateUser", true);
+                obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                obj.send("name=" + name + "& password=" + password);
+            }
+        }
+
+    </script>
 {% endblock %}
 
 {% block body %}
     {% set link_to_home = '../' %}
+    {% set active = {link:'Log In'} %}
     {% include 'templates/navbar.html.twig' %}
 
-    <head>
-        <style>
-            h2.logIn{
-                background-color: #0b083a;
-                border-style: inset;
-                color: white;
-                font-size: 25px;
-                padding: 5px
-            }
-        </style>
-    </head>
-
-    <div class="container">
-
-
-
-            <div class="col-lg-4"></div>
-            <div class="col-lg-4">
-
-
-                    <h2 class="logIn" style="text-align: center">Sign In</h2>
-                    <label for="UserID" class="sr-only">User ID</label>
-                    <input name="userID" type="text" id="userID" class="form-control" placeholder="User ID" required autofocus>
-                    <label for="inputPassword" class="sr-only">Password</label>
-                    <input name="password" type="password" id="password" class="form-control" placeholder="Password" required>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" value="remember-me"> Remember me
-                        </label>
-                    </div>
-
-
-                    <button class="btn btn-lg btn-primary btn-block" onclick="validateUser()">Sign in</button>
-
-
-
-                <div>
-                    <a href="#"><br>Forgot Password?</a>
-                    <p><br>Need a new Account?</p>
-                    <a href="signup" class="btn btn-primary">Sign Up Now</a>
-
-
-                </div>
+    <div class="container division">
+        <div class="col-lg-4"></div>
+        <div class="col-lg-4">
+            <h2 class="logIn" style="text-align: center">Sign In</h2>
+            <label for="UserID" class="sr-only">User ID</label>
+            <input name="userID" type="text" id="userID" class="form-control" placeholder="User ID" required autofocus>
+            <label for="inputPassword" class="sr-only">Password</label>
+            <input name="password" type="password" id="password" class="form-control" placeholder="Password" required>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" value="remember-me"> Remember me
+                </label>
             </div>
 
 
-
-
-
-
-    </div> <!-- /container -->
-
-
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
-
-
-
+            <button class="btn btn-lg btn-primary btn-block" onclick="validateUser()">Sign in</button>
+            <div>
+                <a href="#"><br>Forgot Password?</a>
+                <p><br>Need a new Account?</p>
+                <a href="signup" class="btn btn-primary">Sign Up Now</a>
+            </div>
+        </div>
+    </div>
 {% endblock %}

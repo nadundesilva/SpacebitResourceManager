@@ -41,6 +41,10 @@ nav {
     animation-timing-function: ease-out;
 }
 
+.form-control {
+    background-color: #aea6ff;
+}
+
 ul.footer {
     margin-top:10px;
     text-align:center;
