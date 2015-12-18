@@ -2,8 +2,199 @@
 
 {% block title %}Vehicles{% endblock %}
 
+{% block javascripts %}
+    <script>
+        function loadVehiclesByCategory(category) {
+            var obj;
+
+            if (window.XMLHttpRequest) {
+                obj = new XMLHttpRequest();
+            } else if (window.ActiveXObject) {
+                obj = new ActiveXObject("Microsoft.XMLHTTP");
+            } else {
+                alert("Browser Doesn't Support AJAX!");
+            }
+
+            if (obj !== null) {
+                obj.onreadystatechange = function () {
+                    if (obj.readyState < 4) {
+                        // progress
+                    } else if (obj.readyState === 4) {
+                        var res = obj.responseText;
+                        var rows = JSON.parse(res).result;
+
+                        var modalContent = '<h2 style="text-align: center;">' + category.charAt(0).toUpperCase() + category.slice(1) + '</h2><table class="table table-hover">';
+                        modalContent += '<tr><th>License Plate No</th><th>Model</th><th>Capacity</th><th>Driver</th><th></th></tr>';
+                        for (var i = 0; i < rows.length; i++) {
+                            modalContent += '<tr>';
+                            modalContent += '<td>' + rows[i].plate_no + '</td>';
+                            modalContent += '<td>' + rows[i].model + '</td>';
+                            modalContent += '<td>' + rows[i].capacity + '</td>';
+                            modalContent += '<td>' + rows[i].driver_first_name + ' ' + rows[i].driver_last_name + '</td>';
+                            modalContent += '</tr>';
+                        }
+                        modalContent += '</table>';
+
+                        document.getElementById('vehiclesModalContent').innerHTML = modalContent;
+                        $('#vehiclesModal').modal();
+                    }
+                }
+
+                obj.open("POST", "./getVehicleByCategory", true);
+                obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                obj.send("category=" + category);
+            }
+        }
+
+        function addRequest() {
+            var obj;
+
+            if (window.XMLHttpRequest) {
+                obj = new XMLHttpRequest();
+            } else if (window.ActiveXObject) {
+                obj = new ActiveXObject("Microsoft.XMLHTTP");
+            } else {
+                alert("Browser Doesn't Support AJAX!");
+            }
+
+            if (obj !== null) {
+                obj.onreadystatechange = function () {
+                    if (obj.readyState < 4) {
+                        // progress
+                    } else if (obj.readyState === 4) {
+                        var res = obj.responseText;
+
+                        var modalContent = '<div style="margin: 10px;"><p>';
+                        if (res == 'success') {
+                            modalContent += 'You request was added successfully. An admin will review your request and accept it if possible</p><button class="btn btn-sm btn-success"';
+                        } else {
+                            modalContent += 'An error occured in adding your request. Sorry for the inconvenience.</p><div style="text-align: center;"><button class="btn btn-sm btn-danger"';
+                        }
+                        modalContent += ' onclick=\'$("#vehiclesModal").modal("hide");\'>Ok</button><div></div>';
+                        document.getElementById('vehiclesModalContent').innerHTML = modalContent;
+
+                        $('#requestModal').modal('hide');
+                        $('#vehiclesModal').modal();
+                    }
+                }
+
+                obj.open("POST", "./addRequest", true);
+                obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                var date = document.forms["request-form"]["request-date"].value;
+                var time = document.forms["request-form"]["request-time"].value;
+                var vehicleType = document.forms["request-form"]["request-vehicle-type"].value;
+                var passengerCount = document.forms["request-form"]["request-passenger-count"].value;
+                var parameter = "date=" + date + '&time=' + time + '&vehicle-type=' + vehicleType + '&passenger-count=' + passengerCount;
+                obj.send(parameter);
+            }
+        }
+
+        function onAddRequestFormKeyPress(e) {
+            if(e.keyCode == 13) {
+                addRequest();
+            } else {
+                clearAddRequestForm();
+            }
+        }
+    </script>
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        @keyframes img-in {
+            0%   {width: 0px; height: 0px; opacity: 0.0; transform: translate(50%, 50%);}
+            100% {width: 270px; height: 250px; opacity: 1.0;}
+        }
+
+        .img-portfolio {
+            width: 270px;
+            height: 250px;
+            border-radius: 50%;
+            animation-name: img-in;
+            animation-duration: 1s;
+            animation-timing-function: ease-out;
+        }
+
+        .img-portfolio:hover {
+            opacity: 0.75;
+            cursor: pointer;
+        }
+
+        @keyframes button-h2--in {
+            0%   {opacity: 0.0;}
+            50%  {opacity: 0.0}
+            100% {opacity: 1.0;}
+        }
+
+        #request-button, .text-label {
+            animation-name: button-h2--in;
+            animation-duration: 1s;
+            animation-timing-function: ease-out;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
     {% set link_to_home = '../../' %}
     {% set active = {link:'Resources', sub_link:'Vehicles'} %}
     {% include 'templates/navbar.html.twig' %}
+
+    <div style="width: 100%; text-align: center; padding: 50px;">
+        {% for vehicles_category in vehicles_categories %}
+            <div class="col-lg-4 portfolio-item" style="margin: 0 auto;">
+                <div class="portfolio-wrapper">
+                    {% set url = 'bundles/spacebitvehicles/images/vehicle_category_' ~ vehicles_category.name ~ '.jpg' %}
+                    <img class="img-portfolio" src="{{ asset(url) }}" alt="{{ vehicles_category.name | capitalize }}" onclick="loadVehiclesByCategory('{{ vehicles_category.name }}');" style="width: 270px; height: 250px;" />
+                    <h2 class="text-label">{{ vehicles_category.name | capitalize }}</h2>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div style="width: 100%; text-align: center;">
+        <button id="request-button" class="btn btn-md btn-info" style="margin: 10px;" onclick="$('#requestModal').modal();">Request a Vehicle</button>
+    </div>
+
+    <div id="vehiclesModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content" id="vehiclesModalContent">
+
+            </div>
+        </div>
+    </div>
+
+    <div id="requestModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div style="margin: 20px;">
+                    <h2 style="text-align: center;">Request a Vehicle</h2>
+                    <form id="request-form" role="form" method="POST" name="request-form" onsubmit="addRequest(); return false;">
+                        <div class="form-group">
+                            <label for="request-date">Date :</label>
+                            <input id="request-date" type="date" min="{{ 'now' | date('Y-m-d') }}" name="request-date" class="form-control" onkeypress="onAddRequestFormKeyPress(event);" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="request-time">Time :</label>
+                            <input type="time" name="request-time" class="form-control" onkeypress="onAddRequestFormKeyPress(event);" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="request-vehicle-type" class="control-label">Select the vehicle type you want to request :</label>
+                            <div>
+                                <select name="request-vehicle-type" class="form-control" required>
+                                    {% for vehicle_category in vehicles_categories %}
+                                        <option>{{ vehicle_category.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="request-passenger-count">No of passengers :</label>
+                            <input type="number" name="request-passenger-count" min="1" class="form-control" placeholder="Enter the number of passengers" onkeypress="onAddRequestFormKeyPress(event);" required />
+                        </div>
+                        <input type="submit" class="btn btn-sm btn-success" value="Request">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

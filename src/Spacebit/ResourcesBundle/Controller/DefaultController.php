@@ -16,8 +16,19 @@ class DefaultController extends Controller
         return $this->render('SpacebitResourcesBundle:Default:equipment.html.twig');
     }
 
-    public function locationsAction()
+    public function venuesAction()
     {
-        return $this->render('SpacebitResourcesBundle:Default:locations.html.twig');
+        //$request = Request::createFromGlobals();
+        //$category = $request->query->get('category');
+
+        $conn = $this->get('database_connection');
+        $stmt = $conn->prepare('SELECT * FROM venue');
+        //$stmt->bindValue(':category', $category);
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+
+        return $this->render('SpacebitResourcesBundle:Default:venues.html.twig', array(
+            'venue_categories'=>$result,
+        ));
     }
 }

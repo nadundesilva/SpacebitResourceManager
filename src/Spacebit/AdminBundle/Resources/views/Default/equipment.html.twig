@@ -1,0 +1,89 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Manage Equipment{% endblock %}
+
+{% block javascripts %}
+    <script>
+
+    function validate()
+    {
+
+    if( document.myForm1.resource_id.value == "" )
+    {
+    alert( "Please provide id!" );
+    document.myForm.resource_id.focus() ;
+    return false;
+    }
+
+    if( document.myForm1.description.value == "" )
+    {
+    alert( "Please provide description!" );
+    document.myForm.description.focus() ;
+    return false;
+    }
+
+    if( document.myForm1.value1.value == "" ||
+    isNaN( document.myForm.value1.value ) ||
+    document.myForm.Zip.value.length != 5 )
+    {
+    alert( "Please provide a value" );
+    document.myForm.Zip.focus() ;
+    return false;
+    }
+
+    if( document.myForm1.Country.value == "-1" )
+    {
+    alert( "Please provide your country!" );
+    return false;
+    }
+    return( true );
+    }
+</script>
+
+{% endblock %}
+
+{% block body %}
+    {% set link_to_home = '../' %}
+    {% set active = {link:'Admin', sub_link:'Manage Equipment'} %}
+    {% include 'templates/navbar.html.twig' %}
+
+    <button class="btn btn-sm btn-info" onclick="$('#addEquipmentModal').modal();">Add Equipment</button>
+
+    <div id="addEquipmentModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content" id="vehiclesModalContent">
+                <div style="margin: 10px;">
+                    <h2>Add Equipment</h2>
+
+
+                    <form role="form" action="addEquipment" name="myForm1" onsubmit="return(validate());" method="POST">
+
+                        <div class="form-group">
+                            <label for="resource_id">resource_id:</label>
+                            <input type="text" class="form-control" name = "resource_id" id="resource_id" placeholder="Enter resource_id">
+                        </div>
+
+                        <div class="form-group">
+                            <label><input type="checkbox" name = "availability" id="availability"> Availability</label>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description">description:</label>
+                            <input type="text" class="form-control" id="description" name = "description"  placeholder="Enter description">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="value">value:</label>
+                            <input type="text" class="form-control" id="value1" name = "value1" placeholder="Enter value">
+                        </div>
+
+
+
+                        <button type="submit" class="btn btn-default">Submit</button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

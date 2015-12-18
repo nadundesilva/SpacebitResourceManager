@@ -6,6 +6,6 @@ spacebit_resources_equipment:
     path:     /equipment
     defaults: { _controller: SpacebitResourcesBundle:Default:equipment }
 
-spacebit_resources_locations:
-    path:     /locations
-    defaults: { _controller: SpacebitResourcesBundle:Default:locations }
+spacebit_resources_venues:
+    path:     /venues
+    defaults: { _controller: SpacebitResourcesBundle:Default:venues }
