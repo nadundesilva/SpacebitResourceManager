@@ -33,6 +33,49 @@ class DefaultController extends Controller
         ));
     }
 
+    function getUserDetailsAction()
+    {
+        $request = Request::createFromGlobals();
+        $user_id = $request->request->get('user-id');
+
+        $conn = $this->get('database_connection');
+        $stmt = $conn->prepare('SELECT first_name, middle_name, last_name, email, telephone_no, access_level FROM user WHERE user_id = :user_id;');
+        $stmt->bindValue(':user_id', $user_id);
+        $stmt->execute();
+        $user = $stmt->fetch();
+
+        if($user['access_level'] == 0) {
+            $stmt = $conn->prepare('SELECT nic, address, organizational_title, organizational_email, organizational_telephone FROM guest WHERE user_id = :user_id;');
+            $stmt->bindValue(':user_id', $user_id);
+            $stmt->execute();
+            $result = $stmt->fetch();
+            $user['nic'] = $result['nic'];
+            $user['address'] = $result['address'];
+            $user['organizational_title'] = $result['organizational_title'];
+            $user['organizational_email'] = $result['organizational_email'];
+            $user['organizational_telephone'] = $result['organizational_telephone'];
+        } else if ($user['access_level'] == 1) {
+            $stmt = $conn->prepare('SELECT dept_name, batch FROM student WHERE user_id = :user_id;');
+            $stmt->bindValue(':user_id', $user_id);
+            $stmt->execute();
+            $result = $stmt->fetch();
+            $user['dept_name'] = $result['dept_name'];
+            $user['batch'] = $result['batch'];
+        } else {
+            $stmt = $conn->prepare('SELECT dept_name, designation FROM staff WHERE user_id = :user_id;');
+            $stmt->bindValue(':user_id', $user_id);
+            $stmt->execute();
+            $result = $stmt->fetch();
+            $user['dept_name'] = $result['dept_name'];
+            $user['designation'] = $result['designation'];
+        }
+
+        $response = new Response(json_encode(array('result' => $user)));
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
+    }
+
     /*
      * Manage equipment section starts here
      */
@@ -86,7 +129,7 @@ class DefaultController extends Controller
     public function vehiclesAction()
     {
         $conn = $this->get('database_connection');
-        $stmt = $conn->prepare('SELECT * FROM vehicle_request ORDER BY status, date, time DESC;');
+        $stmt = $conn->prepare('SELECT request_id, user_id, date, time, number_of_passengers, requested_type, requested_town, status FROM vehicle_request ORDER BY status, date, time DESC;');
         $stmt->execute();
         $vehicle_requests = $stmt->fetchAll();
 
@@ -98,7 +141,7 @@ class DefaultController extends Controller
     public function getAllVehiclesAction()
     {
         $conn = $this->get('database_connection');
-        $stmt = $conn->prepare('SELECT * FROM vehicle ORDER BY type;');
+        $stmt = $conn->prepare('SELECT plate_no, type, model, capacity, driver_first_name, driver_last_name, value FROM vehicle ORDER BY type;');
         $stmt->execute();
         $result = $stmt->fetchAll();
 

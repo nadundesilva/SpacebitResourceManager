@@ -4,6 +4,13 @@ spacebit_admin_home:
 
 
 
+spacebit_admin_get_user:
+    path:     /user/getByID
+    defaults: { _controller: SpacebitAdminBundle:Default:getUserDetails }
+    methods:  ['POST']
+
+
+
 spacebit_admin_equipment:
     path:     /equipment
     defaults: { _controller: SpacebitAdminBundle:Default:equipment}
@@ -41,5 +48,5 @@ spacebit_admin_vehicles_add_edit:
 
 spacebit_admin_vehicles_accept_request:
     path:     /vehicles/changeRequest
-    defaults: { _controller: SpacebitAdminBundle:Default:a}
+    defaults: { _controller: SpacebitAdminBundle:Default:ch}
     methods:  ['POST']
