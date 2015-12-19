@@ -52,7 +52,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div style="margin: 20px;">
-                    <h2 style="text-align: center;">Manage Vehicles</h2>
+                    <h3 style="text-align: center;">Manage Vehicles</h3>
                     <div style="margin: 10px;">
                         <button class="btn btn-sm btn-primary" onclick="showAddVehicleModal();">Add Vehicle</button>
                         <div id="manageVehiclesModalContent" style="padding: 20px;">
@@ -68,7 +68,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div style="margin: 20px;">
-                    <h2 style="text-align: center;">Accept Vehicle</h2>
+                    <h3 style="text-align: center;">Accept Vehicle Request</h3>
 
                 </div>
             </div>
@@ -79,7 +79,8 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div style="margin: 20px;">
-                    <h2 id="addEditVehicleTitle" style="text-align: center;">Add Vehicle</h2>
+                    <button class="btn btn-xs btn-primary" onclick="showManageVehiclesModal(); $('#addEditVehicleModal').modal('hide');">Back</button>
+                    <h3 id="addEditVehicleTitle" style="text-align: center;">Add Vehicle</h3>
                     <form id="add-vehicle-form" role="form" method="POST" name="vehicle-add-form" onsubmit="addEditVehicle(); return false;">
                         <div class="row">
                             <div class="form-group col-lg-6">

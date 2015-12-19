@@ -21,7 +21,7 @@
                     var res = obj.responseText;
                     var user = JSON.parse(res).result;
 
-                    document.getElementById('user-id').innerHTML = userID;
+                    document.getElementById('user-id').innerHTML = 'User : ' + userID;
                     document.forms['user-form']['user-name'].value = user.first_name + ' ' + (user.middle_name == null ? '' : user.middle_name + ' ') + user.last_name;
                     document.forms['user-form']['user-email'].value = user.email;
                     document.forms['user-form']['user-telephone-number'].value = user.telephone_no;

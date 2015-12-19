@@ -50,6 +50,8 @@ function showAddVehicleModal() {
     document.forms['vehicle-add-form']['availability'].checked = false;
     document.forms['vehicle-add-form']['driver-first-name'].value = '';
     document.forms['vehicle-add-form']['driver-last-name'].value = '';
+
+    document.getElementById('addEditVehicleTitle').innerHTML = 'Add Vehicle';
     document.forms['vehicle-add-form']['submit-button'].value = 'Add';
     $('#manageVehiclesModal').modal('hide');
     $('#addEditVehicleModal').modal();
@@ -82,6 +84,7 @@ function showEditVehicleModal(plateNo) {
                 document.forms['vehicle-add-form']['driver-first-name'].value = vehicle.driver_first_name;
                 document.forms['vehicle-add-form']['driver-last-name'].value = vehicle.driver_last_name;
 
+                document.getElementById('addEditVehicleTitle').innerHTML = 'Edit Vehicle';
                 document.forms['vehicle-add-form']['submit-button'].value = 'Edit';
                 $('#manageVehiclesModal').modal('hide');
                 $('#addEditVehicleModal').modal();
