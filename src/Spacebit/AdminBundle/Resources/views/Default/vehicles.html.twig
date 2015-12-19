@@ -22,7 +22,7 @@
         {% for vehicle_request in vehicle_requests %}
             <tr>
                 <th>{{ vehicle_request.request_id }}</th>
-                <th><a onclick="showUserModal('{{ vehicle_request.user_id }}')">{{ vehicle_request.user_id }}</a></th>
+                <th>{{ vehicle_request.user_id }}<br><button class="btn btn-xs btn-info" onclick="showUserModal('{{ vehicle_request.user_id }}')">View User</button></th>
                 <th>{{ vehicle_request.date }}</th>
                 <th>{{ vehicle_request.time }}</th>
                 <th>{{ vehicle_request.number_of_passengers }}</th>
@@ -30,11 +30,11 @@
                 <th>{{ vehicle_request.requested_town }}</th>
                 <th>{{ request_status[vehicle_request.status] }}</th>
                 {% if vehicle_request.status != 1 %}
-                    <th><button class="btn btn-sm btn-success" onclick="$('#acceptVehiclesModal').modal();">Accept</button></th>
+                    <th><button class="btn btn-xs btn-success" onclick="$('#acceptVehiclesModal').modal();">Accept</button></th>
                 {% elseif "now"|date('Y-m-d') < vehicle_request.date|date('Y-m-d') %}
-                    <th><button class="btn btn-sm btn-danger" onclick="changeRequest('{{ vehicle_request.request_id }}', false)">Decline</button></th>
+                    <th><button class="btn btn-xs btn-danger" onclick="changeRequest('{{ vehicle_request.request_id }}', false)">Decline</button></th>
                 {% else %}
-                    <th><button class="btn btn-sm btn-info" disabled>Past Request</button></th>
+                    <th><button class="btn btn-xs btn-default" disabled>Past Request</button></th>
                 {% endif %}
             </tr>
         {% endfor %}

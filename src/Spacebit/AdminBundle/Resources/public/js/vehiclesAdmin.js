@@ -26,7 +26,7 @@ function showManageVehiclesModal() {
                     modalContent += '<td>' + rows[i].driver_first_name + ' ' + rows[i].driver_last_name + '</td>';
                     modalContent += '<td>' + rows[i].type + '</td>';
                     modalContent += '<td>' + rows[i].value + '</td>';
-                    modalContent += '<td><button class="btn btn-sm btn-info" onclick="showEditVehicleModal(\'' + rows[i].plate_no + '\')">Edit</button></td>';
+                    modalContent += '<td><button class="btn btn-xs btn-info" onclick="showEditVehicleModal(\'' + rows[i].plate_no + '\')">Edit</button></td>';
                     modalContent += '</tr>';
                 }
                 modalContent += '</table>'

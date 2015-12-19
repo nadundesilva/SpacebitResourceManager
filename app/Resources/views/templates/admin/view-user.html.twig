@@ -21,6 +21,7 @@
                     var res = obj.responseText;
                     var user = JSON.parse(res).result;
 
+                    document.getElementById('user-id').innerHTML = userID;
                     document.forms['user-form']['user-name'].value = user.first_name + ' ' + (user.middle_name == null ? '' : user.middle_name + ' ') + user.last_name;
                     document.forms['user-form']['user-email'].value = user.email;
                     document.forms['user-form']['user-telephone-number'].value = user.telephone_no;
@@ -64,7 +65,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div style="margin: 20px;">
-                <h2 id="userID" style="text-align: center;"></h2>
+                <h3 id="user-id" style="text-align: center;"></h3>
                 <form id="user-form" role="form" name="user-form">
                     <div>
                         <div class="form-group">
