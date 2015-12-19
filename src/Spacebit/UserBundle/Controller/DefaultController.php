@@ -2,13 +2,9 @@
 
 namespace Spacebit\UserBundle\Controller;
 
-<<<<<<< HEAD
-
-=======
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use \Symfony\Component\HttpFoundation\Response;
 use \Symfony\Component\HttpFoundation\Request;
->>>>>>> 8c805e30d01b479bc6e1361dbaa36d119f8624b2
 
 class DefaultController extends Controller
 {
@@ -43,14 +39,12 @@ class DefaultController extends Controller
         }
         else{
 
-
         }
 
         $response = new Response(json_encode(array('result' => $result)));
         $response->headers->set('Content-Type', 'application/json');
 
         return $response;
-
     }
 
 
@@ -84,6 +78,5 @@ class DefaultController extends Controller
         $stmt->bindValue(':password1', $password1);
 
         $stmt->execute();
-
     }
 }

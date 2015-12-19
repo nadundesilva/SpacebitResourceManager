@@ -2,80 +2,90 @@
 
 {% block title %}Login{% endblock %}
 
-{% block javascripts %}
-<script>
-    function validateUser() {
-        var obj;
-
-
-        var name =document.getElementById("userID").value;
-        var password = document.getElementById("password").value;
-
-        if (window.XMLHttpRequest) {
-            obj = new XMLHttpRequest();
-        } else if (window.ActiveXObject) {
-            obj = new ActiveXObject("Microsoft.XMLHTTP");
-        } else {
-            alert("Browser Doesn't Support AJAX!");
+{% block stylesheets %}
+    <style>
+        h2.logIn{
+            background-color: #0b083a;
+            border-style: inset;
+            color: white;
+            font-size: 25px;
+            padding: 5px
         }
 
-        if (obj !== null) {
-            obj.onreadystatechange = function () {
-                if (obj.readyState < 4) {
-                    // progress
-                } else if (obj.readyState === 4) {
+        @keyframes login-form-in {
+            0%   {opacity: 0.0; transform: translate(-20%, 0);}
+            50%  {opacity: 0.0; transform: translate(-20%, 0);}
+            100% {opacity: 1.0;}
+        }
 
-                    var res = obj.responseText;
-                    if (res == "fail"){
-                        window.alert("***Please enter correct username and password***");
-                        document.getElementById("password").value = "";
-                    }
-                    else{
-                        var rows = JSON.parse(res).result;
-                        //window.alert(rows[0].user_id);
-                        if (rows[0].password != password){
-                            window.alert("Log in failed");
-                            document.getElementById("password").value = "";
+        #login-form {
+            animation-name: login-form-in;
+            animation-duration: 2s;
+            animation-timing-function: ease-out;
+        }
+    </style>
+{% endblock %}
 
-                        }
-                        else{
-                            window.alert("Log in successful");
-                        }
+{% block javascripts %}
+    <script>
+        function validateUser() {
+            var obj;
 
-                    }
 
-                }
+            var name =document.getElementById("userID").value;
+            var password = document.getElementById("password").value;
+
+            if (window.XMLHttpRequest) {
+                obj = new XMLHttpRequest();
+            } else if (window.ActiveXObject) {
+                obj = new ActiveXObject("Microsoft.XMLHTTP");
+            } else {
+                alert("Browser Doesn't Support AJAX!");
             }
 
-            obj.open("POST", "./validateUser", true);
-            obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            obj.send("name=" + name + "& password=" + password);
-        }
-    }
+            if (obj !== null) {
+                obj.onreadystatechange = function () {
+                    if (obj.readyState < 4) {
+                        // progress
+                    } else if (obj.readyState === 4) {
 
-</script>
+                        var res = obj.responseText;
+                        if (res == "fail"){
+                            window.alert("***Please enter correct username and password***");
+                            document.getElementById("password").value = "";
+                        }
+                        else{
+                            var rows = JSON.parse(res).result;
+                            //window.alert(rows[0].user_id);
+                            if (rows[0].password != password){
+                                window.alert("Log in failed");
+                                document.getElementById("password").value = "";
+
+                            }
+                            else{
+                                window.alert("Log in successful");
+                            }
+
+                        }
+
+                    }
+                }
+
+                obj.open("POST", "./validateUser", true);
+                obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                obj.send("name=" + name + "& password=" + password);
+            }
+        }
+
+    </script>
 {% endblock %}
 
 {% block body %}
-<<<<<<< HEAD
-    Hey its time to log in
-=======
     {% set link_to_home = '../' %}
+    {% set active = {link:'Log In'} %}
     {% include 'templates/navbar.html.twig' %}
 
-    <head>
-        <style>
-            h2.logIn{
-                background-color: #0b083a;
-                border-style: inset;
-                color: white;
-                font-size: 25px;
-                padding: 5px
-            }
-        </style>
-    </head>
-
-    <div class="container">
+    <div id="login-form" class="container">
 
 
 
@@ -119,7 +129,5 @@
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
 
-
->>>>>>> 8c805e30d01b479bc6e1361dbaa36d119f8624b2
 
 {% endblock %}
