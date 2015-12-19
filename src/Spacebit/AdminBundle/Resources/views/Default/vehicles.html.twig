@@ -4,47 +4,153 @@
 
 {% block javascripts %}
     <script>
-        function getVehicleDetails() {
-            var plate_no = document.getElementById("plate_no_user").value;
+        function showManageVehiclesModal() {
             var obj;
 
             if (window.XMLHttpRequest) {
                 obj = new XMLHttpRequest();
             } else if (window.ActiveXObject) {
-
                 obj = new ActiveXObject("Microsoft.XMLHTTP");
             } else {
                 alert("Browser Doesn't Support AJAX!");
             }
-
             if (obj !== null) {
                 obj.onreadystatechange = function () {
-
                     if (obj.readyState < 4) {
                         // progress
                     } else if (obj.readyState === 4) {
                         var res = obj.responseText;
                         var rows = JSON.parse(res).result;
 
-                        var modalContent = '<h2 style="text-align: center;">View Vehicle</h2><table class="table table-hover">';
-                        modalContent += '<tr><th>License Plate No</th><th>Model</th><th>Capacity</th><th>Driver</th><th></th></tr>';
+                        var modalContent = '<table class="table table-hover">';
+                        modalContent += '<tr><th>License Plate No</th><th>Model</th><th>Capacity</th><th>Driver</th><th>Category</th><th>Value</th><th></th></tr>';
                         for (var i = 0; i < rows.length; i++) {
                             modalContent += '<tr>';
                             modalContent += '<td>' + rows[i].plate_no + '</td>';
                             modalContent += '<td>' + rows[i].model + '</td>';
                             modalContent += '<td>' + rows[i].capacity + '</td>';
                             modalContent += '<td>' + rows[i].driver_first_name + ' ' + rows[i].driver_last_name + '</td>';
+                            modalContent += '<td>' + rows[i].type + '</td>';
+                            modalContent += '<td>' + rows[i].value + '</td>';
+                            modalContent += '<td><button class="btn btn-sm btn-info" onclick="showEditVehicleModal(\'' + rows[i].plate_no + '\')">Edit</button></td>';
                             modalContent += '</tr>';
                         }
-                        modalContent += '</table>';
-                        document.getElementById('vehiclesModalContent').innerHTML = modalContent;
-                        $('#viewVehicleModal').modal();
+                        modalContent += '</table>'
+                        document.getElementById('manageVehiclesModalContent').innerHTML = modalContent;
+                        $('#manageVehiclesModal').modal();
                     }
                 }
 
-                obj.open("POST", "./getVehicleByPlateNo", true);
+                obj.open("POST", "./vehicles/getAll", true);
                 obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                obj.send("plate_no=" + plate_no);
+                obj.send();
+            }
+        }
+
+        function showAddVehicleModal() {
+            document.forms['vehicle-add-form']['plate-no'].value = '';
+            document.forms['vehicle-add-form']['type'].value = '';
+            document.forms['vehicle-add-form']['model'].value = '';
+            document.forms['vehicle-add-form']['capacity'].value = '';
+            document.forms['vehicle-add-form']['value'].value = '';
+            document.forms['vehicle-add-form']['availability'].checked = false;
+            document.forms['vehicle-add-form']['driver-first-name'].value = '';
+            document.forms['vehicle-add-form']['driver-last-name'].value = '';
+            document.forms['vehicle-add-form']['submit-button'].value = 'Add';
+            $('#manageVehiclesModal').modal('hide');
+            $('#addEditVehicleModal').modal();
+        }
+
+        function showEditVehicleModal(plateNo) {
+            var obj;
+
+            if (window.XMLHttpRequest) {
+                obj = new XMLHttpRequest();
+            } else if (window.ActiveXObject) {
+                obj = new ActiveXObject("Microsoft.XMLHTTP");
+            } else {
+                alert("Browser Doesn't Support AJAX!");
+            }
+            if (obj !== null) {
+                obj.onreadystatechange = function () {
+                    if (obj.readyState < 4) {
+                        // progress
+                    } else if (obj.readyState === 4) {
+                        var res = obj.responseText;
+                        var vehicle = JSON.parse(res).result;
+
+                        document.forms['vehicle-add-form']['plate-no'].value = vehicle.plate_no;
+                        document.forms['vehicle-add-form']['type'].value = vehicle.type;
+                        document.forms['vehicle-add-form']['model'].value = vehicle.model;
+                        document.forms['vehicle-add-form']['capacity'].value = vehicle.capacity;
+                        document.forms['vehicle-add-form']['value'].value = vehicle.value;
+                        document.forms['vehicle-add-form']['availability'].checked = vehicle.availability;
+                        document.forms['vehicle-add-form']['driver-first-name'].value = vehicle.driver_first_name;
+                        document.forms['vehicle-add-form']['driver-last-name'].value = vehicle.driver_last_name;
+
+                        document.forms['vehicle-add-form']['submit-button'].value = 'Edit';
+                        $('#manageVehiclesModal').modal('hide');
+                        $('#addEditVehicleModal').modal();
+                    }
+                }
+
+                obj.open("POST", "./vehicles/getByPlateNo", true);
+                obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                obj.send('plate-no=' + plateNo);
+            }
+        }
+
+        function viewUser(user) {
+
+        }
+
+        function changeRequest(requestId, accepted) {
+
+        }
+
+        function addEditVehicle() {
+            var plateNo = document.forms['vehicle-add-form']['plate-no'].value;
+            var type = document.forms['vehicle-add-form']['type'].value;
+            var model = document.forms['vehicle-add-form']['model'].value;
+            var capacity = document.forms['vehicle-add-form']['capacity'].value;
+            var value = document.forms['vehicle-add-form']['value'].value;
+            var availability = document.forms['vehicle-add-form']['availability'].value;
+            var driverFirstName = document.forms['vehicle-add-form']['driver-first-name'].value;
+            var driverLastName = document.forms['vehicle-add-form']['driver-last-name'].value;
+            var updateType = document.forms['vehicle-add-form']['submit-button'].value;
+            var obj;
+
+            if (window.XMLHttpRequest) {
+                obj = new XMLHttpRequest();
+            } else if (window.ActiveXObject) {
+                obj = new ActiveXObject("Microsoft.XMLHTTP");
+            } else {
+                alert("Browser Doesn't Support AJAX!");
+            }
+            if (obj !== null) {
+                obj.onreadystatechange = function () {
+                    if (obj.readyState < 4) {
+                        // progress
+                    } else if (obj.readyState === 4) {
+                        var res = obj.responseText;
+
+                        var modalContent = '<div style="margin: 10px;"><p>';
+                        if (res == 'success') {
+                            modalContent += 'Vehicle with plate number ' + plateNo + ' was ' + (updateType == "Add" ? "added" : "edited") + ' successfully</p><button class="btn btn-sm btn-success"';
+                        } else {
+                            modalContent += 'An error occured in ' + (updateType == "Add" ? "adding" : "editing") + ' the vehicle with plate number ' + plateNo + '. Sorry for the inconvenience.</p><div style="text-align: center;"><button class="btn btn-sm btn-danger"';
+                        }
+                        modalContent += ' onclick=\'$("#messageModal").modal("hide"); showManageVehiclesModal();\'>Ok</button><div></div>';
+                        document.getElementById('messageModalContent').innerHTML = modalContent;
+
+                        $('#addEditVehicleModal').modal('hide');
+                        $('#messageModal').modal();
+                    }
+                }
+
+                obj.open("POST", "./vehicles/addEdit", true);
+                obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                obj.send("plate-no=" + plateNo + '&type=' + type + '&model=' + model + '&capacity=' + capacity + '&driver-first-name=' + driverFirstName + '&driver-last-name=' + driverLastName + '&availability=' + availability + '&value=' + value + '&update-type=' + updateType);
             }
         }
     </script>
@@ -55,64 +161,114 @@
     {% set active = {link:'Admin', sub_link:'Manage Vehicles'} %}
     {% include 'templates/navbar.html.twig' %}
 
-    <dev style="margin: 10px;">
-        <button class="btn btn-sm btn-info" onclick="$('#addVehicleModal').modal();">Add Vehicle</button>
-    </dev>
-
     <div style="margin: 10px;">
-        <input type="text"  id="plate_no_user" name="plate_no_user" placeholder="Enter License Plate No">
-        <button class="btn btn-sm btn-info" onclick="getVehicleDetails();">Search By License Plate No</button>
+        <button class="btn btn-sm btn-primary" onclick="showManageVehiclesModal();">Manage Vehicles</button>
     </div>
 
-    <div id="viewVehicleModal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content" id="vehiclesModalContent">
+    <h2 style="text-align: center; padding-bottom: 10px">Vehicle Requests</h2>
+    <table class="table table-hover" style="padding: 20px">
+        <tr><th>Request Id</th><th>Requester</th><th>Requested date</th><th>Requested Time</th><th>Number of Passengers</th><th>Requested Type of Vehicle</th><th>Requested Destination</th><th>Status</th><th></th></tr>
+        {% set request_status = ['Declined', 'Accepted', 'Pending'] %}
+        {% for vehicle_request in vehicle_requests %}
+            <tr>
+                <th>{{ vehicle_request.request_id }}</th>
+                <th><a onclick="viewUser("{{ vehicle_request.user_id }}")">{{ vehicle_request.user_id }}</a></th>
+                <th>{{ vehicle_request.date }}</th>
+                <th>{{ vehicle_request.time }}</th>
+                <th>{{ vehicle_request.number_of_passengers }}</th>
+                <th>{{ vehicle_request.requested_type }}</th>
+                <th>{{ vehicle_request.requested_town }}</th>
+                <th>{{ request_status[vehicle_request.status] }}</th>
+                {% if vehicle_request.status != 1 %}
+                    <th><button class="btn btn-sm btn-success" onclick="$('#acceptVehiclesModal').modal();">Accept</button></th>
+                {% elseif "now"|date('Y-m-d') < vehicle_request.date|date('Y-m-d') %}
+                    <th><button class="btn btn-sm btn-danger" onclick="changeRequest('{{ vehicle_request.request_id }}', false)">Decline</button></th>
+                {% else %}
+                    <th><button class="btn btn-sm btn-info" disabled>Past Request</button></th>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </table>
 
+    <div id="messageModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div style="margin: 20px;" id="messageModalContent"></div>
             </div>
         </div>
     </div>
 
-    <div id="addVehicleModal" class="modal fade" role="dialog">
+    <div id="manageVehiclesModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
-            <div class="modal-content" id="vehiclesModalContent">
-                <div style="margin: 10px;">
-                    <h2>View Vehicle</h2>
-                    <form role="form" action="addVehicle" name="myForm2" onsubmit="return(validate());" method="POST">
-                        <div class="form-group">
-                            <label for="plate_no">plate_no:</label>
-                            <input type="text" class="form-control" name = "plate_no" id="plate_no" placeholder="Enter plate_no">
-                        </div>
-                        <div class="form-group">
-                            <label for="type">type:</label>
-                            <input type="text" class="form-control" id="type" name = "type"  placeholder="Enter type">
-                        </div>
+            <div class="modal-content">
+                <div style="margin: 20px;">
+                    <h2 style="text-align: center;">Manage Vehicles</h2>
+                    <div style="margin: 10px;">
+                        <button class="btn btn-sm btn-primary" onclick="showAddVehicleModal();">Add Vehicle</button>
+                        <div id="manageVehiclesModalContent" style="padding: 20px;">
 
-                        <div class="form-group">
-                            <label for="model">model:</label>
-                            <input type="text" class="form-control" id="model" name = "model" placeholder="Enter model">
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                        <div class="form-group">
-                            <label for="capacity">capacity:</label>
-                            <input type="text" class="form-control" id="capacity" name = "capacity" placeholder="Enter capacity">
-                        </div>
-                        <div class="form-group">
-                            <label><input type="checkbox" name = "availability" id="availability"> Availability</label>
-                        </div>
-                        <div class="form-group">
-                            <label for="driver_first_name">driver_first_name:</label>
-                            <input type="text" class="form-control" id="driver_first_name" name = "driver_first_name" placeholder="Enter driver_first_name">
-                        </div>
+    <div id="acceptVehiclesModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div style="margin: 20px;">
+                    <h2 style="text-align: center;">Accept Vehicle</h2>
 
-                        <div class="form-group">
-                            <label for="driver_last_name">driver_last_name:</label>
-                            <input type="text" class="form-control" id="driver_last_name" name = "driver_last_name" placeholder="Enter driver_last_name">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="addEditVehicleModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div style="margin: 20px;">
+                    <h2 id="addEditVehicleTitle" style="text-align: center;">Add Vehicle</h2>
+                    <form id="add-vehicle-form" role="form" method="POST" name="vehicle-add-form" onsubmit="addEditVehicle(); return false;">
+                        <div class="row">
+                            <div class="form-group col-lg-6">
+                                <label for="plate-no">Plate No :</label>
+                                <input type="text" id="plate-no" class="form-control" name = "plate-no" placeholder="Enter Plate No" required />
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label for="type">Vehicle Category :</label>
+                                <input type="text" id="type" class="form-control" name = "type"  placeholder="Enter the Vehicle Category" required />
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label for="value">value:</label>
-                            <input type="text" class="form-control" id="value" name = "value" placeholder="Enter value">
+                            <label for="model">Vehicle Model :</label>
+                            <input type="text" id="model" class="form-control" name = "model" placeholder="Enter Model of the Vehicle" required />
                         </div>
-                        <button type="submit" class="btn btn-default">Submit</button>
+                        <div class="row">
+                            <div class="form-group col-lg-6">
+                                <label for="capacity">Capacity of the Vehicle :</label>
+                                <input type="number" id="capacity" class="form-control" id="capacity" name = "capacity" placeholder="Enter the Capacity of the Vehicle" required />
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label for="value">Appraised Value :</label>
+                                <input type="numeric" class="form-control" id="value" name = "value" placeholder="Enter the Value of the vehicle" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label><input type="checkbox" id="availability" name = "availability">Vehicle is Available</label>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-6">
+                                <label for="driver-first-name">Driver's First Name :</label>
+                                <input type="text" id="driver-first-name" class="form-control" name = "driver-first-name" placeholder="Enter the First Name of the designated Driver" required />
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label for="driver-last-name">Driver's Last Name :</label>
+                                <input type="text" id="driver-last-name" class="form-control" name = "driver-last-name" placeholder="Enter the Last name of the designated Driver" required />
+                            </div>
+                        </div>
+                        <input id="submit-button" type="submit" class="btn btn-sm btn-success" value="Add">
                     </form>
                 </div>
             </div>

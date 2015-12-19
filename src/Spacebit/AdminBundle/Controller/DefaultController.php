@@ -22,7 +22,7 @@ class DefaultController extends Controller
         $stmt->execute();
         $venues_request_count = $stmt->fetch();
 
-        $stmt = $conn->prepare('SELECT COUNT(request_id) AS count FROM vehicle_request WHERE status = 1;');
+        $stmt = $conn->prepare('SELECT COUNT(request_id) AS count FROM vehicle_request WHERE status > 1;');
         $stmt->execute();
         $vehicle_request_count = $stmt->fetch();
 
@@ -33,36 +33,12 @@ class DefaultController extends Controller
         ));
     }
 
+    /*
+     * Manage equipment section starts here
+     */
     public function equipmentAction()
     {
         return $this->render('SpacebitAdminBundle:Default:equipment.html.twig');
-    }
-
-    public function venuesAction()
-    {
-        return $this->render('SpacebitAdminBundle:Default:venues.html.twig');
-    }
-
-    public function vehiclesAction()
-    {
-        return $this->render('SpacebitAdminBundle:Default:vehicles.html.twig');
-    }
-
-    public function getVehicleByPlateNoAction()
-    {
-        $request = Request::createFromGlobals();
-        $plate_no = $request->request->get('plate_no');
-
-        $conn = $this->get('database_connection');
-        $stmt = $conn->prepare('SELECT * FROM vehicle WHERE plate_no LIKE :plateNo;');
-        $stmt->bindValue(':plateNo', '%' . trim($plate_no) . '%');
-        $stmt->execute();
-        $result = $stmt->fetchAll();
-
-        $response = new Response(json_encode(array('result' => $result)));
-        $response->headers->set('Content-Type', 'application/json');
-
-        return $response;
     }
 
     public function addEquipmentAction()
@@ -89,22 +65,85 @@ class DefaultController extends Controller
 
         return new Response('success');
     }
+    /*
+     * Manage equipment section ends here
+     */
 
-    public function addVehicleAction()
+    /*
+     * Manage venues section starts here
+     */
+    public function venuesAction()
+    {
+        return $this->render('SpacebitAdminBundle:Default:venues.html.twig');
+    }
+    /*
+     * Manage venues section ends here
+     */
+
+    /*
+     * Manage vehicles section starts here
+     */
+    public function vehiclesAction()
+    {
+        $conn = $this->get('database_connection');
+        $stmt = $conn->prepare('SELECT * FROM vehicle_request ORDER BY status, date, time DESC;');
+        $stmt->execute();
+        $vehicle_requests = $stmt->fetchAll();
+
+        return $this->render('SpacebitAdminBundle:Default:vehicles.html.twig', array(
+            'vehicle_requests'=>$vehicle_requests,
+        ));
+    }
+
+    public function getAllVehiclesAction()
+    {
+        $conn = $this->get('database_connection');
+        $stmt = $conn->prepare('SELECT * FROM vehicle ORDER BY type;');
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+
+        $response = new Response(json_encode(array('result' => $result)));
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
+    }
+
+    public function getVehicleByPlateNoAction()
     {
         $request = Request::createFromGlobals();
-        $plate_no= $request->request->get('plate_no');
+        $plate_no = $request->request->get('plate-no');
+
+        $conn = $this->get('database_connection');
+        $stmt = $conn->prepare('SELECT * FROM vehicle WHERE plate_no = :plateNo;');
+        $stmt->bindValue(':plateNo', $plate_no);
+        $stmt->execute();
+        $result = $stmt->fetch();
+
+        $response = new Response(json_encode(array('result' => $result)));
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
+    }
+
+    public function addEditVehicleAction()
+    {
+        $request = Request::createFromGlobals();
+        $plate_no= $request->request->get('plate-no');
         $type = $request->request->get('type');
         $model = $request->request->get('model');
         $capacity = $request->request->get('capacity');
-        $driver_first_name = $request->request->get('driver_first_name');
-        $driver_last_name= $request->request->get('driver_last_name');
-        $availability = $request->request->get('availability');
-        $availability = $availability =='on'? true : false;
+        $driver_first_name = $request->request->get('driver-first-name');
+        $driver_last_name= $request->request->get('driver-last-name');
+        $availability = ($request->request->get('availability') == 'on');
         $value = $request->request->get('value');
+        $update_type = $request->request->get('update-type');
 
         $conn = $this->get('database_connection');
-        $stmt = $conn->prepare('INSERT into vehicle values(:plate_no , :type, :model , :capacity ,:driver_first_name , :driver_last_name , :availability , :value);');
+        if($update_type == 'Add') {
+            $stmt = $conn->prepare('INSERT into vehicle values(:plate_no, :type, :model, :capacity,:driver_first_name, :driver_last_name, :availability, :value);');
+        } else {
+            $stmt = $conn->prepare('UPDATE vehicle SET type = :type, model = :model, capacity = :capacity,driver_first_name = :driver_first_name, driver_last_name = :driver_last_name, availability = :availability , value = :value WHERE plate_no = :plate_no;');
+        }
         $stmt->bindValue(':plate_no', $plate_no);
         $stmt->bindValue(':type', $type);
         $stmt->bindValue(':model', $model);
@@ -114,8 +153,43 @@ class DefaultController extends Controller
         $stmt->bindValue(':availability',$availability);
         $stmt->bindValue(':value',$value);
 
-        $stmt->execute();
+        $response = 'success';
+        if(!$stmt->execute()) {
+            $response = $stmt->errorCode();
+        } else {
+            if ($update_type == 'Add') {
+                $stmt = $conn->prepare('INSERT INTO vehicle_administration VAlUES(:user_id, :plate_no)');
+                $stmt->bindValue(':user_id', $_SESSION['user_id']);
+                $stmt->bindValue(':plate_no', $plate_no);
 
-        return new Response('success');
+                if (!$stmt->execute()) {
+                    $response = $stmt->errorCode();
+                }
+            }
+        }
+
+        return new Response($response);
     }
+
+    function handleRequestAction()
+    {
+        $request = Request::createFromGlobals();
+        $request_id = $request->request->get('request-id');
+        $plate_no = $request->request->get('plate-no');
+
+
+        $conn = $this->get('database_connection');
+        $stmt = $conn->prepare('SELECT * FROM vehicle WHERE plate_no = :plateNo;');
+        $stmt->bindValue(':plateNo', $plate_no);
+
+        $response = 'success';
+        if(!$stmt->execute()) {
+            $response = $stmt->errorCode();
+        }
+
+        return $response;
+    }
+    /*
+     * Manage vehicles section ends here
+     */
 }

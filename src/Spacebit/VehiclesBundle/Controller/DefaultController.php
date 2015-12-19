@@ -55,7 +55,7 @@ class DefaultController extends Controller
         $stmt->bindValue(':user_id', $_SESSION['user_id']);
         $stmt->bindValue(':date', $date);
         $stmt->bindValue(':time', $time);
-        $stmt->bindValue(':status', 1);
+        $stmt->bindValue(':status', 2);
         $stmt->bindValue(':number_of_passengers', $passenger_count);
         $stmt->bindValue(':requested_type', $vehicle_type);
         $stmt->bindValue(':requested_town', $destination);
@@ -65,6 +65,6 @@ class DefaultController extends Controller
             $response = $stmt->errorCode();
         }
 
-        return new Response($response);;
+        return new Response($response);
     }
 }

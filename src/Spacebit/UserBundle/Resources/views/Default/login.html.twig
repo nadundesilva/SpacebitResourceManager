@@ -12,21 +12,12 @@
             padding: 5px
         }
 
-        @keyframes login-form-in {
-            0%   {opacity: 0.0; transform: translate(-20%, 0);}
-            50%  {opacity: 0.0; transform: translate(-20%, 0);}
-            100% {opacity: 1.0;}
-        }
-
-        #login-form {
-            animation-name: login-form-in;
-            animation-duration: 2s;
-            animation-timing-function: ease-out;
-        }
+        #login-form {}
     </style>
 {% endblock %}
 
 {% block javascripts %}
+    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
     <script>
         function validateUser() {
             var obj;
@@ -82,52 +73,29 @@
 
 {% block body %}
     {% set link_to_home = '../' %}
-    {% set active = {link:'Log In'} %}
     {% include 'templates/navbar.html.twig' %}
 
     <div id="login-form" class="container">
-
-
-
-            <div class="col-lg-4"></div>
-            <div class="col-lg-4">
-
-
-                    <h2 class="logIn" style="text-align: center">Sign In</h2>
-                    <label for="UserID" class="sr-only">User ID</label>
-                    <input name="userID" type="text" id="userID" class="form-control" placeholder="User ID" required autofocus>
-                    <label for="inputPassword" class="sr-only">Password</label>
-                    <input name="password" type="password" id="password" class="form-control" placeholder="Password" required>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" value="remember-me"> Remember me
-                        </label>
-                    </div>
-
-
-                    <button class="btn btn-lg btn-primary btn-block" onclick="validateUser()">Sign in</button>
-
-
-
-                <div>
-                    <a href="#"><br>Forgot Password?</a>
-                    <p><br>Need a new Account?</p>
-                    <a href="signup" class="btn btn-primary">Sign Up Now</a>
-
-
+        <div class="col-lg-4"></div>
+        <div class="col-lg-4">
+                <h2 class="logIn" style="text-align: center">Sign In</h2>
+                <label for="UserID" class="sr-only">User ID</label>
+                <input name="userID" type="text" id="userID" class="form-control" placeholder="User ID" required autofocus>
+                <label for="inputPassword" class="sr-only">Password</label>
+                <input name="password" type="password" id="password" class="form-control" placeholder="Password" required>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" value="remember-me"> Remember me
+                    </label>
                 </div>
+
+                <button class="btn btn-lg btn-primary btn-block" onclick="validateUser()">Sign in</button>
+
+            <div>
+                <a href="#"><br>Forgot Password?</a>
+                <p><br>Need a new Account?</p>
+                <a href="signup" class="btn btn-primary">Sign Up Now</a>
             </div>
-
-
-
-
-
-
-    </div> <!-- /container -->
-
-
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
-
-
+        </div>
+    </div>
 {% endblock %}

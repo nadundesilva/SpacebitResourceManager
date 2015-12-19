@@ -2,29 +2,44 @@ spacebit_admin_home:
     path:     /
     defaults: { _controller: SpacebitAdminBundle:Default:home }
 
+
+
 spacebit_admin_equipment:
     path:     /equipment
     defaults: { _controller: SpacebitAdminBundle:Default:equipment}
+
+spacebit_admin_equipment_add:
+    path:     /addEquipment
+    defaults: { _controller: SpacebitAdminBundle:Default:addEquipment}
+    methods:  ['POST']
+
+
 
 spacebit_admin_venues:
     path:     /venues
     defaults: { _controller: SpacebitAdminBundle:Default:venues}
 
+
+
 spacebit_admin_vehicles:
     path:     /vehicles
     defaults: { _controller: SpacebitAdminBundle:Default:vehicles}
 
-spacebit_admin_resource_add_equipment:
-    path:     /addEquipment
-    defaults: { _controller: SpacebitAdminBundle:Default:addEquipment}
-    methods:  ['POST']
+spacebit_admin_vehicles_get_all:
+    path:     /vehicles/getAll
+    defaults: { _controller: SpacebitAdminBundle:Default:getAllVehicles}
 
-spacebit_admin_resource_add_vehicle:
-    path:     /addVehicle
-    defaults: { _controller: SpacebitAdminBundle:Default:addVehicle}
-    methods:  ['POST']
-
-spacebit_admin_resource_view_vehicle:
-    path:     /getVehicleByPlateNo
+spacebit_admin_vehicles_get_by_plate_no:
+    path:     /vehicles/getByPlateNo
     defaults: { _controller: SpacebitAdminBundle:Default:getVehicleByPlateNo}
+    methods:  ['POST']
+
+spacebit_admin_vehicles_add_edit:
+    path:     /vehicles/addEdit
+    defaults: { _controller: SpacebitAdminBundle:Default:addEditVehicle}
+    methods:  ['POST']
+
+spacebit_admin_vehicles_accept_request:
+    path:     /vehicles/changeRequest
+    defaults: { _controller: SpacebitAdminBundle:Default:a}
     methods:  ['POST']

@@ -1,13 +1,16 @@
 @keyframes body-in {
-    0%   {background-color: #ffffff;}
-    100% {background-color: #ddd6e6;}
+    0%   {background-color: #ffffff; opacity: 0.0;}
+    100% {background-color: #ddd6e6; opacity: 1.0;}
 }
 
-body{
-    overflow-y: auto;
+body {
     background-color: #e6e6e6;
     animation-name: body-in;
     animation-duration: 1s;
+}
+
+a:hover {
+    cursor: pointer;
 }
 
 @keyframes page-header-in {
@@ -41,10 +44,6 @@ nav {
     animation-timing-function: ease-out;
 }
 
-.form-control {
-    background-color: #aea6ff;
-}
-
 ul.footer {
     margin-top:10px;
     text-align:center;
@@ -55,7 +54,6 @@ ul.footer li {
     display:inline-block;
 }
 
-
 #footer {
     bottom: 0px;
     height: 50px;
@@ -63,8 +61,6 @@ ul.footer li {
     right: 0;
     outline: 1px solid #dfdfdf;
 }
-
-
 
 #footer, .page-header {
     background-color: #020414;
