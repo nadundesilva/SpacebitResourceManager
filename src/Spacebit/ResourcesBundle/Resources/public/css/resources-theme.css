@@ -1,6 +1,6 @@
 @keyframes img-portfolio-in {
-    0%   {width: 0px; height: 0px; opacity: 0.0; transform: translate(50%, 50%);}
-    100% {width: 270px; height: 250px; opacity: 1.0;}
+    0%   {transform: scale(0, 0); opacity: 0.0;}
+    100% {transform: scale(1, 1); opacity: 1.0;}
 }
 
 .img-portfolio {

@@ -23,7 +23,7 @@ class DefaultController extends Controller
     public function getVehiclesByCategoryAction()
     {
         $request = Request::createFromGlobals();
-        $category = $request->request->get('categor$request = Request::createFromGlobals();y');
+        $category = $request->request->get('category');
 
         $conn = $this->get('database_connection');
         if($category == 'Other') {

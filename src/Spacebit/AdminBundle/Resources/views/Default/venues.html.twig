@@ -1,9 +1,10 @@
 {% extends 'base.html.twig' %}
 
+{% set link_to_home = '../' %}
+{% set active = {link:'Admin', sub_link:'Manage Venues'} %}
+
 {% block title %}Manage Venues{% endblock %}
 
 {% block body %}
-    {% set link_to_home = '../' %}
-    {% set active = {link:'Admin', sub_link:'Manage Venues'} %}
-    {% include 'templates/navbar.html.twig' %}
+
 {% endblock %}

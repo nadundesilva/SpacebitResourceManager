@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
+{% set link_to_home = '../' %}
+
 {% block title %}Login{% endblock %}
 
 {% block stylesheets %}
@@ -72,9 +74,6 @@
 {% endblock %}
 
 {% block body %}
-    {% set link_to_home = '../' %}
-    {% include 'templates/navbar.html.twig' %}
-
     <div id="login-form" class="container">
         <div class="col-lg-4"></div>
         <div class="col-lg-4">

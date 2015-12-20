@@ -1,5 +1,8 @@
 {% extends 'base.html.twig' %}
 
+{% set link_to_home = '../' %}
+{% set active = {link:'Sign Up'} %}
+
 {% block title %}Sign Up{% endblock %}
 
 {% block stylesheets %}
@@ -91,10 +94,6 @@
 {% endblock %}
 
 {% block body %}
-    {% set link_to_home = '../' %}
-    {% set active = {link:'Sign Up'} %}
-    {% include 'templates/navbar.html.twig' %}
-
     <div class="container">
         <div style="padding: 0px 100px 0px 150px">
             <div class="col-lg-7">

@@ -1,3 +1,35 @@
+{#
+    Need two variables
+        active : A dictionary indicating the active link and sub link
+        link_to_home : The relative link from the current page to the index page of the site
+#}
+{#
+    * Adding the links to the pages relative to the home page
+    * Each page will set the link to the home page from it's location
+#}
+{% set pages = [
+    {name:'Home', link:'./', glyphicon:'glyphicon glyphicon-home'},
+    {name:'Resources', link:'resources', glyphicon:'glyphicon glyphicon-duplicate',
+        sub_menu:[
+            {name:'Equipment', link:'resources/equipment'},
+            {name:'Venues', link:'resources/venues'},
+            {name:'Vehicles', link:'resources/vehicles'}
+        ]
+    }
+] %}
+{# Merging with admin pages if the user have required level of access #}
+{% if app.session.get('access_level') is defined and app.session.get('access_level') >= 0 %}
+    {% set pages = pages | merge([
+        {name:'Admin', link:'admin', glyphicon:'glyphicon glyphicon-cog',
+            sub_menu:[
+                {name:'Manage Equipment', link:'admin/equipment'},
+                {name:'Manage Venues', link:'admin/venues'},
+                {name:'Manage Vehicles', link:'admin/vehicles'}
+            ]
+        }
+    ])%}
+{% endif %}
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -5,37 +37,100 @@
         <meta name="viewport" content="width = device-width, initial-scale = 1">
         <title>Spacebit Resource Manager - {% block title %}{% endblock %}</title>
 
-        <link rel="icon" type="image/x-icon" href="{{ 'home/web' }}" />
-
-        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="{{ asset('bundles/app/css/bootstrap.min.css') }}">
+        <script src="{{ asset('bundles/app/js/jquery.js') }}"></script>
+        <script src="{{ asset('bundles/app/js/bootstrap.min.js') }}"></script>
 
         <link rel="stylesheet" href="{{ asset('bundles/app/css/main-theme.css') }}">
+
+        <link href="{{ asset('bundles/app/css/sb-admin.css') }}" rel="stylesheet">
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
 
         {% block javascripts %}{% endblock %}
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
-        <div class="page-header row">
-            <div class="container">
-                <h1>
-                    Spacebit Resource Manager<br>
-                    <small>{{ block('title') }}</small>
-                </h1>
+        <div id="wrapper">
+
+            <!-- Navigation -->
+            <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="index.html">Spacebit Resource Manager</a>
+                </div>
+
+                <!-- Top Menu Items -->
+                <ul class="nav navbar-right top-nav">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i> {% if session is defined and session.first_name is defined and session.last_name is defined %}{{ session.first_name ~ ' ' ~ session.last_name }}{% else %}Guest{% endif %} <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        {% if session is defined and session.user_id is defined %}
+                            <li>
+                                {% set link = link_to_home ~ 'user' %}
+                                <a href="{{ link }}"><i class="glyphicon glyphicon-user"></i> My Profile</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                {% set link = link_to_home ~ 'user/logout' %}
+                                <a href="{{ link }}"><i class="	glyphicon glyphicon-log-out"></i> Log Out</a>
+                            </li>
+                        {% else %}
+                            <li>
+                                {% set link = link_to_home ~ 'user/signup' %}
+                                <a href="{{ link }}"><i class="glyphicon glyphicon-check"></i> Sign Up</a>
+                            </li>
+                            <li>
+                            <li class="divider"></li>
+                            <li>
+                                {% set link = link_to_home ~ 'user/login' %}
+                                <a href="{{ link }}"><i class="	glyphicon glyphicon-log-in"></i> Log In</a>
+                            </li>
+                        {% endif %}
+                        </ul>
+                    </li>
+                </ul>
+
+                <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+                <div class="collapse navbar-collapse navbar-ex1-collapse">
+                    <ul class="nav navbar-nav side-nav">
+                        {% for page in pages %}
+                        <li{% if active.link is defined and active.link == page.name %} class="active"{% endif %}>
+                            {% set link = link_to_home ~ page.link %}
+                            <a href="{{ link }}" data-toggle="collapse" data-target="#{{ page.name }}">{% if page.glyphicon is defined %}<span class="{{ page.glyphicon }}"></span> {% endif %}{{ page.name }}{% if page.sub_menu is defined %} <i class="caret"></i>{% endif %}</a>
+                            {% if page.sub_menu is defined %}
+                                <ul id="{{ page.name }}" class="{% if active.link is defined and active.link == page.name %}dropdown{% else %}collapse{% endif %}" data-target="#{{ page.name }}">
+                                {% for sub_page in page.sub_menu %}
+                                    <li>
+                                        {% set link = link_to_home ~ sub_page.link %}
+                                        <a href="{{ link }}">{{ sub_page.name }}</a>
+                                    </li>
+                                {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </nav>
+
+            <div id="page-wrapper">
+                <div class="container-fluid">
+                    {% block body %}{% endblock %}
+                </div>
             </div>
         </div>
-
-        {% block body %}{% endblock %}
-
-
-
-
-        {#<div id="footer">#}
-            {#<ul class="footer">#}
-                {#<li>Website Designed By &#169; Spacebit</li>#}
-            {#</ul>#}
-        {#</div>#}
-
     </body>
 </html>

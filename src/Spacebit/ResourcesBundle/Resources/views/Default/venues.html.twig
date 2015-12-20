@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
+{% set link_to_home = '../' %}
+{% set active = {link:'Resources', sub_link:'Locations'} %}
 
 {% block stylesheets %}
     <style>
@@ -38,10 +40,6 @@
 {% block title %}Venues{% endblock %}
 
 {% block body %}
-    {% set link_to_home = '../' %}
-    {% set active = {link:'Resources', sub_link:'Locations'} %}
-    {% include 'templates/navbar.html.twig' %}
-
     {% block content %}
 
 <div class="container col-lg-6">

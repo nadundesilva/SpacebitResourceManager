@@ -1,9 +1,10 @@
 {% extends 'base.html.twig' %}
 
+{% set link_to_home = './' %}
+{% set active = {link:'Home'} %}
+
 {% block title %}Home{% endblock %}
 
 {% block body %}
-    {% set link_to_home = './' %}
-    {% set active = {link:'Home'} %}
-    {% include 'templates/navbar.html.twig' %}
+
 {% endblock %}

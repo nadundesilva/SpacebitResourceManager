@@ -131,7 +131,7 @@ class DefaultController extends Controller
     public function vehiclesAction()
     {
         $conn = $this->get('database_connection');
-        $stmt = $conn->prepare('SELECT request_id, user_id, date, time, number_of_passengers, requested_type, requested_town, status FROM vehicle_request ORDER BY status, date, time DESC;');
+        $stmt = $conn->prepare('SELECT request_id, user_id, date, time, number_of_passengers, requested_type, requested_town, status FROM vehicle_request ORDER BY status DESC, date DESC, time DESC;');
         $stmt->execute();
         $vehicle_requests = $stmt->fetchAll();
 

@@ -1,5 +1,8 @@
 {% extends 'base.html.twig' %}
 
+{% set link_to_home = '../' %}
+{% set active = {link:'Admin', sub_link:'Manage Equipment'} %}
+
 {% block title %}Manage Equipment{% endblock %}
 
 {% block javascripts %}
@@ -43,10 +46,6 @@
 {% endblock %}
 
 {% block body %}
-    {% set link_to_home = '../' %}
-    {% set active = {link:'Admin', sub_link:'Manage Equipment'} %}
-    {% include 'templates/navbar.html.twig' %}
-
     <button class="btn btn-sm btn-info" onclick="$('#addEquipmentModal').modal();">Add Equipment</button>
 
     <div id="addEquipmentModal" class="modal fade" role="dialog">

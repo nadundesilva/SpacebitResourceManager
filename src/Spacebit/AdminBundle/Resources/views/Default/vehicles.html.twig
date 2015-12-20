@@ -1,5 +1,8 @@
 {% extends 'base.html.twig' %}
 
+{% set link_to_home = '../' %}
+{% set active = {link:'Admin', sub_link:'Manage Vehicles'} %}
+
 {% block title %}Manage Vehicles{% endblock %}
 
 {% block javascripts %}
@@ -7,10 +10,6 @@
 {% endblock %}
 
 {% block body %}
-    {% set link_to_home = '../' %}
-    {% set active = {link:'Admin', sub_link:'Manage Vehicles'} %}
-    {% include 'templates/navbar.html.twig' %}
-
     <div style="margin: 10px;">
         <button class="btn btn-sm btn-primary" onclick="showManageVehiclesModal();"><span class="glyphicon glyphicon-edit"></span> Manage Vehicles</button>
     </div>
@@ -28,13 +27,21 @@
                 <th>{{ vehicle_request.number_of_passengers }}</th>
                 <th>{{ vehicle_request.requested_type }}</th>
                 <th>{{ vehicle_request.requested_town }}</th>
-                <th>{{ request_status[vehicle_request.status] }}</th>
-                {% if vehicle_request.status != 1 %}
-                    <th><button class="btn btn-xs btn-success" onclick="$('#acceptVehiclesModal').modal();"><span class="glyphicon glyphicon-ok"></span> Accept</button></th>
-                {% elseif "now"|date('Y-m-d') < vehicle_request.date|date('Y-m-d') %}
-                    <th><button class="btn btn-xs btn-danger" onclick="changeRequest('{{ vehicle_request.request_id }}', false)"><span class="glyphicon glyphicon-remove"></span> Decline</button></th>
-                {% else %}
+                {% if vehicle_request.status == 0 %}
+                    <th style="color: #ff4d54;">
+                {% elseif vehicle_request.status == 1  %}
+                    <th style="color: #55ff5e;">
+                {% elseif vehicle_request.status == 2  %}
+                    <th style="color: #624cff;">
+                {% endif %}
+                        {{ request_status[vehicle_request.status] }}
+                    </th>
+                {% if "now"|date('Y-m-d') > vehicle_request.date|date('Y-m-d') %}
                     <th><button class="btn btn-xs btn-default" disabled>Past Request</button></th>
+                {% elseif vehicle_request.status != 1 %}
+                    <th><button class="btn btn-xs btn-success" onclick="$('#acceptVehiclesModal').modal();"><span class="glyphicon glyphicon-ok"></span> Accept</button></th>
+                {% else %}
+                    <th><button class="btn btn-xs btn-danger" onclick="changeRequest('{{ vehicle_request.request_id }}', false)"><span class="glyphicon glyphicon-remove"></span> Decline</button></th>
                 {% endif %}
             </tr>
         {% endfor %}
