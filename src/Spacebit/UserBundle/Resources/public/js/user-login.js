@@ -1,3 +1,7 @@
+function login() {
+
+}
+
 function validateUser() {
     var obj;
 

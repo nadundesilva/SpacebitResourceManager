@@ -14,24 +14,22 @@
 {% endblock %}
 
 {% block body %}
-    <div name="Login_section">
-        <div class="col-lg-4" style="margin: 125px;">
-            <h2 class="login-division">Log In</h2>
-            <form role="form">
-                <div class="form-group">
-                    <label for="user-id" style="padding-right:3em">User ID</label>
-                    <input name="user-id" type="text" class="form-control" id="user-id" placeholder="Enter your user ID" required autofocus>
-                </div>
-                <div class="form-group">
-                    <label for="password" style="padding-right:2.4em">Password</label>
-                    <input name="password" type="password" class="form-control" id="password" placeholder="Enter password" required>
-                </div>
-                <div class="form-group">
-                    <label><input type="checkbox" value="remember_me" id="remember_me">Remember me</label>
-                </div>
-                <button id="submit-button" type="submit" class="btn btn-sm btn-success">Log In</button>  or <a href="signup">Sign Up</a>
-                <a style="display: block; padding-top: 10px;" href="forgotPassword">Forgot Password?</a>
-            </form>
-        </div>
+    <div class="col-lg-4" style="margin: 125px;">
+        <h2 class="login-division">Log In</h2>
+        <form role="form">
+            <div class="form-group">
+                <label for="user-id" style="padding-right:3em">User ID</label>
+                <input name="user-id" type="text" class="form-control" id="user-id" placeholder="Enter your user ID" required autofocus>
+            </div>
+            <div class="form-group">
+                <label for="password" style="padding-right:2.4em">Password</label>
+                <input name="password" type="password" class="form-control" id="password" placeholder="Enter password" required>
+            </div>
+            <div class="form-group">
+                <label><input type="checkbox" value="remember_me" id="remember_me">Remember me</label>
+            </div>
+            <button id="submit-button" type="submit" class="btn btn-sm btn-success">Log In</button>  or <a href="signup">Sign Up</a>
+            <a style="display: block; padding-top: 10px;" href="forgotPassword" onclick="login(); return false;">Forgot Password?</a>
+        </form>
     </div>
 {% endblock %}

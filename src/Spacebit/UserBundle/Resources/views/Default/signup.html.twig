@@ -14,90 +14,86 @@
 {% endblock %}
 
 {% block body %}
-    <div class="container">
-        <div style="padding: 0px 100px 0px 150px">
-            <div class="col-lg-7">
-                <h2 class="logIn division" style="text-align: center">Sign Up</h2>
-                <form role="form">
-                    <div>
-                        <div class="form-group">
-                            <label for="userID">User ID</label>
-                            <input type="text" class="form-control" name="userID" id="userID" placeholder="User ID" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="firstName">First Name</label>
-                            <input type="text" class="form-control" name="firstName" id="firstName" placeholder="First Name" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="middleName">Middle Name (optional)</label>
-                            <input type="text" class="form-control" name="middleName" id="middleName" placeholder="Middle Name" />
-                        </div>
-                        <div class="form-group">
-                            <label for="lastName">Last Name</label>
-                            <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Last Name" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email Address</label>
-                            <input type="text" class="form-control" id="email" name="email" placeholder="Email Address" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="telephoneNumber">Telephone Number</label>
-                            <input type="number" class="form-control" id="telephoneNumber" name="telephoneNumber" placeholder="Telephone Number" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="passwordOne">Password</label>
-                            <input type="password" class="form-control" id="InputPasswordFirst" name="passwordOne" placeholder="Password" required />
-                            <label for="passwordTwo">Re-enter Password</label>
-                            <input type="password" class="form-control" id="InputPasswordSecond" name="passwordTwo" placeholder="Confirm Password" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="accessLevel">Select User Category:</label>
-                            <select class="form-control" id="accessLevel" name="accessLevel" onchange="showDiv(this)">
-                                <option value="student">Student</option>
-                                <option value="staff">Staff</option>
-                                <option value="guest" selected>Guest</option>
-                            </select>
-                            <br>
-                        </div>
-                    </div>
-                    <div id="studentDivision" style="display: none;">
-                        <div class="form-group">
-                            <label for="batch">Batch</label>
-                            <input type="number" class="form-control" id="batch" name="batch" placeholder="Batch" required />
-                        </div>
-                    </div>
-                    <div id="staffDivision" style="display: none;">
-                        <div class="form-group">
-                            <label for="designation">Designation</label>
-                            <input type="text" class="form-control" id="designation" name="designation" placeholder="Designation" required />
-                        </div>
-                    </div>
-                    <div id="guestDivision" style="display: block;">
-                        <h4>Organization Details</h4>
-                        <div class="form-group">
-                            <label for="title">Organization Title</label>
-                            <input type="text" class="form-control" id="title" name="title" placeholder="Organization Title" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="organizationEmail">Organization Email</label>
-                            <input type="email" class="form-control" id="organizationEmail" name="organizationEmail" placeholder="Organization Email" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="organizationTelephone">Organization Telephone</label>
-                            <input type="text" class="form-control" id="organizationTelephone" name="organizationTelephone" placeholder="Organization Telephone" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="nic">National ID Card Number (NIC)</label>
-                            <input type="text" class="form-control" id="nic" name="nic" placeholder="National ID Card Number" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="organizationAddress">Organization Address</label>
-                            <input type="text" class="form-control" id="organizationAddress" name="organizationAddress" placeholder="Organization Address" required />
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-md btn-primary btn-block" onsubmit="addNewUser(); return false;">Sign Up</button><br>
-                </form>
+    <div class="col-lg-7" style="padding: 0px 125px 0px 65px">
+        <h2 class="logIn division" style="text-align: center">Sign Up</h2>
+        <form role="form">
+            <div>
+                <div class="form-group">
+                    <label for="userID">User ID</label>
+                    <input type="text" class="form-control" name="userID" id="userID" placeholder="User ID" required />
+                </div>
+                <div class="form-group">
+                    <label for="firstName">First Name</label>
+                    <input type="text" class="form-control" name="firstName" id="firstName" placeholder="First Name" required />
+                </div>
+                <div class="form-group">
+                    <label for="middleName">Middle Name (optional)</label>
+                    <input type="text" class="form-control" name="middleName" id="middleName" placeholder="Middle Name" />
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Last Name" required />
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="text" class="form-control" id="email" name="email" placeholder="Email Address" required />
+                </div>
+                <div class="form-group">
+                    <label for="telephoneNumber">Telephone Number</label>
+                    <input type="number" class="form-control" id="telephoneNumber" name="telephoneNumber" placeholder="Telephone Number" required />
+                </div>
+                <div class="form-group">
+                    <label for="passwordOne">Password</label>
+                    <input type="password" class="form-control" id="InputPasswordFirst" name="passwordOne" placeholder="Password" required />
+                    <label for="passwordTwo">Re-enter Password</label>
+                    <input type="password" class="form-control" id="InputPasswordSecond" name="passwordTwo" placeholder="Confirm Password" required />
+                </div>
+                <div class="form-group">
+                    <label for="accessLevel">Select User Category:</label>
+                    <select class="form-control" id="accessLevel" name="accessLevel" onchange="showDiv(this)">
+                        <option value="student">Student</option>
+                        <option value="staff">Staff</option>
+                        <option value="guest" selected>Guest</option>
+                    </select>
+                    <br>
+                </div>
             </div>
-        </div>
+            <div id="student-division" style="display: none;">
+                <div class="form-group">
+                    <label for="batch">Batch</label>
+                    <input type="number" class="form-control" id="batch" name="batch" placeholder="Batch" required />
+                </div>
+            </div>
+            <div id="staff-division" style="display: none;">
+                <div class="form-group">
+                    <label for="designation">Designation</label>
+                    <input type="text" class="form-control" id="designation" name="designation" placeholder="Designation" required />
+                </div>
+            </div>
+            <div id="guest-division" style="display: block;">
+                <h4>Organization Details</h4>
+                <div class="form-group">
+                    <label for="title">Organization Title</label>
+                    <input type="text" class="form-control" id="title" name="title" placeholder="Organization Title" required />
+                </div>
+                <div class="form-group">
+                    <label for="organizationEmail">Organization Email</label>
+                    <input type="email" class="form-control" id="organizationEmail" name="organizationEmail" placeholder="Organization Email" required />
+                </div>
+                <div class="form-group">
+                    <label for="organizationTelephone">Organization Telephone</label>
+                    <input type="text" class="form-control" id="organizationTelephone" name="organizationTelephone" placeholder="Organization Telephone" required />
+                </div>
+                <div class="form-group">
+                    <label for="nic">National ID Card Number (NIC)</label>
+                    <input type="text" class="form-control" id="nic" name="nic" placeholder="National ID Card Number" required />
+                </div>
+                <div class="form-group">
+                    <label for="organizationAddress">Organization Address</label>
+                    <input type="text" class="form-control" id="organizationAddress" name="organizationAddress" placeholder="Organization Address" required />
+                </div>
+            </div>
+            <button type="submit" class="btn btn-md btn-primary" onsubmit="addNewUser(); return false;">Sign Up</button><br>
+        </form>
     </div>
 {% endblock %}
