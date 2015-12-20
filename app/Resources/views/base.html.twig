@@ -41,8 +41,6 @@
         <script src="{{ asset('bundles/app/js/jquery.js') }}"></script>
         <script src="{{ asset('bundles/app/js/bootstrap.min.js') }}"></script>
 
-        <link rel="stylesheet" href="{{ asset('bundles/app/css/main-theme.css') }}">
-
         <link href="{{ asset('bundles/app/css/sb-admin.css') }}" rel="stylesheet">
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -52,10 +50,12 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
 
+        <link rel="stylesheet" href="{{ asset('bundles/app/css/main-theme.css') }}">
+
         {% block javascripts %}{% endblock %}
         {% block stylesheets %}{% endblock %}
     </head>
-    <body>
+    <body style="font-size: 15px;">
         <div id="wrapper">
 
             <!-- Navigation -->
