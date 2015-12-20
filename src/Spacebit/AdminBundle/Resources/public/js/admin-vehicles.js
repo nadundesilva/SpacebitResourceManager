@@ -97,8 +97,8 @@ function showEditVehicleModal(plateNo) {
     }
 }
 
-function changeRequest(requestId, accepted) {
-
+function changeRequest(requestId) {
+    $('#editVehiclesModal').modal();
 }
 
 function addEditVehicle() {

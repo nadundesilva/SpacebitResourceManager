@@ -31,17 +31,15 @@
                     <th style="color: #ff4d54;">
                 {% elseif vehicle_request.status == 1  %}
                     <th style="color: #55ff5e;">
-                {% elseif vehicle_request.status == 2  %}
+                {% else %}
                     <th style="color: #624cff;">
                 {% endif %}
                         {{ request_status[vehicle_request.status] }}
                     </th>
                 {% if "now"|date('Y-m-d') > vehicle_request.date|date('Y-m-d') %}
                     <th><button class="btn btn-xs btn-default" disabled>Past Request</button></th>
-                {% elseif vehicle_request.status != 1 %}
-                    <th><button class="btn btn-xs btn-success" onclick="$('#acceptVehiclesModal').modal();"><span class="glyphicon glyphicon-ok"></span> Accept</button></th>
                 {% else %}
-                    <th><button class="btn btn-xs btn-danger" onclick="changeRequest('{{ vehicle_request.request_id }}', false)"><span class="glyphicon glyphicon-remove"></span> Decline</button></th>
+                    <th><button class="btn btn-xs btn-primary" onclick="changeRequest('{{ vehicle_request.request_id }}');"><span class="glyphicon glyphicon-Edit"></span> Edit Status</button></th>
                 {% endif %}
             </tr>
         {% endfor %}
@@ -71,11 +69,11 @@
         </div>
     </div>
 
-    <div id="acceptVehiclesModal" class="modal fade" role="dialog">
+    <div id="editVehiclesModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div style="margin: 20px;">
-                    <h3 style="text-align: center;">Accept Vehicle Request</h3>
+                    <h3 style="text-align: center;">Edit Vehicle Request</h3>
 
                 </div>
             </div>
