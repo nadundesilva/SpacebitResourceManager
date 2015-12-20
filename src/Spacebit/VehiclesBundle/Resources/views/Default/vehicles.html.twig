@@ -3,38 +3,7 @@
 {% block title %}Vehicles{% endblock %}
 
 {% block stylesheets %}
-    <style>
-        @keyframes img-portfolio-in {
-            0%   {width: 0px; height: 0px; opacity: 0.0; transform: translate(50%, 50%);}
-            100% {width: 270px; height: 250px; opacity: 1.0;}
-        }
-
-        .img-portfolio {
-            width: 270px;
-            height: 250px;
-            border-radius: 50%;
-            animation-name: img-portfolio-in;
-            animation-duration: 1s;
-            animation-timing-function: ease-out;
-        }
-
-        .img-portfolio:hover {
-            opacity: 0.75;
-            cursor: pointer;
-        }
-
-        @keyframes button-h2--in {
-            0%   {opacity: 0.0;}
-            50%  {opacity: 0.0}
-            100% {opacity: 1.0;}
-        }
-
-        #request-button, .text-label {
-            animation-name: button-h2--in;
-            animation-duration: 1s;
-            animation-timing-function: ease-out;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('bundles/spacebitresources/css/resource-pages.css') }}">
 {% endblock %}
 
 {% block javascripts %}
