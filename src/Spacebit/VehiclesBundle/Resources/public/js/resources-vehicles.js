@@ -1,3 +1,4 @@
+
 function loadVehiclesByCategory(category) {
     var obj;
 
