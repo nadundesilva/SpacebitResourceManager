@@ -13,18 +13,18 @@
 }
 
 .img-portfolio:hover {
-    opacity: 0.75;
+    transform: scale(1.05, 1.05);
     cursor: pointer;
 }
 
-@keyframes button-h2--in {
+@keyframes button-h2-in {
     0%   {opacity: 0.0;}
-    50%  {opacity: 0.0}
+    50%  {opacity: 0.0;}
     100% {opacity: 1.0;}
 }
 
 #request-button, .text-label {
-    animation-name: button-h2--in;
+    animation-name: button-h2-in;
     animation-duration: 1s;
     animation-timing-function: ease-out;
 }

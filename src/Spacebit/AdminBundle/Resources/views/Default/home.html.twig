@@ -3,29 +3,7 @@
 {% block title %}Admin{% endblock %}
 
 {% block stylesheets %}
-    <style>
-        @keyframes img-in {
-            0%   {opacity: 0.0; transform: translate(-50%, 0);}
-            50%   {opacity: 0.0; transform: translate(-50%, 0);}
-            100% {opacity: 1.0;}
-        }
-
-        .portfolio-item {
-            animation-name: img-in;
-            animation-duration: 2s;
-            animation-timing-function: ease-out;
-        }
-
-        .img-portfolio {
-            width: 108px;
-            height: 100px;
-        }
-
-        .img-portfolio:hover {
-            opacity: 0.75;
-            cursor: pointer;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('bundles/spacebitadmin/css/admin-home.css') }}">
 {% endblock %}
 
 {% block body %}

@@ -3,7 +3,7 @@
 {% block title %}Manage Vehicles{% endblock %}
 
 {% block javascripts %}
-    <script src="{{ asset('bundles/spacebitadmin/js/vehiclesAdmin.js') }}"></script>
+    <script src="{{ asset('bundles/spacebitadmin/js/admin-vehicles.js') }}"></script>
 {% endblock %}
 
 {% block body %}
@@ -12,7 +12,7 @@
     {% include 'templates/navbar.html.twig' %}
 
     <div style="margin: 10px;">
-        <button class="btn btn-sm btn-primary" onclick="showManageVehiclesModal();">Manage Vehicles</button>
+        <button class="btn btn-sm btn-primary" onclick="showManageVehiclesModal();"><span class="glyphicon glyphicon-edit"></span> Manage Vehicles</button>
     </div>
 
     <h2 style="text-align: center; padding-bottom: 10px">Vehicle Requests</h2>
@@ -22,7 +22,7 @@
         {% for vehicle_request in vehicle_requests %}
             <tr>
                 <th>{{ vehicle_request.request_id }}</th>
-                <th>{{ vehicle_request.user_id }}<br><button class="btn btn-xs btn-info" onclick="showUserModal('{{ vehicle_request.user_id }}')">View User</button></th>
+                <th>{{ vehicle_request.user_id }}<br><button class="btn btn-xs btn-info" onclick="showUserModal('{{ vehicle_request.user_id }}')"><span class="glyphicon glyphicon-modal-window"></span> View User</button></th>
                 <th>{{ vehicle_request.date }}</th>
                 <th>{{ vehicle_request.time }}</th>
                 <th>{{ vehicle_request.number_of_passengers }}</th>
@@ -30,9 +30,9 @@
                 <th>{{ vehicle_request.requested_town }}</th>
                 <th>{{ request_status[vehicle_request.status] }}</th>
                 {% if vehicle_request.status != 1 %}
-                    <th><button class="btn btn-xs btn-success" onclick="$('#acceptVehiclesModal').modal();">Accept</button></th>
+                    <th><button class="btn btn-xs btn-success" onclick="$('#acceptVehiclesModal').modal();"><span class="glyphicon glyphicon-ok"></span> Accept</button></th>
                 {% elseif "now"|date('Y-m-d') < vehicle_request.date|date('Y-m-d') %}
-                    <th><button class="btn btn-xs btn-danger" onclick="changeRequest('{{ vehicle_request.request_id }}', false)">Decline</button></th>
+                    <th><button class="btn btn-xs btn-danger" onclick="changeRequest('{{ vehicle_request.request_id }}', false)"><span class="glyphicon glyphicon-remove"></span> Decline</button></th>
                 {% else %}
                     <th><button class="btn btn-xs btn-default" disabled>Past Request</button></th>
                 {% endif %}
@@ -54,8 +54,8 @@
                 <div style="margin: 20px;">
                     <h3 style="text-align: center;">Manage Vehicles</h3>
                     <div style="margin: 10px;">
-                        <button class="btn btn-sm btn-primary" onclick="showAddVehicleModal();">Add Vehicle</button>
-                        <div id="manageVehiclesModalContent" style="padding: 20px;">
+                        <button class="btn btn-xs btn-primary" style="margin-bottom: 10px" onclick="showAddVehicleModal();"><span class="glyphicon glyphicon-plus"></span> Add Vehicle</button>
+                        <div id="manageVehiclesModalContent">
 
                         </div>
                     </div>
@@ -79,7 +79,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div style="margin: 20px;">
-                    <button class="btn btn-xs btn-primary" onclick="showManageVehiclesModal(); $('#addEditVehicleModal').modal('hide');">Back</button>
+                    <button class="btn btn-xs btn-primary" onclick="showManageVehiclesModal(); $('#addEditVehicleModal').modal('hide');"><span class="glyphicon glyphicon-arrow-left"></span> Back</button>
                     <h3 id="addEditVehicleTitle" style="text-align: center;">Add Vehicle</h3>
                     <form id="add-vehicle-form" role="form" method="POST" name="vehicle-add-form" onsubmit="addEditVehicle(); return false;">
                         <div class="row">
@@ -119,7 +119,7 @@
                                 <input type="text" id="driver-last-name" class="form-control" name = "driver-last-name" placeholder="Enter the Last name of the designated Driver" required />
                             </div>
                         </div>
-                        <input id="submit-button" type="submit" class="btn btn-sm btn-success" value="Add">
+                        <button id="submit-button" type="submit" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-plus"></span> Add</button>
                     </form>
                 </div>
             </div>

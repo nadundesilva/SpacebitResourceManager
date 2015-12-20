@@ -26,7 +26,7 @@ function showManageVehiclesModal() {
                     modalContent += '<td>' + rows[i].driver_first_name + ' ' + rows[i].driver_last_name + '</td>';
                     modalContent += '<td>' + rows[i].type + '</td>';
                     modalContent += '<td>' + rows[i].value + '</td>';
-                    modalContent += '<td><button class="btn btn-xs btn-info" onclick="showEditVehicleModal(\'' + rows[i].plate_no + '\')">Edit</button></td>';
+                    modalContent += '<td><button class="btn btn-xs btn-info" onclick="showEditVehicleModal(\'' + rows[i].plate_no + '\')"><span class="glyphicon glyphicon-pencil"></span></span> Edit</button></td>';
                     modalContent += '</tr>';
                 }
                 modalContent += '</table>'
@@ -52,7 +52,7 @@ function showAddVehicleModal() {
     document.forms['vehicle-add-form']['driver-last-name'].value = '';
 
     document.getElementById('addEditVehicleTitle').innerHTML = 'Add Vehicle';
-    document.forms['vehicle-add-form']['submit-button'].value = 'Add';
+    document.forms['vehicle-add-form']['submit-button'].innerHTML = '<span class="glyphicon glyphicon-plus"></span> Add';
     $('#manageVehiclesModal').modal('hide');
     $('#addEditVehicleModal').modal();
 }
@@ -85,7 +85,7 @@ function showEditVehicleModal(plateNo) {
                 document.forms['vehicle-add-form']['driver-last-name'].value = vehicle.driver_last_name;
 
                 document.getElementById('addEditVehicleTitle').innerHTML = 'Edit Vehicle';
-                document.forms['vehicle-add-form']['submit-button'].value = 'Edit';
+                document.forms['vehicle-add-form']['submit-button'].innerHTML = '<span class="glyphicon glyphicon-pencil"></span> Edit';
                 $('#manageVehiclesModal').modal('hide');
                 $('#addEditVehicleModal').modal();
             }
@@ -129,11 +129,11 @@ function addEditVehicle() {
 
                 var modalContent = '<div style="margin: 10px;"><p>';
                 if (res == 'success') {
-                    modalContent += 'Vehicle with plate number ' + plateNo + ' was ' + (updateType == "Add" ? "added" : "edited") + ' successfully</p><button class="btn btn-sm btn-success"';
+                    modalContent += 'Vehicle with plate number ' + plateNo + ' was ' + (updateType == "Add" ? "added" : "edited") + ' successfully</p><button class="btn btn-sm btn-success" onclick=\'$("#messageModal").modal("hide"); showManageVehiclesModal();\'><span class="glyphicon glyphicon-ok"></span>';
                 } else {
-                    modalContent += 'An error occured in ' + (updateType == "Add" ? "adding" : "editing") + ' the vehicle with plate number ' + plateNo + '. Sorry for the inconvenience.</p><div style="text-align: center;"><button class="btn btn-sm btn-danger"';
+                    modalContent += 'An error occured in ' + (updateType == "Add" ? "adding" : "editing") + ' the vehicle with plate number ' + plateNo + '. Sorry for the inconvenience.</p><div style="text-align: center;"><button class="btn btn-sm btn-danger" onclick=\'$("#messageModal").modal("hide"); showManageVehiclesModal();\'><span class="glyphicon glyphicon-warning-sign"></span>';
                 }
-                modalContent += ' onclick=\'$("#messageModal").modal("hide"); showManageVehiclesModal();\'>Ok</button><div></div>';
+                modalContent += ' Ok</button><div></div>';
                 document.getElementById('messageModalContent').innerHTML = modalContent;
 
                 $('#addEditVehicleModal').modal('hide');

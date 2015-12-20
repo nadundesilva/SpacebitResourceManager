@@ -8,21 +8,21 @@
     * Each page will set the link to the home page from it's location
 #}
 {% set pages = [
-    {name:'Home', link:'./'},
-    {name:'Resources', link:'resources',
+    {name:'Home', link:'./', glyphicon:'glyphicon glyphicon-home'},
+    {name:'Resources', link:'resources', glyphicon:'glyphicon glyphicon-duplicate',
         sub_menu:[
             {name:'Equipment', link:'resources/equipment'},
             {name:'Venues', link:'resources/venues'},
             {name:'Vehicles', link:'resources/vehicles'}
         ]
     },
-    {name:'My Profile', link:'user'},
+    {name:'My Profile', link:'user', glyphicon:'glyphicon glyphicon-user'},
 
 ] %}
 {# Merging with admin pages if the user have required level of access #}
 {% if app.session.get('access_level') is defined and app.session.get('access_level') >= 0 %}
     {% set pages = pages | merge([
-        {name:'Admin', link:'admin', active:false,
+        {name:'Admin', link:'admin', active:false, glyphicon:'glyphicon glyphicon-cog',
             sub_menu:[
                 {name:'Manage Equipment', link:'admin/equipment'},
                 {name:'Manage Venues', link:'admin/venues'},
@@ -51,7 +51,7 @@
         {% for page in pages %}
             <li class="{% if page.sub_menu is defined %}dropdown{% endif %} {% if active.link is defined and active.link == page.name %}active{% endif %}">
                 {% set link = link_to_home ~ page.link %}
-                <a {% if page.sub_menu is defined %}class="dropdown-toggle disabled" data-toggle="dropdown"{% endif %} href="{{ link }}">{{ page.name }}{% if page.sub_menu is defined %} <span class="caret"></span>{% endif %}</a>
+                <a {% if page.sub_menu is defined %}class="dropdown-toggle disabled" data-toggle="dropdown"{% endif %} href="{{ link }}">{% if page.glyphicon is defined %}<span class="{{ page.glyphicon }}"></span> {% endif %}{{ page.name }}{% if page.sub_menu is defined %} <span class="caret"></span>{% endif %}</a>
 
                 {% if page.sub_menu is defined %}
                     <ul class="dropdown-menu">
@@ -67,18 +67,22 @@
         {% endfor %}
     </ul>
 
-    <!----This part was edited by Keet--->
-    <!----Added Sign up and Log in Buttons--->
     <ul class="nav navbar-nav pull-right">
-        <li {% if active.link is defined and active.link == 'Sign Up' %}class="active"{% endif %}>
-            {% set link = link_to_home ~ "user/signup" %}
-            <a href="{{ link }}">Sign Up</a>
-        </li>
-        <li {% if active.link is defined and active.link == 'Log In' %}class="active"{% endif %}>
-            {% set link = link_to_home ~ "user/login" %}
-            <a href="{{ link }}">Log In</a>
+        {% if app.session.get('user_id') is defined or true %}
+            <li {% if active.link is defined and active.link == 'Sign Up' %}class="active"{% endif %}>
+                {% set link = link_to_home ~ "user/signup" %}
+                <a href="{{ link }}"><span class="glyphicon glyphicon-check"></span> Sign Up</a>
+            </li>
+            <li {% if active.link is defined and active.link == 'Log In' %}class="active"{% endif %}>
+                {% set link = link_to_home ~ "user/login" %}
+                <a href="{{ link }}"><span class="glyphicon glyphicon-log-in"></span> Log In</a>
 
-        </li>
+            </li>
+        {% else %}
+            <li>
+                {% set link = link_to_home ~ "user/logout" %}
+                <a href="{{ link }}"><span class="glyphicon glyphicon-log-out"></span> Log Out</a>
+            </li>
+        {% endif %}
     </ul>
-    <!--end of Sign up and Log in buttons-->
 </nav>
