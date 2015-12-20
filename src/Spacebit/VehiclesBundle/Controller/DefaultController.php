@@ -23,7 +23,7 @@ class DefaultController extends Controller
     public function getVehiclesByCategoryAction()
     {
         $request = Request::createFromGlobals();
-        $category = $request->request->get('category');
+        $category = $request->request->get('categor$request = Request::createFromGlobals();y');
 
         $conn = $this->get('database_connection');
         if($category == 'Other') {
@@ -51,6 +51,7 @@ class DefaultController extends Controller
         $destination = $request->request->get('destination');
 
         $conn = $this->get('database_connection');
+
         $stmt = $conn->prepare('INSERT INTO vehicle_request(user_id, date, time, status, number_of_passengers, requested_type, requested_town) VALUES(:user_id, :date, :time, :status, :number_of_passengers, :requested_type, :requested_town);');
         $stmt->bindValue(':user_id', $_SESSION['user_id']);
         $stmt->bindValue(':date', $date);

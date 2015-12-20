@@ -10,6 +10,8 @@ class DefaultController extends Controller
 {
     public function homeAction()
     {
+        $request = Request::createFromGlobals();
+
         $conn = $this->get('database_connection');
 
         $stmt = $conn->prepare('SELECT COUNT(request_id) AS count FROM ((resource_request INNER JOIN resource USING(resource_id)) INNER JOIN resource_administration USING(resource_id)) INNER JOIN equipment USING(resource_id) WHERE status = 2 AND resource_administration.user_id = :user_id;');
@@ -182,6 +184,7 @@ class DefaultController extends Controller
         $update_type = $request->request->get('update-type');
 
         $conn = $this->get('database_connection');
+
         if($update_type == 'Add') {
             $stmt = $conn->prepare('INSERT into vehicle values(:plate_no, :type, :model, :capacity,:driver_first_name, :driver_last_name, :availability, :value);');
         } else {
