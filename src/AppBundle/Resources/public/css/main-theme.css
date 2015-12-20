@@ -6,6 +6,7 @@ body {
 
 a:hover {
     cursor: pointer;
+    color: #5b39ff;
 }
 
 @keyframes body-in {
@@ -17,4 +18,9 @@ a:hover {
     animation-name: body-in;
     animation-duration: 1s;
     animation-timing-function: ease-out;
+}
+
+a {
+    text-decoration: none;
+    color: #3231ff;
 }

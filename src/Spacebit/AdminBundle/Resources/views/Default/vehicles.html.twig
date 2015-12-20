@@ -39,7 +39,7 @@
                 {% if "now"|date('Y-m-d') > vehicle_request.date|date('Y-m-d') %}
                     <th><button class="btn btn-xs btn-default" disabled>Past Request</button></th>
                 {% else %}
-                    <th><button class="btn btn-xs btn-primary" onclick="changeRequest('{{ vehicle_request.request_id }}');"><span class="glyphicon glyphicon-Edit"></span> Edit Status</button></th>
+                    <th><button class="btn btn-xs btn-primary" onclick="changeRequest('{{ vehicle_request.request_id }}');"><span class="glyphicon glyphicon-edit"></span> Edit Status</button></th>
                 {% endif %}
             </tr>
         {% endfor %}
