@@ -2,20 +2,24 @@ spacebit_user_home:
     path:     /
     defaults: { _controller: SpacebitUserBundle:Default:home }
 
-login:
+spacebit_user_login:
     path:     /login
     defaults: { _controller: SpacebitUserBundle:Default:login }
 
-signup:
+spacebit_user_signup:
     path:     /signup
     defaults: { _controller: SpacebitUserBundle:Default:signup }
 
-validate_user:
+spacebit_user_forgot_password:
+    path:     /forgotPassword
+    defaults: { _controller: SpacebitUserBundle:Default:forgotPassword }
+
+spacebit_user_validate:
     path:     /validateUser
     defaults: { _controller: SpacebitUserBundle:Default:validateUser }
     methods:  ['POST']
 
-add_user:
+spacebit_user_add:
     path:     /addUser
     defaults: { _controller: SpacebitUserBundle:Default:addUser }
     methods:  ['GET']

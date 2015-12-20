@@ -6,91 +6,11 @@
 {% block title %}Sign Up{% endblock %}
 
 {% block stylesheets %}
-    <style>
-        @keyframes division-in {
-            0%   {opacity: 0.0; transform: translate(-50%, 0);}
-            50%  {opacity: 0.0; transform: translate(-50%, 0);}
-            100% {opacity: 1.0;}
-        }
-
-        .division {
-            animation-name: division-in;
-            animation-duration: 2s;
-            animation-timing-function: ease-out;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('bundles/spacebituser/css/user-signup.css') }}">
 {% endblock %}
 
 {% block javascripts %}
-    <script>
-        function showDiv(){
-            var elem = document.getElementById("accessLevel");
-            if(elem.value == "student") {
-                document.getElementById('studentDivision').style.display = "block";
-                document.getElementById('staffDivision').style.display = "none";
-                document.getElementById('guestDivision').style.display = "none";
-            }
-            if(elem.value == "staff") {
-                document.getElementById('studentDivision').style.display = "none";
-                document.getElementById('staffDivision').style.display = "block";
-                document.getElementById('guestDivision').style.display = "none";
-            }
-            if(elem.value == "guest") {
-                document.getElementById('studentDivision').style.display = "none";
-                document.getElementById('staffDivision').style.display = "none";
-                document.getElementById('guestDivision').style.display = "block";
-            }
-        }
-
-        function addNewUser() {
-            var obj;
-
-            var userId = document.getElementsByName("userID").value;
-            var firstName = document.getElementsByName("firstName").value;
-            var middleName = document.getElementsByName("middleName").value;
-            var lastName = document.getElementsByName("lastName").value;
-            var email = document.getElementsByName("email").value;
-            var telephoneNumber = document.getElementsByName("telephoneNumber").value;
-            var accessLevel = document.getElementsByName("accessLevel").value;
-            var password1 = document.getElementsByName("password1").value;
-            var password2 = document.getElementsByName("password2").value;
-
-            window.alert(firstName);
-
-            if (password1 == password2){
-                if (window.XMLHttpRequest) {
-                    obj = new XMLHttpRequest();
-                } else if (window.ActiveXObject) {
-                    obj = new ActiveXObject("Microsoft.XMLHTTP");
-                } else {
-                    alert("Browser Doesn't Support AJAX!");
-                }
-
-                if (obj !== null) {
-                    obj.onreadystatechange = function () {
-                        if (obj.readyState < 4) {
-                            // progress
-                        } else if (obj.readyState === 4) {
-                            var res = obj.responseText;
-                            var rows = JSON.parse(res).result;
-                            window.alert(res);
-                        }
-                    }
-
-                    obj.open("POST", "./addUser", true);
-                    obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                    obj.send("userId=" + userId & "firstName=" + firstName &
-                    "middleName=" + middleName & "lastName=" + lastName &
-                    "email=" + email & "telephoneNumber=" + telephoneNumber &
-                    "accessLevel=" + accessLevel & "password1=" + password1
-                    );
-                }
-            }
-            else{
-                window.alert("Passwords do not match");
-            }
-        }
-    </script>
+    <script src="{{ asset('bundles/spacebituser/js/user-signup.js') }}"></script>
 {% endblock %}
 
 {% block body %}
@@ -99,7 +19,7 @@
             <div class="col-lg-7">
                 <h2 class="logIn division" style="text-align: center">Sign Up</h2>
                 <form role="form">
-                    <div class="division">
+                    <div>
                         <div class="form-group">
                             <label for="userID">User ID</label>
                             <input type="text" class="form-control" name="userID" id="userID" placeholder="User ID" required />
@@ -140,19 +60,19 @@
                             <br>
                         </div>
                     </div>
-                    <div id="studentDivision" class="division" style="display: none;">
+                    <div id="studentDivision" style="display: none;">
                         <div class="form-group">
                             <label for="batch">Batch</label>
                             <input type="number" class="form-control" id="batch" name="batch" placeholder="Batch" required />
                         </div>
                     </div>
-                    <div id="staffDivision" class="division" style="display: none;">
+                    <div id="staffDivision" style="display: none;">
                         <div class="form-group">
                             <label for="designation">Designation</label>
                             <input type="text" class="form-control" id="designation" name="designation" placeholder="Designation" required />
                         </div>
                     </div>
-                    <div id="guestDivision" class="division" style="display: block;">
+                    <div id="guestDivision" style="display: block;">
                         <h4>Organization Details</h4>
                         <div class="form-group">
                             <label for="title">Organization Title</label>

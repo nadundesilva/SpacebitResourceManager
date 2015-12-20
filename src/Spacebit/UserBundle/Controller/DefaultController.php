@@ -22,6 +22,12 @@ class DefaultController extends Controller
     {
         return $this->render('SpacebitUserBundle:Default:signup.html.twig');
     }
+
+    public function forgotPasswordAction()
+    {
+        return $this->render('SpacebitUserBundle:Default:forgot-password.html.twig');
+    }
+
     public function validateUserAction()
     {
         $request = Request::createFromGlobals();
