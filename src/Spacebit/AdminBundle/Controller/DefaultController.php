@@ -86,30 +86,7 @@ class DefaultController extends Controller
         return $this->render('SpacebitAdminBundle:Default:equipment.html.twig');
     }
 
-    public function addEquipmentAction()
-    {
-        $request = Request::createFromGlobals();
-        $resource_id= $request->request->get('resource_id');
-        $availability = $request->request->get('availability');
-        $availability = $availability =='on'? true : false;
-        $description = $request->request->get('description');
-        $value1 = $request->request->get('value1');
 
-        $conn = $this->get('database_connection');
-        $stmt = $conn->prepare('INSERT into resource values(:resource_id , :availability , :description);');
-        $stmt->bindValue(':resource_id', $resource_id);
-        $stmt->bindValue(':availability', $availability);
-        $stmt->bindValue(':description',$description );
-        $stmt->execute();
-
-        $stmt = $conn->prepare('INSERT into equipment values(:resource_id , :value1);');
-        $stmt->bindValue(':resource_id', $resource_id);
-        $stmt->bindValue(':value1', $value1);
-
-        $stmt->execute();
-
-        return new Response('success');
-    }
     /*
      * Manage equipment section starts here
      */
@@ -139,7 +116,7 @@ class DefaultController extends Controller
         return $response;
     }
 
-    public function getEquipmentByRequestIDAction()
+    public function getEquipmentByResourceIDAction()
     {
         $request = Request::createFromGlobals();
         $resource_id = $request->request->get('resource_id');
@@ -171,8 +148,8 @@ class DefaultController extends Controller
         if($update_type == 'Add') {
             $stmt = $conn->prepare('INSERT into resource values(:resource_id, :availability, :description);');
             $stmt->bindValue(':plate_no', $resource_id);
-            $stmt->bindValue(':type', $availability);
-            $stmt->bindValue(':model', $description);
+            $stmt->bindValue(':availability', $availability);
+            $stmt->bindValue(':description', $description);
 
             $response = 'success';
             if(!$stmt->execute()) {
@@ -192,37 +169,60 @@ class DefaultController extends Controller
             $stmt = $conn->prepare('INSERT into equipment values(:resource_id, :value, :equipment_type);');
             $stmt->bindValue(':resource_id', $resource_id);
             $stmt->bindValue(':value', $value);
-            $stmt->bindValue(':equipment', $equipment_type);
+            $stmt->bindValue(':equipment_type', $equipment_type);
 
             $response = 'success';
             if(!$stmt->execute()) {
                 $response = $stmt->errorCode();
-
-
-                
             }
 
 
 
 
         } else {
-            $stmt = $conn->prepare('UPDATE vehicle SET type = :type, model = :model, capacity = :capacity,driver_first_name = :driver_first_name, driver_last_name = :driver_last_name, availability = :availability , value = :value WHERE plate_no = :plate_no;');
+            $stmt = $conn->prepare('UPDATE resource SET description = :description, availability = :availability WHERE resource_id = :resource_id;');
+            $stmt->bindValue(':resoucre_id', $resource_id);
+            $stmt->bindValue(':availability', $availability);
+            $stmt->bindValue(':description', $description);
+
+            $response = 'success';
+            if (!$stmt->execute()) {
+                $response = $stmt->errorCode();
+            } else {
+                if ($update_type == 'Add') {
+                    $stmt = $conn->prepare('UPDATE resource_administration  SET user_id = :user_id WHERE resource_id = :resource_id;');
+                    $stmt->bindValue(':user_id', $_SESSION['user_id']);
+                    $stmt->bindValue(':resource_id', $resource_id);
+
+                    if (!$stmt->execute()) {
+                        $response = $stmt->errorCode();
+                    }
+                }
+            }
+            $stmt = $conn->prepare('UPDATE equipment SET value = :value, equipment_type = :equipment_type WHERE resource_id = :resource_id;');
+            $stmt->bindValue(':resource_id', $resource_id);
+            $stmt->bindValue(':value', $value);
+            $stmt->bindValue(':equipment_type', $equipment_type);
+
+            $response = 'success';
+            if (!$stmt->execute()) {
+                $response = $stmt->errorCode();
+            }
+
         }
-
-
         return new Response($response);
     }
 
-    function handleRequestAction()
+    function handleEquipmentRequestAction()
     {
         $request = Request::createFromGlobals();
         $request_id = $request->request->get('request-id');
-        $plate_no = $request->request->get('plate-no');
+        $resource_id = $request->request->get('resource_id');
 
 
         $conn = $this->get('database_connection');
-        $stmt = $conn->prepare('SELECT * FROM vehicle WHERE plate_no = :plateNo;');
-        $stmt->bindValue(':plateNo', $plate_no);
+        $stmt = $conn->prepare('SELECT * FROM equipment LEFT OUTER  JOIN  resource WHERE resource_id = :resource_id;');
+        $stmt->bindValue(':resource_id', $resource_id);
 
         $response = 'success';
         if(!$stmt->execute()) {
