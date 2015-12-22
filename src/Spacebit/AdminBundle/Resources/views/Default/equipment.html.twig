@@ -1,88 +1,135 @@
 {% extends 'base.html.twig' %}
 
 {% set link_to_home = '../' %}
-{% set active = {link:'Admin', sub_link:'Manage Equipment'} %}
+{% set active = {link:'Admin', sub_link:'Manage Resources'} %}
 
 {% block title %}Manage Equipment{% endblock %}
 
 {% block javascripts %}
-    <script>
-
-    function validate()
-    {
-
-    if( document.myForm1.resource_id.value == "" )
-    {
-    alert( "Please provide id!" );
-    document.myForm.resource_id.focus() ;
-    return false;
-    }
-
-    if( document.myForm1.description.value == "" )
-    {
-    alert( "Please provide description!" );
-    document.myForm.description.focus() ;
-    return false;
-    }
-
-    if( document.myForm1.value1.value == "" ||
-    isNaN( document.myForm.value1.value ) ||
-    document.myForm.Zip.value.length != 5 )
-    {
-    alert( "Please provide a value" );
-    document.myForm.Zip.focus() ;
-    return false;
-    }
-
-    if( document.myForm1.Country.value == "-1" )
-    {
-    alert( "Please provide your country!" );
-    return false;
-    }
-    return( true );
-    }
-</script>
-
+    <script src="{{ asset('bundles/spacebitadmin/js/admin-equipments.js') }}"></script>
 {% endblock %}
 
 {% block body %}
-    <button class="btn btn-sm btn-info" onclick="$('#addEquipmentModal').modal();">Add Equipment</button>
+    <div style="margin: 10px;">
+        <button class="btn btn-sm btn-primary" onclick="showManageEquipmentModal();"><span class="glyphicon glyphicon-edit"></span> Manage Equipments</button>
+    </div>
 
-    <div id="addEquipmentModal" class="modal fade" role="dialog">
+    <h2 style="text-align: center; padding-bottom: 10px">Equipment Requests</h2>
+    <table class="table table-hover" style="padding: 20px">
+        <tr><th>Request Id</th><th>Requester</th><th>Requested date</th><th>Requested Time</th><th>Number of Passengers</th><th>Requested Type of Equipment</th><th>Requested Destination</th><th>Status</th><th></th></tr>
+        {% set request_status = ['Declined', 'Accepted', 'Pending'] %}
+        {% for equipment_request in equipment_requests %}
+            <tr>
+                <th>{{ equipment_request.request_id }}</th>
+                <th>{{ equipment_request.user_id }}<br><button class="btn btn-xs btn-info" onclick="showUserModal('{{ equipment_request.user_id }}')"><span class="glyphicon glyphicon-modal-window"></span> View User</button></th>
+                <th>{{ equipment_request.date }}</th>
+                <th>{{ equipment_request.time }}</th>
+                <th>{{ equipment_request.number_of_passengers }}</th>
+                <th>{{ equipment_request.requested_type }}</th>
+                <th>{{ equipment_request.requested_town }}</th>
+                {% if equipment_request.status == 0 %}
+                <th style="color: #ff4d54;">
+            {% elseif equipment_request.status == 1  %}
+            <th style="color: #55ff5e;">
+            {% else %}
+                <th style="color: #624cff;">
+                    {% endif %}
+                    {{ request_status[equipment_request.status] }}
+                </th>
+                {% if "now"|date('Y-m-d') > equipment_request.date|date('Y-m-d') %}
+                    <th><button class="btn btn-xs btn-default" disabled>Past Request</button></th>
+                {% else %}
+                    <th><button class="btn btn-xs btn-primary" onclick="changeRequest('{{ equipment_request.request_id }}');"><span class="glyphicon glyphicon-edit"></span> Edit Status</button></th>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </table>
+
+    <div id="messageModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
-            <div class="modal-content" id="vehiclesModalContent">
-                <div style="margin: 10px;">
-                    <h2>Add Equipment</h2>
+            <div class="modal-content">
+                <div style="margin: 20px;" id="messageModalContent"></div>
+            </div>
+        </div>
+    </div>
 
+    <div id="manageEquipmentsModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div style="margin: 20px;">
+                    <h3 style="text-align: center;">Manage Equipments</h3>
+                    <div style="margin: 10px;">
+                        <button class="btn btn-xs btn-primary" style="margin-bottom: 10px" onclick="showAddEquipmentModal();"><span class="glyphicon glyphicon-plus"></span> Add Equipment</button>
+                        <div id="manageEquipmentsModalContent">
 
-                    <form role="form" action="addEquipment" name="myForm1" onsubmit="return(validate());" method="POST">
-
-                        <div class="form-group">
-                            <label for="resource_id">resource_id:</label>
-                            <input type="text" class="form-control" name = "resource_id" id="resource_id" placeholder="Enter resource_id">
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                        <div class="form-group">
-                            <label><input type="checkbox" name = "availability" id="availability"> Availability</label>
+    <div id="editEquipmentsModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div style="margin: 20px;">
+                    <h3 style="text-align: center;">Edit Equipment Request</h3>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="addEditEquipmentModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div style="margin: 20px;">
+                    <button class="btn btn-xs btn-primary" onclick="showManageEquipmentsModal(); $('#addEditEquipmentModal').modal('hide');"><span class="glyphicon glyphicon-arrow-left"></span> Back</button>
+                    <h3 id="addEditEquipmentTitle" style="text-align: center;">Add Equipment</h3>
+                    <form id="add-equipment-form" role="form" method="POST" name="equipment-add-form" onsubmit="addEditEquipment(); return false;">
+                        <div class="row">
+                            <div class="form-group col-lg-6">
+                                <label for="plate-no">Plate No :</label>
+                                <input type="text" id="plate-no" class="form-control" name = "plate-no" placeholder="Enter Plate No" required />
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label for="type">Equipment Category :</label>
+                                <input type="text" id="type" class="form-control" name = "type"  placeholder="Enter the Equipment Category" required />
+                            </div>
                         </div>
-
                         <div class="form-group">
-                            <label for="description">description:</label>
-                            <input type="text" class="form-control" id="description" name = "description"  placeholder="Enter description">
+                            <label for="model">Equipment Model :</label>
+                            <input type="text" id="model" class="form-control" name = "model" placeholder="Enter Model of the Equipment" required />
                         </div>
-
+                        <div class="row">
+                            <div class="form-group col-lg-6">
+                                <label for="capacity">Capacity of the Equipment :</label>
+                                <input type="number" id="capacity" class="form-control" id="capacity" name = "capacity" placeholder="Enter the Capacity of the Equipment" required />
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label for="value">Appraised Value :</label>
+                                <input type="numeric" class="form-control" id="value" name = "value" placeholder="Enter the Value of the equipment" />
+                            </div>
+                        </div>
                         <div class="form-group">
-                            <label for="value">value:</label>
-                            <input type="text" class="form-control" id="value1" name = "value1" placeholder="Enter value">
+                            <label><input type="checkbox" id="availability" name = "availability">Equipment is Available</label>
                         </div>
-
-
-
-                        <button type="submit" class="btn btn-default">Submit</button>
-
+                        <div class="row">
+                            <div class="form-group col-lg-6">
+                                <label for="driver-first-name">Driver's First Name :</label>
+                                <input type="text" id="driver-first-name" class="form-control" name = "driver-first-name" placeholder="Enter the First Name of the designated Driver" required />
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label for="driver-last-name">Driver's Last Name :</label>
+                                <input type="text" id="driver-last-name" class="form-control" name = "driver-last-name" placeholder="Enter the Last name of the designated Driver" required />
+                            </div>
+                        </div>
+                        <button id="submit-button" type="submit" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-plus"></span> Add</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+
+    {% include 'templates/admin/view-user.html.twig' %}
 {% endblock %}
