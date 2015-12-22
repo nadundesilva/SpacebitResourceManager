@@ -27,7 +27,7 @@ function showManageEquipmentModal() {
                     modalContent += '<td>' + rows[i].description + '</td>';
                     modalContent += '<td>' + rows[i].value + '</td>';
                     modalContent += '<td>' + rows[i].equipment_type + '</td>';
-                    modalContent += '<td><button class="btn btn-xs btn-info" onclick="showEditEquipmentModal(\'' + rows[i].resource_id + '\')"><span class="glyphicon glyphicon-pencil"></span></span> Edit</button></td>';
+                    modalContent += '<td><button class="btn btn-xs btn-info" onclick="showEditEquipmentModal(\'' + rows[i].resource_id + '\')"><span class="glyphicon glyphicon-pencil"></span> Edit</button></td>';
                     modalContent += '</tr>';
                 }
                 modalContent += '</table>'

@@ -20,7 +20,7 @@ spacebit_admin_equipments_get_all:
     defaults: { _controller: SpacebitAdminBundle:Default:getAllEquipments}
 
 spacebit_admin_equipments_get_by_resource_id:
-    path:     /equipmenrs/getByResourceID
+    path:     /equipments/getByResourceID
     defaults: { _controller: SpacebitAdminBundle:Default:getEquipmentByResourceID}
     methods:  ['POST']
 

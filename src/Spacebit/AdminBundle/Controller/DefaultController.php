@@ -77,7 +77,6 @@ class DefaultController extends Controller
 
         return $response;
     }
-
     /*
      * Manage equipment section starts here
      */
@@ -87,7 +86,6 @@ class DefaultController extends Controller
     /*
      * Manage equipment section starts here
      */
-
     public function equipmentAction()
     {
         $conn = $this->get('database_connection');
@@ -103,7 +101,7 @@ class DefaultController extends Controller
     public function getAllEquipmentsAction()
     {
         $conn = $this->get('database_connection');
-        $stmt = $conn->prepare('SELECT resource_id, availability, description, value, equipment_type FROM equipment LEFT OUTER JOIN resource USING(resource_id);');
+        $stmt = $conn->prepare('SELECT resource_id, availability, description, value, equipment_type FROM equipment INNER JOIN resource USING(resource_id);');
         $stmt->execute();
         $result = $stmt->fetchAll();
 
@@ -119,8 +117,8 @@ class DefaultController extends Controller
         $resource_id = $request->request->get('resource_id');
 
         $conn = $this->get('database_connection');
-        $stmt = $conn->prepare('SELECT * FROM equipment LEFT OUTER JOIN resource  WHERE resource_id = :resource_id;');
-        $stmt->bindValue(':resouce-id', $resource_id);
+        $stmt = $conn->prepare('SELECT * FROM equipment INNER JOIN resource USING(resource_id) WHERE resource_id = :resource_id;');
+        $stmt->bindValue(':resource_id', $resource_id);
         $stmt->execute();
         $result = $stmt->fetch();
 
@@ -172,10 +170,6 @@ class DefaultController extends Controller
             if(!$stmt->execute()) {
                 $response = $stmt->errorCode();
             }
-
-
-
-
         } else {
             $stmt = $conn->prepare('UPDATE resource SET description = :description, availability = :availability WHERE resource_id = :resource_id;');
             $stmt->bindValue(':resoucre_id', $resource_id);
@@ -228,13 +222,8 @@ class DefaultController extends Controller
 
         return $response;
     }
-
-
-
     /*
-     *
      * equipments finishes here
-     *
      * */
 
     /*
