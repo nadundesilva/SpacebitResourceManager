@@ -19,7 +19,6 @@ spacebit_admin_equipments_get_all:
     path:     /equipments/getAll
     defaults: { _controller: SpacebitAdminBundle:Default:getAllEquipments}
 
-
 spacebit_admin_equipments_get_by_resource_id:
     path:     /equipmenrs/getByResourceID
     defaults: { _controller: SpacebitAdminBundle:Default:getEquipmentByResourceID}

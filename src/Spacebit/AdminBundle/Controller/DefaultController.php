@@ -103,7 +103,7 @@ class DefaultController extends Controller
     public function getAllEquipmentsAction()
     {
         $conn = $this->get('database_connection');
-        $stmt = $conn->prepare('SELECT resource_id, availability, description, value, equipment_type FROM equipment LEFT OUTER JOIN resource  ;');
+        $stmt = $conn->prepare('SELECT resource_id, availability, description, value, equipment_type FROM equipment LEFT OUTER JOIN resource USING(resource_id);');
         $stmt->execute();
         $result = $stmt->fetchAll();
 
