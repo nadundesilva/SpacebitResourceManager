@@ -14,8 +14,8 @@
         <button class="btn btn-sm btn-primary" onclick="showManageEquipmentModal();"><span class="glyphicon glyphicon-edit"></span> Manage Equipments</button>
     </div>
 
-    <h2 style="text-align: center; padding-bottom: 10px">Equipment Requests</h2>
-    <table class="table table-hover" style="padding: 20px">
+                                                                                                                                        <h2 style="text-align: center; padding-bottom: 10px">Equipment Requests</h2>
+                    <table class="table table-hover" style="padding: 20px">
         <tr><th>Request Id</th><th>Requester</th><th>Resource ID</th><th>Date From</th><th>Date To</th><th>Time From</th><th>Time To</th><th>Status</th><th></th></tr>
         {% set request_status = ['Declined', 'Accepted', 'Pending'] %}
         {% for equipment_request in equipment_requests %}
@@ -36,7 +36,7 @@
                     {% endif %}
                     {{ request_status[equipment_request.status] }}
                 </th>
-                {% if "now"|date('Y-m-d') > equipment_request.date|date_from('Y-m-d') %}
+                {% if "now"|date('Y-m-d') > equipment_request.date_from|date('Y-m-d') %}
                     <th><button class="btn btn-xs btn-default" disabled>Past Request</button></th>
                 {% else %}
                     <th><button class="btn btn-xs btn-primary" onclick="changeRequest('{{ equipment_request.request_id }}');"><span class="glyphicon glyphicon-edit"></span> Edit Status</button></th>
@@ -46,6 +46,7 @@
                 {% else %}
                     <th><button class="btn btn-xs btn-primary" onclick="changeRequest('{{ equipment_request.request_id }}');"><span class="glyphicon glyphicon-edit"></span> Edit Status</button></th>
                 {% endif %}
+
             </tr>
         {% endfor %}
     </table>
