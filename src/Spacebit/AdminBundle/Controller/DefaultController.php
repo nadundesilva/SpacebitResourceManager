@@ -114,7 +114,7 @@ class DefaultController extends Controller
      * Manage equipment section starts here
      */
 
-    public function vehiclesAction()
+    public function equipmentsAction()
     {
         $conn = $this->get('database_connection');
         $stmt = $conn->prepare('SELECT request_id, user_id,resource_id, date_from,date_to, time_from,time_to, status FROM resource_request ORDER BY status DESC, date_from DESC, time_from DESC;');
@@ -129,7 +129,7 @@ class DefaultController extends Controller
     public function getAllEquipmentsAction()
     {
         $conn = $this->get('database_connection');
-        $stmt = $conn->prepare('SELECT plate_no, type, model, capacity, driver_first_name, driver_last_name, value FROM vehicle ORDER BY type;');
+        $stmt = $conn->prepare('SELECT resource_id, availability, description, value, equipment_type FROM equipment LEFT OUTER JOIN resource  ;');
         $stmt->execute();
         $result = $stmt->fetchAll();
 
@@ -139,14 +139,14 @@ class DefaultController extends Controller
         return $response;
     }
 
-    public function getVehicleByPlateNoAction()
+    public function getEquipmentByRequestIDAction()
     {
         $request = Request::createFromGlobals();
-        $plate_no = $request->request->get('plate-no');
+        $resource_id = $request->request->get('resource_id');
 
         $conn = $this->get('database_connection');
-        $stmt = $conn->prepare('SELECT * FROM vehicle WHERE plate_no = :plateNo;');
-        $stmt->bindValue(':plateNo', $plate_no);
+        $stmt = $conn->prepare('SELECT * FROM equipment LEFT OUTER JOIN resource  WHERE resource_id = :resource_id;');
+        $stmt->bindValue(':resouce-id', $resource_id);
         $stmt->execute();
         $result = $stmt->fetch();
 
@@ -156,49 +156,59 @@ class DefaultController extends Controller
         return $response;
     }
 
-    public function addEditVehicleAction()
+    public function addEditEquipmentAction()
     {
         $request = Request::createFromGlobals();
-        $plate_no= $request->request->get('plate-no');
-        $type = $request->request->get('type');
-        $model = $request->request->get('model');
-        $capacity = $request->request->get('capacity');
-        $driver_first_name = $request->request->get('driver-first-name');
-        $driver_last_name= $request->request->get('driver-last-name');
-        $availability = ($request->request->get('availability') == 'on');
+        $resource_id= $request->request->get('resource_id');
+        $equipment_type = $request->request->get('equipment_type');
+        $description = $request->request->get('description');
+        $availability = $request->request->get('availability');
         $value = $request->request->get('value');
         $update_type = $request->request->get('update-type');
 
         $conn = $this->get('database_connection');
 
         if($update_type == 'Add') {
-            $stmt = $conn->prepare('INSERT into vehicle values(:plate_no, :type, :model, :capacity,:driver_first_name, :driver_last_name, :availability, :value);');
+            $stmt = $conn->prepare('INSERT into resource values(:resource_id, :availability, :description);');
+            $stmt->bindValue(':plate_no', $resource_id);
+            $stmt->bindValue(':type', $availability);
+            $stmt->bindValue(':model', $description);
+
+            $response = 'success';
+            if(!$stmt->execute()) {
+                $response = $stmt->errorCode();
+            } else {
+                if ($update_type == 'Add') {
+                    $stmt = $conn->prepare('INSERT INTO resource_administration VAlUES(:user_id, :resource_id)');
+                    $stmt->bindValue(':user_id', $_SESSION['user_id']);
+                    $stmt->bindValue(':resource_id', $resource_id);
+
+                    if (!$stmt->execute()) {
+                        $response = $stmt->errorCode();
+                    }
+                }
+            }
+
+            $stmt = $conn->prepare('INSERT into equipment values(:resource_id, :value, :equipment_type);');
+            $stmt->bindValue(':resource_id', $resource_id);
+            $stmt->bindValue(':value', $value);
+            $stmt->bindValue(':equipment', $equipment_type);
+
+            $response = 'success';
+            if(!$stmt->execute()) {
+                $response = $stmt->errorCode();
+
+
+                
+            }
+
+
+
+
         } else {
             $stmt = $conn->prepare('UPDATE vehicle SET type = :type, model = :model, capacity = :capacity,driver_first_name = :driver_first_name, driver_last_name = :driver_last_name, availability = :availability , value = :value WHERE plate_no = :plate_no;');
         }
-        $stmt->bindValue(':plate_no', $plate_no);
-        $stmt->bindValue(':type', $type);
-        $stmt->bindValue(':model', $model);
-        $stmt->bindValue(':capacity',$capacity);
-        $stmt->bindValue(':driver_first_name',$driver_first_name);
-        $stmt->bindValue(':driver_last_name',$driver_last_name);
-        $stmt->bindValue(':availability',$availability);
-        $stmt->bindValue(':value',$value);
 
-        $response = 'success';
-        if(!$stmt->execute()) {
-            $response = $stmt->errorCode();
-        } else {
-            if ($update_type == 'Add') {
-                $stmt = $conn->prepare('INSERT INTO vehicle_administration VAlUES(:user_id, :plate_no)');
-                $stmt->bindValue(':user_id', $_SESSION['user_id']);
-                $stmt->bindValue(':plate_no', $plate_no);
-
-                if (!$stmt->execute()) {
-                    $response = $stmt->errorCode();
-                }
-            }
-        }
 
         return new Response($response);
     }
