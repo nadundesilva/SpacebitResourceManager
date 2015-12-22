@@ -1,4 +1,4 @@
-spacebit_resource_manager
+Spacebit Resource Manager
 =========================
 
-A Symfony project created on November 20, 2015, 6:39 pm.
+This was a web app for managing the resources at the university of Moratuwa created for the module CS3042 - Database Systems offered at the unviersity of Moratuwa.
