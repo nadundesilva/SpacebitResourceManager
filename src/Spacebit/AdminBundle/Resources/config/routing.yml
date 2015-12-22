@@ -15,10 +15,28 @@ spacebit_admin_equipment:
     path:     /equipment
     defaults: { _controller: SpacebitAdminBundle:Default:equipment}
 
-spacebit_admin_equipment_add:
-    path:     /addEquipment
-    defaults: { _controller: SpacebitAdminBundle:Default:addEquipment}
+spacebit_admin_equipments_get_all:
+    path:     /equipments/getAll
+    defaults: { _controller: SpacebitAdminBundle:Default:getAllEquipments}
+
+
+spacebit_admin_equipments_get_by_resource_id:
+    path:     /equipmenrs/getByResourceID
+    defaults: { _controller: SpacebitAdminBundle:Default:getEquipmentByResourceID}
     methods:  ['POST']
+
+spacebit_admin_equipments_add_edit:
+    path:     /equipments/addEdit
+    defaults: { _controller: SpacebitAdminBundle:Default:addEditEquipment}
+    methods:  ['POST']
+
+
+spacebit_admin_equipment_accept_request:
+    path:     /equipments/changeRequest
+    defaults: { _controller: SpacebitAdminBundle:Default:handleEquipmentRequest}
+    methods:  ['POST']
+
+
 
 
 

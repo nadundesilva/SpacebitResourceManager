@@ -81,17 +81,14 @@ class DefaultController extends Controller
     /*
      * Manage equipment section starts here
      */
-    public function equipmentAction()
-    {
-        return $this->render('SpacebitAdminBundle:Default:equipment.html.twig');
-    }
+
 
 
     /*
      * Manage equipment section starts here
      */
 
-    public function equipmentsAction()
+    public function equipmentAction()
     {
         $conn = $this->get('database_connection');
         $stmt = $conn->prepare('SELECT request_id, user_id,resource_id, date_from,date_to, time_from,time_to, status FROM resource_request ORDER BY status DESC, date_from DESC, time_from DESC;');
