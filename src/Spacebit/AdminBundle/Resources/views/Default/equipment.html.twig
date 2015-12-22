@@ -84,18 +84,18 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div style="margin: 20px;">
-                    <button class="btn btn-xs btn-primary" onclick="showManageEquipmentsModal(); $('#addEditEquipmentModal').modal('hide');"><span class="glyphicon glyphicon-arrow-left"></span> Back</button>
+                    <button class="btn btn-xs btn-primary" onclick="showManageEquipmentModal(); $('#addEditEquipmentModal').modal('hide');"><span class="glyphicon glyphicon-arrow-left"></span> Back</button>
                     <h3 id="addEditEquipmentTitle" style="text-align: center;">Add Equipment</h3>
                     <form id="add-equipment-form" role="form" method="POST" name="equipment-add-form" onsubmit="addEditEquipment(); return false;">
                         <div class="row">
-                            <div class="form-group col-lg-6">
+                            <div class="form-group col-lg-12">
                                 <label for="resource_id">Resource ID :</label>
-                                <input type="text" id=resource_id" class="form-control" name = resource_id" placeholder="Enter Resource ID" required />
+                                <input type="text" id=resource_id" class="form-control" name="resource_id" placeholder="Enter Resource ID" required />
                             </div>
-                            <div class="form-group">
+                            <div class="form-group col-lg-12">
                                 <label><input type="checkbox" id="availability" name = "availability">Equipment is Available</label>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group col-lg-12">
                                 <label for="description">Description :</label>
                                 <input type="text" id="description" class="form-control" name = "description" placeholder="Enter Description of the Equipment" required />
                             </div>
@@ -104,7 +104,7 @@
                                 <input type="numeric" class="form-control" id="value" name = "value" placeholder="Enter the Value of the equipment" />
                             </div>
                             <div class="form-group col-lg-6">
-                                <label for="type">Equipment Type :</label>
+                                <label for="equipment_type">Equipment Type :</label>
                                 <input type="text" id="equipment_type" class="form-control" name = "equipment_type"  placeholder="Enter the Equipment Type" required />
                             </div>
                         </div>
