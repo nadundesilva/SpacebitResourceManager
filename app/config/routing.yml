@@ -14,10 +14,6 @@ spacebit_admin:
     resource: "@SpacebitAdminBundle/Resources/config/routing.yml"
     prefix:   /admin
 
-spacebit_vehicles:
-    resource: "@SpacebitVehiclesBundle/Resources/config/routing.yml"
-    prefix:   /resources/vehicles
-
 spacebit_resources:
     resource: "@SpacebitResourcesBundle/Resources/config/routing.yml"
     prefix:   /resources

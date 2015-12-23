@@ -36,7 +36,7 @@ function showManageEquipmentModal() {
             }
         }
 
-        obj.open("POST", "./equipments/getAll", true);
+        obj.open("POST", "./equipment/getAll", true);
         obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         obj.send();
     }
@@ -89,7 +89,7 @@ function showEditEquipmentModal(resource_id) {
             }
         }
 
-        obj.open("POST", "./equipments/getByResourceID", true);
+        obj.open("POST", "./equipment/getByResourceID", true);
         obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         obj.send('resource_id=' + resource_id);
     }
@@ -136,7 +136,7 @@ function addEditEquipment() {
             }
         }
 
-        obj.open("POST", "./equipments/addEdit", true);
+        obj.open("POST", "./equipment/addEdit", true);
         obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         obj.send("resource_id=" + resource_id+ '&equipment_type=' + type +  '&availability=' + availability + '&value=' + value + '&description=' + description + '&update-type=' + updateType);
     }

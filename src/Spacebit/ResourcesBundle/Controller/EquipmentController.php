@@ -6,10 +6,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use \Symfony\Component\HttpFoundation\Response;
 use \Symfony\Component\HttpFoundation\Request;
 
-class DefaultController extends Controller
+class EquipmentController extends Controller
 {
-    public function homeAction()
+    public function equipmentAction()
     {
-        return $this->render('SpacebitResourcesBundle:Default:home.html.twig');
+        return $this->render('SpacebitResourcesBundle:Default:equipment.html.twig');
     }
 }

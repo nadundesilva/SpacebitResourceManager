@@ -11,7 +11,7 @@
 
 {% block javascripts %}
     <script src="http://maps.googleapis.com/maps/api/js"></script>
-    <script src="{{ asset('bundles/spacebitvehicles/js/resources-vehicles.js') }}"></script>
+    <script src="{{ asset('bundles/spacebitresources/js/resources-vehicles.js') }}"></script>
 {% endblock %}
 
 {% block body %}
@@ -20,7 +20,7 @@
         {% for category in categories %}
             <div class="col-lg-6 portfolio-item" style="margin: 0 auto;">
                 <div class="portfolio-wrapper">
-                    {% set url = 'bundles/spacebitvehicles/images/vehicle_category_' ~ category ~ '.jpg' %}
+                    {% set url = 'bundles/spacebitresources/images/vehicles/vehicle_category_' ~ category ~ '.jpg' %}
                     <img class="img-portfolio" src="{{ asset(url) }}" alt="{{ category }}" onclick="loadVehiclesByCategory('{{ category }}');" />
                     <h2 class="text-label">{{ category }}</h2>
                 </div>

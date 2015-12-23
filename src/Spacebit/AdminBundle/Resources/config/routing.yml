@@ -6,64 +6,62 @@ spacebit_admin_home:
 
 spacebit_admin_get_user:
     path:     /user/getByID
-    defaults: { _controller: SpacebitAdminBundle:Default:getUserDetails }
+    defaults: { _controller: SpacebitAdminBundle:User:getDetails }
     methods:  ['POST']
 
 
 
 spacebit_admin_equipment:
     path:     /equipment
-    defaults: { _controller: SpacebitAdminBundle:Default:equipment}
+    defaults: { _controller: SpacebitAdminBundle:Equipment:equipment }
 
 spacebit_admin_equipments_get_all:
-    path:     /equipments/getAll
-    defaults: { _controller: SpacebitAdminBundle:Default:getAllEquipments}
+    path:     /equipment/getAll
+    defaults: { _controller: SpacebitAdminBundle:Equipment:getAll }
 
 spacebit_admin_equipments_get_by_resource_id:
-    path:     /equipments/getByResourceID
-    defaults: { _controller: SpacebitAdminBundle:Default:getEquipmentByResourceID}
+    path:     /equipment/getByResourceID
+    defaults: { _controller: SpacebitAdminBundle:Equipment:getByResourceID }
     methods:  ['POST']
 
 spacebit_admin_equipments_add_edit:
-    path:     /equipments/addEdit
-    defaults: { _controller: SpacebitAdminBundle:Default:addEditEquipment}
+    path:     /equipment/addEdit
+    defaults: { _controller: SpacebitAdminBundle:Equipment:addEdit }
     methods:  ['POST']
 
 
 spacebit_admin_equipment_accept_request:
-    path:     /equipments/changeRequest
-    defaults: { _controller: SpacebitAdminBundle:Default:handleEquipmentRequest}
+    path:     /equipment/changeRequest
+    defaults: { _controller: SpacebitAdminBundle:Equipment:changeRequestStatus }
     methods:  ['POST']
-
-
 
 
 
 spacebit_admin_venues:
     path:     /venues
-    defaults: { _controller: SpacebitAdminBundle:Default:venues}
+    defaults: { _controller: SpacebitAdminBundle:Venues:venues }
 
 
 
 spacebit_admin_vehicles:
     path:     /vehicles
-    defaults: { _controller: SpacebitAdminBundle:Default:vehicles}
+    defaults: { _controller: SpacebitAdminBundle:Vehicles:vehicles }
 
 spacebit_admin_vehicles_get_all:
     path:     /vehicles/getAll
-    defaults: { _controller: SpacebitAdminBundle:Default:getAllVehicles}
+    defaults: { _controller: SpacebitAdminBundle:Vehicles:getAll }
 
 spacebit_admin_vehicles_get_by_plate_no:
     path:     /vehicles/getByPlateNo
-    defaults: { _controller: SpacebitAdminBundle:Default:getVehicleByPlateNo}
+    defaults: { _controller: SpacebitAdminBundle:Vehicles:getByPlateNo }
     methods:  ['POST']
 
 spacebit_admin_vehicles_add_edit:
     path:     /vehicles/addEdit
-    defaults: { _controller: SpacebitAdminBundle:Default:addEditVehicle}
+    defaults: { _controller: SpacebitAdminBundle:Vehicles:addEdit }
     methods:  ['POST']
 
 spacebit_admin_vehicles_accept_request:
     path:     /vehicles/changeRequest
-    defaults: { _controller: SpacebitAdminBundle:Default:ch}
+    defaults: { _controller: SpacebitAdminBundle:Vehicles:changeRequestStatus }
     methods:  ['POST']

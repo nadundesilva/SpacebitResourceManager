@@ -1,12 +1,12 @@
 <?php
 
-namespace Spacebit\VehiclesBundle\Controller;
+namespace Spacebit\ResourcesBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use \Symfony\Component\HttpFoundation\Response;
 use \Symfony\Component\HttpFoundation\Request;
 
-class DefaultController extends Controller
+class VehiclesController extends Controller
 {
     public function vehiclesAction()
     {
@@ -15,12 +15,12 @@ class DefaultController extends Controller
         $stmt->execute();
         $vehicle_categories = $stmt->fetchAll();
 
-        return $this->render('SpacebitVehiclesBundle:Default:vehicles.html.twig', array(
+        return $this->render('SpacebitResourcesBundle:Default:vehicles.html.twig', array(
             'vehicles_categories'=>$vehicle_categories,
         ));
     }
 
-    public function getVehiclesByCategoryAction()
+    public function getByCategoryAction()
     {
         $request = Request::createFromGlobals();
         $category = $request->request->get('category');

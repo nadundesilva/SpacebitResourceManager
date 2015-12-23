@@ -20,7 +20,6 @@ class AppKernel extends Kernel
             new Spacebit\UserBundle\SpacebitUserBundle(),
             new Spacebit\AdminBundle\SpacebitAdminBundle(),
             new Spacebit\ResourcesBundle\SpacebitResourcesBundle(),
-            new Spacebit\VehiclesBundle\SpacebitVehiclesBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

@@ -38,7 +38,7 @@ function loadVehiclesByCategory(category) {
             }
         }
 
-        obj.open("POST", "./getVehicleByCategory", true);
+        obj.open("POST", "./vehicles/getByCategory", true);
         obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         obj.send("category=" + category);
     }
@@ -76,7 +76,7 @@ function addRequest() {
             }
         }
 
-        obj.open("POST", "./addRequest", true);
+        obj.open("POST", "./vehicles/addRequest", true);
         obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         var date = document.forms["request-form"]["request-date"].value;
         var time = document.forms["request-form"]["request-time"].value;
