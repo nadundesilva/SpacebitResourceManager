@@ -113,7 +113,7 @@
                             {% if page.sub_menu is defined %}
                                 <ul id="{{ page.name }}" class="{% if active.link is defined and active.link == page.name %}dropdown{% else %}collapse{% endif %}" data-target="#{{ page.name }}">
                                 {% for sub_page in page.sub_menu %}
-                                    <li>
+                                    <li{% if active.sub_link is defined and active.sub_link == sub_page.name %} class="active"{% endif %}>
                                         {% set link = link_to_home ~ sub_page.link %}
                                         <a href="{{ link }}">{{ sub_page.name }}</a>
                                     </li>

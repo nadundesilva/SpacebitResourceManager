@@ -8,6 +8,10 @@ a:hover {
     color: #5b39ff;
 }
 
+div.collapse.navbar-collapse.navbar-ex1-collapse > ul.nav.navbar-nav.side-nav > li > ul.dropdown > li.active {
+    background-color: #000001;
+}
+
 @keyframes body-in {
     0%   {opacity: 0.0; transform: translate(-25%, 0);}
     100% {opacity: 1.0;}
