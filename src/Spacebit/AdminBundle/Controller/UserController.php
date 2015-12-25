@@ -8,6 +8,18 @@ use \Symfony\Component\HttpFoundation\Request;
 
 class UserController extends Controller
 {
+    function usersAction()
+    {
+        $conn = $this->get('database_connection');
+        $stmt = $conn->prepare('SELECT * FROM user;');
+        $stmt->execute();
+        $users = $stmt->fetchAll();
+
+        return $this->render('SpacebitAdminBundle:Default:users.html.twig', array(
+            'users'=>$users,
+        ));
+    }
+
     function getDetailsAction()
     {
         $request = Request::createFromGlobals();

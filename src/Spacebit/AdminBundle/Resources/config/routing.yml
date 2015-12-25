@@ -4,8 +4,12 @@ spacebit_admin_home:
 
 
 
-spacebit_admin_get_user:
-    path:     /user/getByID
+spacebit_admin_user:
+    path:     /users
+    defaults: { _controller: SpacebitAdminBundle:User:users }
+
+spacebit_admin_user_getByID:
+    path:     /users/getByID
     defaults: { _controller: SpacebitAdminBundle:User:getDetails }
     methods:  ['POST']
 

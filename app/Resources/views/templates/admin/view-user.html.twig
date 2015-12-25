@@ -54,7 +54,7 @@
                 }
             }
 
-            obj.open("POST", "./user/getByID", true);
+            obj.open("POST", "./users/getByID", true);
             obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             obj.send('user-id=' + userID);
         }
