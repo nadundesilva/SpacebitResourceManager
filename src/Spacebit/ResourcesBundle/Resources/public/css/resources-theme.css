@@ -1,6 +1,6 @@
 @keyframes img-portfolio-in {
     0%   {transform: scale(0.5, 0.5); opacity: 0.0;}
-    50%   {transform: scale(0.5, 0.5); opacity: 0.0;}
+    66%   {transform: scale(0.5, 0.5); opacity: 0.0;}
     100% {transform: scale(1, 1); opacity: 1.0;}
 }
 
@@ -20,11 +20,12 @@
 
 @keyframes button-h2-in {
     0%   {opacity: 0.0;}
+    66%  {opacity: 0.0;}
     100% {opacity: 1.0;}
 }
 
 #request-button, .text-label {
     animation-name: button-h2-in;
-    animation-duration: 1s;
+    animation-duration: 2s;
     animation-timing-function: ease-out;
 }

@@ -85,7 +85,7 @@ function showEditVehicleModal(plateNo) {
                 document.forms['vehicle-add-form']['driver-last-name'].value = vehicle.driver_last_name;
 
                 document.getElementById('addEditVehicleTitle').innerHTML = 'Edit Vehicle';
-                document.forms['vehicle-add-form']['submit-button'].innerHTML = '<span class="glyphicon glyphicon-pencil"></span> Edit';
+                document.forms['vehicle-add-form']['submit-button'].innerHTML = '<span class="glyphicon glyphicon-ok"></span> OK';
                 $('#manageVehiclesModal').modal('hide');
                 $('#addEditVehicleModal').modal();
             }
@@ -95,10 +95,6 @@ function showEditVehicleModal(plateNo) {
         obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         obj.send('plate-no=' + plateNo);
     }
-}
-
-function changeRequest(requestId) {
-    $('#editVehiclesModal').modal();
 }
 
 function addEditVehicle() {
@@ -144,5 +140,77 @@ function addEditVehicle() {
         obj.open("POST", "./vehicles/addEdit", true);
         obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         obj.send("plate-no=" + plateNo + '&type=' + type + '&model=' + model + '&capacity=' + capacity + '&driver-first-name=' + driverFirstName + '&driver-last-name=' + driverLastName + '&availability=' + availability + '&value=' + value + '&update-type=' + updateType);
+    }
+}
+
+function showEditVehicleRequestModal(address) {
+    document.getElementById('location-name').innerHTML = address;
+    viewLocation(address);
+    $('#editVehicleRequestModal').modal();
+}
+
+function changeVehicleRequest() {
+
+}
+
+var mapCanvas;
+var map;
+function initialize() {
+    mapCanvas = document.getElementById("google-map");
+    var mapOptions = {
+        center:new google.maps.LatLng(10, 78),
+        zoom:7,
+        mapTypeId:google.maps.MapTypeId.ROADMAP
+    };
+    var map = new google.maps.Map(mapCanvas, mapOptions);
+
+    $("#editVehicleRequestModal").on('shown.bs.modal', function(){
+        google.maps.event.trigger(map, 'resize')
+    });
+}
+google.maps.event.addDomListener(window, 'load', initialize);
+
+function viewLocation(address) {
+    var obj;
+
+    if (window.XMLHttpRequest) {
+        obj = new XMLHttpRequest();
+    } else if (window.ActiveXObject) {
+        obj = new ActiveXObject("Microsoft.XMLHTTP");
+    } else {
+        alert("Browser Doesn't Support AJAX!");
+    }
+
+    if (obj !== null) {
+        obj.onreadystatechange = function () {
+            if (obj.readyState < 4) {
+                // progress
+            } else if (obj.readyState === 4) {
+                var res = obj.responseText;
+                var result = JSON.parse(res);
+                if(result.status == 'OK') {
+                    var longitude = result.results[0].geometry.location.lng;
+                    var latitude = result.results[0].geometry.location.lat;
+
+                    var mapOptions = {
+                        center: new google.maps.LatLng(latitude, longitude),
+                        zoom: 10,
+                        mapTypeId: google.maps.MapTypeId.ROADMAP
+                    }
+                    var map = new google.maps.Map(mapCanvas, mapOptions);
+
+                    var iconBase = 'https://maps.google.com/mapfiles/kml/paddle/';
+                    var marker = new google.maps.Marker({
+                        position: new google.maps.LatLng(latitude, longitude),
+                        map: map,
+                        icon: iconBase + 'red-circle.png'
+                    });
+                }
+            }
+        }
+
+        obj.open("GET", "https://maps.googleapis.com/maps/api/geocode/json?address=" + address, true);
+        obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        obj.send();
     }
 }

@@ -33,7 +33,6 @@ spacebit_admin_equipments_add_edit:
     defaults: { _controller: SpacebitAdminBundle:Equipment:addEdit }
     methods:  ['POST']
 
-
 spacebit_admin_equipment_accept_request:
     path:     /equipment/changeRequest
     defaults: { _controller: SpacebitAdminBundle:Equipment:changeRequestStatus }
@@ -65,7 +64,12 @@ spacebit_admin_vehicles_add_edit:
     defaults: { _controller: SpacebitAdminBundle:Vehicles:addEdit }
     methods:  ['POST']
 
-spacebit_admin_vehicles_accept_request:
-    path:     /vehicles/changeRequest
+spacebit_admin_vehicles_request_get_by_id:
+    path:     /vehicles/request/getByID
+    defaults: { _controller: SpacebitAdminBundle:Vehicles:getRequestByID }
+    methods:  ['POST']
+
+spacebit_admin_vehicles_request_change:
+    path:     /vehicles/request/change
     defaults: { _controller: SpacebitAdminBundle:Vehicles:changeRequestStatus }
     methods:  ['POST']

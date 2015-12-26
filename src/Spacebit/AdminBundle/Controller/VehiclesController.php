@@ -97,6 +97,23 @@ class VehiclesController extends Controller
         return new Response($response);
     }
 
+    function getRequestByIDAction()
+    {
+        $request = Request::createFromGlobals();
+        $request_id = $request->request->get('request-id');
+
+        $conn = $this->get('database_connection');
+        $stmt = $conn->prepare('SELECT * FROM vehicle_request WHERE request_id = :request_id;');
+        $stmt->bindValue(':request_id', $request_id);
+        $stmt->execute();
+        $result = $stmt->fetch();
+
+        $response = new Response(json_encode(array('result' => $result)));
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
+    }
+
     function changeRequestStatusAction()
     {
         $request = Request::createFromGlobals();

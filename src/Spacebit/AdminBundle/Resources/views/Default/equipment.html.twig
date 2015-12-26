@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% set link_to_home = '../' %}
-{% set active = {link:'Admin', sub_link:'Manage Resources'} %}
+{% set active = {link:'Admin', sub_link:'Manage Equipment'} %}
 
 {% block title %}Manage Equipment{% endblock %}
 
@@ -11,7 +11,7 @@
 
 {% block body %}
     <div style="margin: 10px;">
-        <button class="btn btn-sm btn-primary" onclick="showManageEquipmentModal();"><span class="glyphicon glyphicon-edit"></span> Manage Equipments</button>
+        <button class="btn btn-sm btn-primary" onclick="showManageEquipmentModal();"><span class="glyphicon glyphicon-edit"></span> Manage Equipment</button>
     </div>
 
     <h2 style="text-align: center; padding-bottom: 10px">Equipment Requests</h2>
@@ -39,7 +39,7 @@
                 {% if "now"|date('Y-m-d') > equipment_request.date_from|date('Y-m-d') %}
                     <th><button class="btn btn-xs btn-default" disabled>Past Request</button></th>
                 {% else %}
-                    <th><button class="btn btn-xs btn-primary" onclick="changeRequest('{{ equipment_request.request_id }}');"><span class="glyphicon glyphicon-edit"></span> Edit Status</button></th>
+                    <th><button class="btn btn-xs btn-primary" onclick="changeRequest('{{ equipment_request.request_id }}');"><span class="glyphicon glyphicon-edit"></span> Edit</button></th>
                 {% endif %}
             </tr>
         {% endfor %}

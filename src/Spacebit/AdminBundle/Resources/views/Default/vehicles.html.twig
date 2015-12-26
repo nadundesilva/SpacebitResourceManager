@@ -6,6 +6,7 @@
 {% block title %}Manage Vehicles{% endblock %}
 
 {% block javascripts %}
+    <script src="http://maps.googleapis.com/maps/api/js"></script>
     <script src="{{ asset('bundles/spacebitadmin/js/admin-vehicles.js') }}"></script>
 {% endblock %}
 
@@ -39,7 +40,7 @@
                 {% if "now"|date('Y-m-d') > vehicle_request.date|date('Y-m-d') %}
                     <th><button class="btn btn-xs btn-default" disabled>Past Request</button></th>
                 {% else %}
-                    <th><button class="btn btn-xs btn-primary" onclick="changeRequest('{{ vehicle_request.request_id }}');"><span class="glyphicon glyphicon-edit"></span> Edit Status</button></th>
+                    <th><button class="btn btn-xs btn-primary" onclick="showEditVehicleRequestModal('{{ vehicle_request.requested_town }}');"><span class="glyphicon glyphicon-edit"></span> Edit</button></th>
                 {% endif %}
             </tr>
         {% endfor %}
@@ -69,12 +70,22 @@
         </div>
     </div>
 
-    <div id="editVehiclesModal" class="modal fade" role="dialog">
+    <div id="editVehicleRequestModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div style="margin: 20px;">
                     <h3 style="text-align: center;">Edit Vehicle Request</h3>
+                    <form id="request-status-form" role="form" method="POST" name="request-status-form" onsubmit="changeVehicleRequest(); return false;">
 
+
+                        <div class="form-group">
+                            <label><span id="location-name"></span> :</label>
+                            <div class="container" style="padding: 25px">
+                                <div id="google-map" class="container col-sm-5" style="width: 500px; height: 400px; background-color: #CCC;"></div>
+                            </div>
+                        </div>
+                        <button type="submit" id="submit-button" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-ok"></span> OK</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -90,41 +101,41 @@
                         <div class="row">
                             <div class="form-group col-lg-6">
                                 <label for="plate-no">Plate No :</label>
-                                <input type="text" id="plate-no" class="form-control" name = "plate-no" placeholder="Enter Plate No" required />
+                                <input type="text" id="plate-no" class="form-control" name="plate-no" placeholder="Enter Plate No" required />
                             </div>
                             <div class="form-group col-lg-6">
                                 <label for="type">Vehicle Category :</label>
-                                <input type="text" id="type" class="form-control" name = "type"  placeholder="Enter the Vehicle Category" required />
+                                <input type="text" id="type" class="form-control" name="type"  placeholder="Enter the Vehicle Category" required />
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="model">Vehicle Model :</label>
-                            <input type="text" id="model" class="form-control" name = "model" placeholder="Enter Model of the Vehicle" required />
+                            <input type="text" id="model" class="form-control" name="model" placeholder="Enter Model of the Vehicle" required />
                         </div>
                         <div class="row">
                             <div class="form-group col-lg-6">
                                 <label for="capacity">Capacity of the Vehicle :</label>
-                                <input type="number" id="capacity" class="form-control" id="capacity" name = "capacity" placeholder="Enter the Capacity of the Vehicle" required />
+                                <input type="number" id="capacity" class="form-control" name="capacity" placeholder="Enter the Capacity of the Vehicle" required />
                             </div>
                             <div class="form-group col-lg-6">
                                 <label for="value">Appraised Value :</label>
-                                <input type="numeric" class="form-control" id="value" name = "value" placeholder="Enter the Value of the vehicle" />
+                                <input type="numeric" id="value" class="form-control" name="value" placeholder="Enter the Value of the vehicle" />
                             </div>
                         </div>
                         <div class="form-group">
-                            <label><input type="checkbox" id="availability" name = "availability">Vehicle is Available</label>
+                            <label><input type="checkbox" id="availability" name="availability">Vehicle is Available</label>
                         </div>
                         <div class="row">
                             <div class="form-group col-lg-6">
                                 <label for="driver-first-name">Driver's First Name :</label>
-                                <input type="text" id="driver-first-name" class="form-control" name = "driver-first-name" placeholder="Enter the First Name of the designated Driver" required />
+                                <input type="text" id="driver-first-name" class="form-control" name="driver-first-name" placeholder="Enter the First Name of the designated Driver" required />
                             </div>
                             <div class="form-group col-lg-6">
                                 <label for="driver-last-name">Driver's Last Name :</label>
-                                <input type="text" id="driver-last-name" class="form-control" name = "driver-last-name" placeholder="Enter the Last name of the designated Driver" required />
+                                <input type="text" id="driver-last-name" class="form-control" name="driver-last-name" placeholder="Enter the Last name of the designated Driver" required />
                             </div>
                         </div>
-                        <button id="submit-button" type="submit" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-plus"></span> Add</button>
+                        <button type="submit" id="submit-button" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-plus"></span> Add</button>
                     </form>
                 </div>
             </div>

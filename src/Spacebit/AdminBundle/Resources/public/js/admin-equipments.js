@@ -83,7 +83,7 @@ function showEditEquipmentModal(resource_id) {
                 document.forms['equipment-add-form']['description'].checked = equipment.description;
 
                 document.getElementById('addEditEquipmentTitle').innerHTML = 'Edit Equipment';
-                document.forms['equipment-add-form']['submit-button'].innerHTML = '<span class="glyphicon glyphicon-pencil"></span> Edit';
+                document.forms['equipment-add-form']['submit-button'].innerHTML = '<span class="glyphicon glyphicon-ok"></span> OK';
                 $('#manageEquipmentsModal').modal('hide');
                 $('#addEditEquipmentModal').modal();
             }
