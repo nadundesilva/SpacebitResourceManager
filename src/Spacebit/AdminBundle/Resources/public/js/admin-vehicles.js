@@ -159,7 +159,8 @@ function showEditVehicleRequestModal(requestID, requester, requestedDate, reques
                 // progress
             } else if (obj.readyState === 4) {
                 var res = obj.responseText;
-                var routeGroups = JSON.parse(res).result;
+                var vehicles = JSON.parse(res).vehicles;
+                var routeGroups = JSON.parse(res).group_names;
 
                 document.forms['request-status-form']['request-id'].value = requestID;
                 document.forms['request-status-form']['requester'].value = requester;
@@ -170,7 +171,7 @@ function showEditVehicleRequestModal(requestID, requester, requestedDate, reques
                 document.forms['request-status-form']['requested-destination'].value = requestedDestination;
                 document.getElementById('requested-destination-view-location').setAttribute("onClick", "javascript: viewLocation('" + requestedDestination + "');");
 
-                if (routeGroups != false) {
+                if (routeGroups.length > 0) {
                     var options = '';
                     for (var i = 0; i < routeGroups.length; i++) {
                         options += '<option>' + routeGroups[i].group_id + '</option>';
@@ -188,6 +189,22 @@ function showEditVehicleRequestModal(requestID, requester, requestedDate, reques
                     document.getElementById('existing-route-selection-division').style.display = "none";
                     document.getElementById('new-route-division').style.display = "block";
                 }
+                if (vehicles.length > 0) {
+                    var options = '';
+                    for (var i = 0; i < vehicles.length; i++) {
+                        options += '<option>' + vehicles[i].plate_no + '</option>';
+                    }
+                    document.getElementById('route-selection-radio-button-container').style.display = "block";
+                    document.getElementById('new-route-vehicle-plate-no').innerHTML = options;
+                    document.getElementById('no-vehicles-message').style.display = "none";
+                    document.forms['request-status-form']['vehicle-request-submit-button'].disabled = false;
+                } else {
+                    document.getElementById('route-selection-radio-button-container').style.display = "none";
+                    document.getElementById('existing-route-selection-division').style.display = "none";
+                    document.getElementById('new-route-division').style.display = "none";
+                    document.getElementById('no-vehicles-message').style.display = "block";
+                    document.forms['request-status-form']['vehicle-request-submit-button'].disabled = true;
+                }
 
                 viewLocation(requestedDestination);
 
@@ -195,7 +212,7 @@ function showEditVehicleRequestModal(requestID, requester, requestedDate, reques
             }
         }
 
-        obj.open("POST", "./vehicles/requests/getAllGroupNames", true);
+        obj.open("POST", "./vehicles/requests/getAllGroupNamesAndVehicles", true);
         obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         obj.send("requested-type=" + requestedVehicleType + '&requested-date=' + requestedDate);
     }
@@ -255,7 +272,29 @@ function updateRouteTable() {
 }
 
 function changeVehicleRequest() {
+    var obj;
 
+    if (window.XMLHttpRequest) {
+        obj = new XMLHttpRequest();
+    } else if (window.ActiveXObject) {
+        obj = new ActiveXObject("Microsoft.XMLHTTP");
+    } else {
+        alert("Browser Doesn't Support AJAX!");
+    }
+    if (obj !== null) {
+        obj.onreadystatechange = function () {
+            if (obj.readyState < 4) {
+                // progress
+            } else if (obj.readyState === 4) {
+                var res = obj.responseText;
+
+            }
+        }
+
+        obj.open("POST", "./vehicles/requests/getRouteByGroupID", true);
+        obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        obj.send('group-id=' + document.forms['request-status-form']["route-group-id"].value);
+    }
 }
 
 var mapCanvas;

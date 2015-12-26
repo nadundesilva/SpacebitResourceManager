@@ -65,8 +65,8 @@ spacebit_admin_vehicles_add_edit:
     methods:  ['POST']
 
 spacebit_admin_vehicles_request_get_all_group_names:
-    path:     /vehicles/requests/getAllGroupNames
-    defaults: { _controller: SpacebitAdminBundle:Vehicles:getAllGroupNames }
+    path:     /vehicles/requests/getAllGroupNamesAndVehicles
+    defaults: { _controller: SpacebitAdminBundle:Vehicles:getAllGroupNamesAndVehicles }
     methods:  ['POST']
 
 spacebit_admin_vehicles_request_get_route:

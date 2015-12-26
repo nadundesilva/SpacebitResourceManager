@@ -97,20 +97,29 @@ class VehiclesController extends Controller
         return new Response($response);
     }
 
-    function getAllGroupNamesAction()
+    function getAllGroupNamesAndVehiclesAction()
     {
         $request = Request::createFromGlobals();
         $requested_type = $request->request->get('requested-type');
         $date = $request->request->get('requested-date');
 
         $conn = $this->get('database_connection');
+
         $stmt = $conn->prepare('SELECT group_id FROM (route INNER JOIN vehicle ON plate_no = vehicle_plate_no) INNER JOIN vehicle_request ON group_id = route_group_id WHERE type = :requested_type and date = :date;');
         $stmt->bindValue(':requested_type', $requested_type);
         $stmt->bindValue(':date', $date);
         $stmt->execute();
-        $result = $stmt->fetchAll();
+        $group_names = $stmt->fetchAll();
 
-        $response = new Response(json_encode(array('result' => $result)));
+        $stmt = $conn->prepare('SELECT plate_no FROM vehicle WHERE type = :requested_type;');
+        $stmt->bindValue(':requested_type', $requested_type);
+        $stmt->execute();
+        $vehicles = $stmt->fetchAll();
+
+        $response = new Response(json_encode(array(
+            'group_names' => $group_names,
+            'vehicles' => $vehicles
+        )));
         $response->headers->set('Content-Type', 'application/json');
 
         return $response;
