@@ -64,12 +64,17 @@ spacebit_admin_vehicles_add_edit:
     defaults: { _controller: SpacebitAdminBundle:Vehicles:addEdit }
     methods:  ['POST']
 
-spacebit_admin_vehicles_request_get_by_id:
-    path:     /vehicles/request/getByID
-    defaults: { _controller: SpacebitAdminBundle:Vehicles:getRequestByID }
+spacebit_admin_vehicles_request_get_all_group_names:
+    path:     /vehicles/requests/getAllGroupNames
+    defaults: { _controller: SpacebitAdminBundle:Vehicles:getAllGroupNames }
+    methods:  ['POST']
+
+spacebit_admin_vehicles_request_get_route:
+    path:     /vehicles/requests/getRouteByGroupID
+    defaults: { _controller: SpacebitAdminBundle:Vehicles:getRouteByGroupID }
     methods:  ['POST']
 
 spacebit_admin_vehicles_request_change:
-    path:     /vehicles/request/change
+    path:     /vehicles/requests/change
     defaults: { _controller: SpacebitAdminBundle:Vehicles:changeRequestStatus }
     methods:  ['POST']

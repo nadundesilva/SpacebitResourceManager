@@ -143,10 +143,115 @@ function addEditVehicle() {
     }
 }
 
-function showEditVehicleRequestModal(address) {
-    document.getElementById('location-name').innerHTML = address;
-    viewLocation(address);
-    $('#editVehicleRequestModal').modal();
+function showEditVehicleRequestModal(requestID, requester, requestedDate, requestedTime, noOfPassengers, requestedVehicleType, requestedDestination) {
+    var obj;
+
+    if (window.XMLHttpRequest) {
+        obj = new XMLHttpRequest();
+    } else if (window.ActiveXObject) {
+        obj = new ActiveXObject("Microsoft.XMLHTTP");
+    } else {
+        alert("Browser Doesn't Support AJAX!");
+    }
+    if (obj !== null) {
+        obj.onreadystatechange = function () {
+            if (obj.readyState < 4) {
+                // progress
+            } else if (obj.readyState === 4) {
+                var res = obj.responseText;
+                var routeGroups = JSON.parse(res).result;
+
+                document.forms['request-status-form']['request-id'].value = requestID;
+                document.forms['request-status-form']['requester'].value = requester;
+                document.forms['request-status-form']['requested-date'].value = requestedDate;
+                document.forms['request-status-form']['requested-time'].value = requestedTime;
+                document.forms['request-status-form']['no-of-passengers'].value = noOfPassengers;
+                document.forms['request-status-form']['vehicle-type'].value = requestedVehicleType;
+                document.forms['request-status-form']['requested-destination'].value = requestedDestination;
+                document.getElementById('requested-destination-view-location').setAttribute("onClick", "javascript: viewLocation('" + requestedDestination + "');");
+
+                if (routeGroups != false) {
+                    var options = '';
+                    for (var i = 0; i < routeGroups.length; i++) {
+                        options += '<option>' + routeGroups[i].group_id + '</option>';
+                    }
+                    document.getElementById('route-group-id').innerHTML = options;
+
+                    updateRouteTable();
+                    document.forms['request-status-form']['route-assign-method'].value = 'existing';
+                    document.getElementById('existing-route-selection').style.display = "block";
+                    document.getElementById('existing-route-selection-division').style.display = "block";
+                    document.getElementById('new-route-division').style.display = "none";
+                } else {
+                    document.forms['request-status-form']['route-assign-method'].value = 'new';
+                    document.getElementById('existing-route-selection').style.display = "none";
+                    document.getElementById('existing-route-selection-division').style.display = "none";
+                    document.getElementById('new-route-division').style.display = "block";
+                }
+
+                viewLocation(requestedDestination);
+
+                $('#editVehicleRequestModal').modal();
+            }
+        }
+
+        obj.open("POST", "./vehicles/requests/getAllGroupNames", true);
+        obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        obj.send("requested-type=" + requestedVehicleType + '&requested-date=' + requestedDate);
+    }
+}
+
+function routeSelectionMethodOnClick() {
+    var elem = document.forms['request-status-form']["route-assign-method"];
+    if(elem.value == "new") {
+        document.getElementById('existing-route-selection-division').style.display = "none";
+        document.getElementById('new-route-division').style.display = "block";
+    }
+    if(elem.value == "existing") {
+        document.getElementById('existing-route-selection-division').style.display = "block";
+        document.getElementById('new-route-division').style.display = "none";
+    }
+}
+
+function updateRouteTable() {
+    document.getElementById('locations-table').innerHTML = '';
+    var obj;
+
+    if (window.XMLHttpRequest) {
+        obj = new XMLHttpRequest();
+    } else if (window.ActiveXObject) {
+        obj = new ActiveXObject("Microsoft.XMLHTTP");
+    } else {
+        alert("Browser Doesn't Support AJAX!");
+    }
+    if (obj !== null) {
+        obj.onreadystatechange = function () {
+            if (obj.readyState < 4) {
+                // progress
+            } else if (obj.readyState === 4) {
+                var res = obj.responseText;
+                var route = JSON.parse(res).result;
+
+                if (route != false) {
+                    var tableContent = '<tr><th>Town</th><th>Time</th><th></th></tr>';
+                    for (var i = 0; i < route.length; i++) {
+                        tableContent += '<tr>';
+                        tableContent += '<td>' + route[i].requested_town + '</td>';
+                        tableContent += '<td>' + route[i].time + '</td>';
+                        tableContent += '<td><button class="btn btn-xs btn-info" onclick=\'viewLocation("' + route[i].requested_town + '");\'><span class="glyphicon glyphicon-globe"></span> View in map</button></td>';
+                        tableContent += '</tr>';
+                    }
+                    document.getElementById('locations-table').innerHTML = tableContent;
+                } else {
+                    document.getElementById('locations-table').innerHTML = '';
+                }
+            }
+        }
+
+        obj.open("POST", "./vehicles/requests/getRouteByGroupID", true);
+        obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        obj.send('group-id=' + document.forms['request-status-form']["route-group-id"].value);
+    }
 }
 
 function changeVehicleRequest() {
@@ -191,6 +296,8 @@ function viewLocation(address) {
                 if(result.status == 'OK') {
                     var longitude = result.results[0].geometry.location.lng;
                     var latitude = result.results[0].geometry.location.lat;
+
+                    document.getElementById('location-name').innerHTML = address;
 
                     var mapOptions = {
                         center: new google.maps.LatLng(latitude, longitude),

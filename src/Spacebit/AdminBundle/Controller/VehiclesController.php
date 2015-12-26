@@ -97,16 +97,35 @@ class VehiclesController extends Controller
         return new Response($response);
     }
 
-    function getRequestByIDAction()
+    function getAllGroupNamesAction()
     {
         $request = Request::createFromGlobals();
-        $request_id = $request->request->get('request-id');
+        $requested_type = $request->request->get('requested-type');
+        $date = $request->request->get('requested-date');
 
         $conn = $this->get('database_connection');
-        $stmt = $conn->prepare('SELECT * FROM vehicle_request WHERE request_id = :request_id;');
-        $stmt->bindValue(':request_id', $request_id);
+        $stmt = $conn->prepare('SELECT group_id FROM (route INNER JOIN vehicle ON plate_no = vehicle_plate_no) INNER JOIN vehicle_request ON group_id = route_group_id WHERE type = :requested_type and date = :date;');
+        $stmt->bindValue(':requested_type', $requested_type);
+        $stmt->bindValue(':date', $date);
         $stmt->execute();
-        $result = $stmt->fetch();
+        $result = $stmt->fetchAll();
+
+        $response = new Response(json_encode(array('result' => $result)));
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
+    }
+
+    function getRouteByGroupIDAction()
+    {
+        $request = Request::createFromGlobals();
+        $group_id = $request->request->get('group-id');
+
+        $conn = $this->get('database_connection');
+        $stmt = $conn->prepare('SELECT requested_town, time FROM vehicle_request WHERE route_group_id = :group_id;');
+        $stmt->bindValue(':group_id', $group_id);
+        $stmt->execute();
+        $result = $stmt->fetchAll();
 
         $response = new Response(json_encode(array('result' => $result)));
         $response->headers->set('Content-Type', 'application/json');
@@ -122,8 +141,8 @@ class VehiclesController extends Controller
 
 
         $conn = $this->get('database_connection');
-        $stmt = $conn->prepare('SELECT * FROM vehicle WHERE plate_no = :plateNo;');
-        $stmt->bindValue(':plateNo', $plate_no);
+        $stmt = $conn->prepare('SELECT * FROM vehicle WHERE plate_no = :plate_no;');
+        $stmt->bindValue(':plate_no', $plate_no);
 
         $response = 'success';
         if(!$stmt->execute()) {

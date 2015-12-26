@@ -5,6 +5,10 @@
 
 {% block title %}Manage Vehicles{% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('bundles/spacebitadmin/css/admin-vehicles.css') }}">
+{% endblock %}
+
 {% block javascripts %}
     <script src="http://maps.googleapis.com/maps/api/js"></script>
     <script src="{{ asset('bundles/spacebitadmin/js/admin-vehicles.js') }}"></script>
@@ -40,7 +44,7 @@
                 {% if "now"|date('Y-m-d') > vehicle_request.date|date('Y-m-d') %}
                     <th><button class="btn btn-xs btn-default" disabled>Past Request</button></th>
                 {% else %}
-                    <th><button class="btn btn-xs btn-primary" onclick="showEditVehicleRequestModal('{{ vehicle_request.requested_town }}');"><span class="glyphicon glyphicon-edit"></span> Edit</button></th>
+                    <th><button class="btn btn-xs btn-primary" onclick="showEditVehicleRequestModal('{{ vehicle_request.request_id }}', '{{ vehicle_request.user_id }}', '{{ vehicle_request.date }}', '{{ vehicle_request.time }}', '{{ vehicle_request.number_of_passengers }}', '{{ vehicle_request.requested_type }}', '{{ vehicle_request.requested_town }}');"><span class="glyphicon glyphicon-edit"></span> Edit</button></th>
                 {% endif %}
             </tr>
         {% endfor %}
@@ -76,7 +80,68 @@
                 <div style="margin: 20px;">
                     <h3 style="text-align: center;">Edit Vehicle Request</h3>
                     <form id="request-status-form" role="form" method="POST" name="request-status-form" onsubmit="changeVehicleRequest(); return false;">
+                        <div class="row">
+                            <div class="form-group col-lg-6">
+                                <label for="request-id">Request ID :</label>
+                                <input type="text" id="request-id" class="form-control" name="request-id" disabled />
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label for="requester">Requester :</label>
+                                <input type="text" id="requester" class="form-control" name="requester" disabled />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-6">
+                                <label for="requested-date">Requested Date :</label>
+                                <input type="text" id="requested-date" class="form-control" name="requested-date" disabled />
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label for="requested-time">Requested Time :</label>
+                                <input type="text" id="requested-time" class="form-control" name="requested-time" disabled />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-6">
+                                <label for="no-of-passengers">Number of Passengers :</label>
+                                <input type="text" id="no-of-passengers" class="form-control" name="no-of-passengers" disabled />
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label for="vehicle-type">Requested Vehicle Type :</label>
+                                <input type="text" id="vehicle-type" class="form-control" name="vehicle-type" disabled />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="requested-destination">Requested Destination :</label>
+                            <input type="text" id="requested-destination" class="form-control" name="requested-destination" disabled />
+                            <button id="requested-destination-view-location" class="btn btn-xs btn-info"><span class="glyphicon glyphicon-globe"></span> View Location</button>
+                        </div>
 
+                        <div class="form-group">
+                            <label for="accessLevel">Select the method of assigning a route :</label>
+                            <div id="new-route-selection" class="radio">
+                                <label><input type="radio" name="route-assign-method" onclick="routeSelectionMethodOnClick()" value="new">Create new route</label>
+                            </div>
+                            <div id="existing-route-selection" class="radio">
+                                <label><input type="radio" name="route-assign-method" onclick="routeSelectionMethodOnClick()" value="existing" checked >Select from existing routed</label>
+                            </div>
+                        </div>
+                        <div id="existing-route-selection-division">
+                            <div class="form-group">
+                                <label for="route-group-id">Select the Group ID you want to match up with :</label>
+                                <div>
+                                    <select id="route-group-id" name="route-group-id" class="form-control" onclick="updateRouteTable();" required></select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Towns in route :</label>
+                                <table id="locations-table" class="table table-hover" style="padding: 20px">
+
+                                </table>
+                            </div>
+                        </div>
+                        <div id="new-route-division">
+
+                        </div>
 
                         <div class="form-group">
                             <label><span id="location-name"></span> :</label>
