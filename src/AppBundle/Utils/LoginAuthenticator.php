@@ -2,55 +2,67 @@
 
 namespace AppBundle\Utils;
 
+use Doctrine\DBAL\Connection;
+use Symfony\Component\HttpFoundation\Session\Session;
+
 class LoginAuthenticator
 {
-    public function authenticateGuestLogin($session, $connection)
+    private $session;
+    private $connection;
+
+    public function __construct(Session $session, Connection $connection)
     {
-        return $this->authenticateUser(0, $session, $connection);
+        $this->session = $session;
+        $this->connection = $connection;
     }
 
-    public function authenticateStudentLogin($session, $connection)
+    public function authenticateGuestLogin()
     {
-        return $this->authenticateUser(1, $session, $connection);
+        return $this->authenticateUser(0);
     }
 
-    public function authenticateStaffLogin($session, $connection)
+    public function authenticateStudentLogin()
     {
-        return $this->authenticateUser(2, $session, $connection);
+        return $this->authenticateUser(1);
     }
 
-    public function authenticateLowLevelAdminLogin($session, $connection)
+    public function authenticateStaffLogin()
     {
-        return $this->authenticateUser(3, $session, $connection);
+        return $this->authenticateUser(2);
     }
 
-    public function authenticateMiddleLevelAdminLogin($session, $connection)
+    public function authenticateLowLevelAdminLogin()
     {
-        return $this->authenticateUser(4, $session, $connection);
+        return $this->authenticateUser(3);
     }
 
-    public function authenticateHighLevelAdminLogin($session, $connection)
+    public function authenticateMiddleLevelAdminLogin()
     {
-        return $this->authenticateUser(5, $session, $connection);
+        return $this->authenticateUser(4);
     }
 
-    private function authenticateUser($authenticated_access_level, $session, $connection)
+    public function authenticateHighLevelAdminLogin()
     {
-        $access_level = $session->get('access_level');
-        $user_id = $session->get('user_id');
+        return $this->authenticateUser(5);
+    }
+
+    private function authenticateUser($authenticated_access_level)
+    {
+        $access_level = $this->session->get('access_level');
+        $user_id = $this->session->get('user_id');
 
         if ($access_level >= $authenticated_access_level) {
-            $stmt = $connection->prepare('SELECT access_level FROM login INNER JOIN user USING(user_id) WHERE user_id = :user_id;');
+            $stmt = $this->connection->prepare('SELECT access_level FROM login INNER JOIN user USING(user_id) WHERE user_id = :user_id;');
             $stmt->bindValue(':user_id', $user_id);
             $stmt->execute();
 
             if ($access_level != $stmt->fetch()['access_level']) {
-                $session->invalidate();
+                $this->session->invalidate();
                 return false;
             }
 
         } else {
-            $session->invalidate();
+            $this->session->invalidate();
             return false;
         }
         return true;

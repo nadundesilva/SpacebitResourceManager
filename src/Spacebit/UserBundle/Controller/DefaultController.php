@@ -23,6 +23,11 @@ class DefaultController extends Controller
         return $this->render('SpacebitUserBundle:Default:signup.html.twig');
     }
 
+    public function logoutAction() {
+        $this->get('session')->invalidate();
+        return new Response('success');
+    }
+
     public function forgotPasswordAction()
     {
         return $this->render('SpacebitUserBundle:Default:forgot-password.html.twig');

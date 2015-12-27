@@ -10,6 +10,10 @@ spacebit_user_signup:
     path:     /signup
     defaults: { _controller: SpacebitUserBundle:Default:signup }
 
+spacebit_user_logout:
+    path:     /logout
+    defaults: { _controller: SpacebitUserBundle:Default:logout }
+
 spacebit_user_forgot_password:
     path:     /forgotPassword
     defaults: { _controller: SpacebitUserBundle:Default:forgotPassword }
