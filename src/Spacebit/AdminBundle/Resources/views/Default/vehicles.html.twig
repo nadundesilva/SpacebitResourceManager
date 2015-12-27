@@ -21,11 +21,17 @@
 
     <h2 style="text-align: center; padding-bottom: 10px">Vehicle Requests</h2>
     <table class="table table-hover" style="padding: 20px">
-        <tr><th>Request Id</th><th>Requester</th><th>Requested date</th><th>Requested Time</th><th>Number of Passengers</th><th>Requested Type of Vehicle</th><th>Requested Destination</th><th>Status</th><th></th></tr>
+        <tr><th>Request Id</th><th>Assigned Route</th><th>Requester</th><th>Requested date</th><th>Requested Time</th><th>Number of Passengers</th><th>Requested Type of Vehicle</th><th>Requested Destination</th><th>Status</th><th></th></tr>
         {% set request_status = ['Declined', 'Accepted', 'Pending'] %}
         {% for vehicle_request in vehicle_requests %}
             <tr>
                 <th>{{ vehicle_request.request_id }}</th>
+                {% if vehicle_request.route_group_id is empty %}
+                    {% set temp = 'Unassigned' %}
+                    <th>{{ temp }}</th>
+                {% else %}
+                    <th>{{ vehicle_request.route_group_id }}</th>
+                {% endif %}
                 <th>{{ vehicle_request.user_id }}<br><button class="btn btn-xs btn-info" onclick="showUserModal('{{ vehicle_request.user_id }}')"><span class="glyphicon glyphicon-modal-window"></span> View User</button></th>
                 <th>{{ vehicle_request.date }}</th>
                 <th>{{ vehicle_request.time }}</th>
@@ -44,7 +50,7 @@
                 {% if "now"|date('Y-m-d') > vehicle_request.date|date('Y-m-d') %}
                     <th><button class="btn btn-xs btn-default" disabled>Past Request</button></th>
                 {% else %}
-                    <th><button class="btn btn-xs btn-primary" onclick="showEditVehicleRequestModal('{{ vehicle_request.request_id }}', '{{ vehicle_request.user_id }}', '{{ vehicle_request.date }}', '{{ vehicle_request.time }}', '{{ vehicle_request.number_of_passengers }}', '{{ vehicle_request.requested_type }}', '{{ vehicle_request.requested_town }}');"><span class="glyphicon glyphicon-edit"></span> Edit</button></th>
+                    <th><button class="btn btn-xs btn-primary" onclick="showEditVehicleRequestModal('{{ vehicle_request.request_id }}', '{{ vehicle_request.route_group_id }}', '{{ vehicle_request.user_id }}', '{{ vehicle_request.date }}', '{{ vehicle_request.time }}', '{{ vehicle_request.number_of_passengers }}', '{{ vehicle_request.requested_type }}', '{{ vehicle_request.requested_town }}', '{{ request_status[vehicle_request.status] }}');"><span class="glyphicon glyphicon-edit"></span> Edit</button></th>
                 {% endif %}
             </tr>
         {% endfor %}
@@ -83,7 +89,7 @@
                         <div class="row">
                             <div class="form-group col-lg-6">
                                 <label for="request-id">Request ID :</label>
-                                <input type="text" id="request-id" class="form-control" name="request-id" disabled />
+                                <input type="number" id="request-id" class="form-control" name="request-id" disabled />
                             </div>
                             <div class="form-group col-lg-6">
                                 <label for="requester">Requester :</label>
@@ -93,17 +99,17 @@
                         <div class="row">
                             <div class="form-group col-lg-6">
                                 <label for="requested-date">Requested Date :</label>
-                                <input type="text" id="requested-date" class="form-control" name="requested-date" disabled />
+                                <input type="date" id="requested-date" class="form-control" name="requested-date" disabled />
                             </div>
                             <div class="form-group col-lg-6">
                                 <label for="requested-time">Requested Time :</label>
-                                <input type="text" id="requested-time" class="form-control" name="requested-time" disabled />
+                                <input type="time" id="requested-time" class="form-control" name="requested-time" disabled />
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-group col-lg-6">
                                 <label for="no-of-passengers">Number of Passengers :</label>
-                                <input type="text" id="no-of-passengers" class="form-control" name="no-of-passengers" disabled />
+                                <input type="number" id="no-of-passengers" class="form-control" name="no-of-passengers" disabled />
                             </div>
                             <div class="form-group col-lg-6">
                                 <label for="vehicle-type">Requested Vehicle Type :</label>
@@ -164,8 +170,9 @@
                             <label for="request-status">Select the status you want the request to change to :</label>
                             <div>
                                 <select id="request-status" name="request-status" class="form-control" required>
-                                    <option>Decline</option>
-                                    <option>Accept</option>
+                                    <option disabled>Pending</option>
+                                    <option>Declined</option>
+                                    <option>Accepted</option>
                                 </select>
                             </div>
                         </div>

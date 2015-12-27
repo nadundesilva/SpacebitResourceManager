@@ -129,7 +129,7 @@ function addEditVehicle() {
                 } else {
                     modalContent += 'An error occured in ' + (updateType == "Add" ? "adding" : "editing") + ' the vehicle with plate number ' + plateNo + '. Sorry for the inconvenience.</p><div style="text-align: center;"><button class="btn btn-sm btn-danger" onclick=\'$("#messageModal").modal("hide"); showManageVehiclesModal();\'><span class="glyphicon glyphicon-warning-sign"></span>';
                 }
-                modalContent += ' Ok</button><div></div>';
+                modalContent += ' Ok</button></div></div>';
                 document.getElementById('messageModalContent').innerHTML = modalContent;
 
                 $('#addEditVehicleModal').modal('hide');
@@ -143,7 +143,7 @@ function addEditVehicle() {
     }
 }
 
-function showEditVehicleRequestModal(requestID, requester, requestedDate, requestedTime, noOfPassengers, requestedVehicleType, requestedDestination) {
+function showEditVehicleRequestModal(requestID, routeGroupID, requester, requestedDate, requestedTime, noOfPassengers, requestedVehicleType, requestedDestination, status) {
     var obj;
 
     if (window.XMLHttpRequest) {
@@ -169,6 +169,8 @@ function showEditVehicleRequestModal(requestID, requester, requestedDate, reques
                 document.forms['request-status-form']['no-of-passengers'].value = noOfPassengers;
                 document.forms['request-status-form']['vehicle-type'].value = requestedVehicleType;
                 document.forms['request-status-form']['requested-destination'].value = requestedDestination;
+                document.forms['request-status-form']['route-group-id'].value = routeGroupID;
+                document.forms['request-status-form']['request-status'].value = status;
                 document.getElementById('requested-destination-view-location').setAttribute("onClick", "javascript: viewLocation('" + requestedDestination + "');");
 
                 if (routeGroups.length > 0) {
@@ -272,6 +274,11 @@ function updateRouteTable() {
 }
 
 function changeVehicleRequest() {
+    var status = document.forms['request-status-form']["request-status"].value;
+    if (status == 'Pending') { return; }
+    var requestID = document.forms['request-status-form']["request-id"].value;
+    var routeAssignMethod = document.forms['request-status-form']["route-assign-method"].value;
+
     var obj;
 
     if (window.XMLHttpRequest) {
@@ -288,12 +295,30 @@ function changeVehicleRequest() {
             } else if (obj.readyState === 4) {
                 var res = obj.responseText;
 
+                var modalContent = '<div style="margin: 10px;"><p>';
+                if (res == 'success') {
+                    modalContent += 'Vehicle request with request ID ' + requestID + ' was ' + status + ' successfully</p><button class="btn btn-sm btn-success" onclick=\'location.reload();\'><span class="glyphicon glyphicon-ok"></span>';
+                } else {
+                    modalContent += 'An error occured in ' + (status == "Accepted" ? "Accepting" : "Declining") + ' the vehicle request with request ID ' + requestID + '. Sorry for the inconvenience.</p><div style="text-align: center;"><button class="btn btn-sm btn-danger" onclick=\'location.reload();\'><span class="glyphicon glyphicon-warning-sign"></span>';
+                }
+                modalContent += ' Ok</button></div></div>';
+                document.getElementById('messageModalContent').innerHTML = modalContent;
+
+                $('#editVehicleRequestModal').modal('hide');
+                $('#messageModal').modal();
             }
         }
 
-        obj.open("POST", "./vehicles/requests/getRouteByGroupID", true);
+        var parameters = 'request-id=' + requestID + '&status=' + (status == 'Accepted' ? 1 : 0) + '&route-assign-method=' + routeAssignMethod;
+        if (routeAssignMethod == 'new') {
+            parameters += '&plate-no=' + document.forms['request-status-form']["new-route-vehicle-plate-no"].value;
+        } else {
+            parameters += '&group-id=' + document.forms['request-status-form']["route-group-id"].value;
+        }
+
+        obj.open("POST", "./vehicles/requests/change", true);
         obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        obj.send('group-id=' + document.forms['request-status-form']["route-group-id"].value);
+        obj.send(parameters);
     }
 }
 

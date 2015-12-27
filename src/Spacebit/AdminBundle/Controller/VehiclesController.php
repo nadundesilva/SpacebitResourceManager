@@ -2,6 +2,7 @@
 
 namespace Spacebit\AdminBundle\Controller;
 
+use Assetic\Exception\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use \Symfony\Component\HttpFoundation\Response;
 use \Symfony\Component\HttpFoundation\Request;
@@ -11,7 +12,7 @@ class VehiclesController extends Controller
     public function vehiclesAction()
     {
         $conn = $this->get('database_connection');
-        $stmt = $conn->prepare('SELECT request_id, user_id, date, time, number_of_passengers, requested_type, requested_town, status FROM vehicle_request ORDER BY status DESC, date DESC, time DESC;');
+        $stmt = $conn->prepare('SELECT request_id, route_group_id, user_id, date, time, number_of_passengers, requested_type, requested_town, status FROM vehicle_request ORDER BY status DESC, date DESC, time DESC;');
         $stmt->execute();
         $vehicle_requests = $stmt->fetchAll();
 
@@ -105,7 +106,7 @@ class VehiclesController extends Controller
 
         $conn = $this->get('database_connection');
 
-        $stmt = $conn->prepare('SELECT group_id FROM (route INNER JOIN vehicle ON plate_no = vehicle_plate_no) INNER JOIN vehicle_request ON group_id = route_group_id WHERE type = :requested_type and date = :date;');
+        $stmt = $conn->prepare('SELECT DISTINCT(group_id) FROM (route INNER JOIN vehicle ON plate_no = vehicle_plate_no) INNER JOIN vehicle_request ON group_id = route_group_id WHERE type = :requested_type and date = :date;');
         $stmt->bindValue(':requested_type', $requested_type);
         $stmt->bindValue(':date', $date);
         $stmt->execute();
@@ -146,17 +147,49 @@ class VehiclesController extends Controller
     {
         $request = Request::createFromGlobals();
         $request_id = $request->request->get('request-id');
-        $plate_no = $request->request->get('plate-no');
-
+        $status = $request->request->get('status');
+        $route_assign_method = $request->request->get('route-assign-method');
 
         $conn = $this->get('database_connection');
-        $stmt = $conn->prepare('SELECT * FROM vehicle WHERE plate_no = :plate_no;');
-        $stmt->bindValue(':plate_no', $plate_no);
+        $conn->beginTransaction();
 
         $response = 'success';
-        if(!$stmt->execute()) {
-            $response = $stmt->errorCode();
+        try {
+            if ($route_assign_method == 'new') {
+                $plate_no = $request->request->get('plate-no');
+
+                $stmt = $conn->prepare('INSERT INTO route(vehicle_plate_no) VALUES(:plate_no);');
+                $stmt->bindValue(':plate_no', $plate_no);
+                if (!$stmt->execute()) {
+                    throw new \Symfony\Component\Config\Definition\Exception\Exception();
+                }
+
+                $stmt = $conn->prepare('SELECT MAX(group_id) AS group_id FROM route;');
+                $stmt->bindValue(':plate_no', $plate_no);
+                if (!$stmt->execute()) {
+                    throw new \Symfony\Component\Config\Definition\Exception\Exception();
+                }
+                $group_id = $stmt->fetch()['group_id'];
+            } else {
+                $group_id = $request->request->get('group-id');
+            }
+
+            $stmt = $conn->prepare('UPDATE vehicle_request SET status = :status, route_group_id = :route_group_id WHERE request_id = :request_id;');
+            $stmt->bindValue(':status', $status);
+            $stmt->bindValue(':route_group_id', $group_id);
+            $stmt->bindValue(':request_id', $request_id);
+            if (!$stmt->execute()) {
+                throw new \Symfony\Component\Config\Definition\Exception\Exception();
+            }
+
+            $conn->commit();
+        } catch (Exception $e) {
+            $conn->rollBack();
+            $response = $e->getCode();
         }
+
+        $response = new Response($response);
+        $response->headers->set('Content-Type', 'application/json');
 
         return $response;
     }
