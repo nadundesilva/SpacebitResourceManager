@@ -24,17 +24,6 @@ div.collapse.navbar-collapse.navbar-ex1-collapse > ul.nav.navbar-nav.side-nav > 
     animation-timing-function: ease-out;
 }
 
-@keyframes nav-in {
-    0%   {opacity: 0.0;}
-    100% {opacity: 1.0;}
-}
-
-nav {
-    animation-name: nav-in;
-    animation-duration: 1s;
-    animation-timing-function: ease-out;
-}
-
 a {
     text-decoration: none;
     color: #3231ff;

@@ -8,6 +8,11 @@ imports:
 parameters:
     locale: en
 
+    mailer_transport: gmail
+    mailer_host:      ~
+    mailer_user:      "spacebit.mora@gmail.com"
+    mailer_password:  "sp@ceb1t@m0ra"
+
 framework:
     #esi:             ~
     #translator:      { fallbacks: ["%locale%"] }
