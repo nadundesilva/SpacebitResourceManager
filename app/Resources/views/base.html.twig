@@ -17,18 +17,25 @@
         ]
     }
 ] %}
+
 {# Merging with admin pages if the user have required level of access #}
 {% if app.session.get('access_level') is defined and app.session.get('access_level') >= 0 %}
+    {% set sub_menu_array = [
+        {name:'Manage Equipment', link:'admin/equipment'},
+        {name:'Manage Venues', link:'admin/venues'},
+        {name:'Manage Vehicles', link:'admin/vehicles'}
+    ] %}
+    {% if app.session.get('access_level') is defined and app.session.get('access_level') >= 0 %}
+        {% set sub_menu_array = sub_menu_array | merge([
+            {name:'Manage Users', link:'admin/users'}
+        ]) %}
+    {% endif %}
+
     {% set pages = pages | merge([
         {name:'Admin', link:'admin', glyphicon:'glyphicon glyphicon-cog',
-            sub_menu:[
-                {name:'Manage Equipment', link:'admin/equipment'},
-                {name:'Manage Venues', link:'admin/venues'},
-                {name:'Manage Vehicles', link:'admin/vehicles'},
-                {name:'Manage Users', link:'admin/users'}
-            ]
+            sub_menu:sub_menu_array
         }
-    ])%}
+    ]) %}
 {% endif %}
 
 <!DOCTYPE html>
@@ -76,9 +83,9 @@
                 <!-- Top Menu Items -->
                 <ul class="nav navbar-right top-nav">
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i> {% if session is defined and session.first_name is defined and session.last_name is defined %}{{ session.first_name ~ ' ' ~ session.last_name }}{% else %}Guest{% endif %} <b class="caret"></b></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i> {% if app.session.get('first_name') is empty and app.session.get('last_name') is empty %}Guest{% else %}{{ app.session.get('first_name') ~ ' ' ~ app.session.get('last_name') }}{% endif %} <b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                        {% if session is defined and session.user_id is defined %}
+                        {% if app.session.get('user_id') is defined %}
                             <li>
                                 {% set link = link_to_home ~ 'user' %}
                                 <a href="{{ link }}"><i class="glyphicon glyphicon-user"></i> My Profile</a>
