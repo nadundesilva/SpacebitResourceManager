@@ -127,7 +127,7 @@ function addEditVehicle() {
                 if (res == 'success') {
                     modalContent += 'Vehicle with plate number ' + plateNo + ' was ' + (updateType == "Add" ? "added" : "edited") + ' successfully</p><button class="btn btn-sm btn-success" onclick=\'$("#messageModal").modal("hide"); showManageVehiclesModal();\'><span class="glyphicon glyphicon-ok"></span>';
                 } else {
-                    modalContent += 'An error occured in ' + (updateType == "Add" ? "adding" : "editing") + ' the vehicle with plate number ' + plateNo + '. Sorry for the inconvenience.</p><div style="text-align: center;"><button class="btn btn-sm btn-danger" onclick=\'$("#messageModal").modal("hide"); showManageVehiclesModal();\'><span class="glyphicon glyphicon-warning-sign"></span>';
+                    modalContent += 'An error occurred in ' + (updateType == "Add" ? "adding" : "editing") + ' the vehicle with plate number ' + plateNo + '. Sorry for the inconvenience.</p><div style="text-align: center;"><button class="btn btn-sm btn-danger" onclick=\'$("#messageModal").modal("hide"); showManageVehiclesModal();\'><span class="glyphicon glyphicon-warning-sign"></span>';
                 }
                 modalContent += ' Ok</button></div></div>';
                 document.getElementById('messageModalContent').innerHTML = modalContent;
@@ -257,7 +257,7 @@ function updateRouteTable() {
                         tableContent += '<tr>';
                         tableContent += '<td>' + route[i].requested_town + '</td>';
                         tableContent += '<td>' + route[i].time + '</td>';
-                        tableContent += '<td><button class="btn btn-xs btn-info" onclick=\'viewLocation("' + route[i].requested_town + '");\'><span class="glyphicon glyphicon-globe"></span> View in map</button></td>';
+                        tableContent += '<td><button type="button" class="btn btn-xs btn-info" onclick=\'viewLocation("' + route[i].requested_town + '");\'><span class="glyphicon glyphicon-globe"></span> View in map</button></td>';
                         tableContent += '</tr>';
                     }
                     document.getElementById('locations-table').innerHTML = tableContent;
@@ -274,8 +274,8 @@ function updateRouteTable() {
 }
 
 function changeVehicleRequest() {
-    var status = document.forms['request-status-form']["request-status"].value;
-    if (status == 'Pending') { return; }
+    var status = document.forms['request-status-form']['request-status'].value;
+    if (status == 2) { return; }
     var requestID = document.forms['request-status-form']["request-id"].value;
     var routeAssignMethod = document.forms['request-status-form']["route-assign-method"].value;
 
@@ -299,7 +299,7 @@ function changeVehicleRequest() {
                 if (res == 'success') {
                     modalContent += 'Vehicle request with request ID ' + requestID + ' was ' + status + ' successfully</p><button class="btn btn-sm btn-success" onclick=\'location.reload();\'><span class="glyphicon glyphicon-ok"></span>';
                 } else {
-                    modalContent += 'An error occured in ' + (status == "Accepted" ? "Accepting" : "Declining") + ' the vehicle request with request ID ' + requestID + '. Sorry for the inconvenience.</p><div style="text-align: center;"><button class="btn btn-sm btn-danger" onclick=\'location.reload();\'><span class="glyphicon glyphicon-warning-sign"></span>';
+                    modalContent += 'An error occurred in ' + (status == 1 ? "Accepting" : "Declining") + ' the vehicle request with request ID ' + requestID + '. Sorry for the inconvenience.</p><div style="text-align: center;"><button class="btn btn-sm btn-danger" onclick=\'location.reload();\'><span class="glyphicon glyphicon-warning-sign"></span>';
                 }
                 modalContent += ' Ok</button></div></div>';
                 document.getElementById('messageModalContent').innerHTML = modalContent;
@@ -309,7 +309,7 @@ function changeVehicleRequest() {
             }
         }
 
-        var parameters = 'request-id=' + requestID + '&status=' + (status == 'Accepted' ? 1 : 0) + '&route-assign-method=' + routeAssignMethod;
+        var parameters = 'request-id=' + requestID + '&status=' + status + '&route-assign-method=' + routeAssignMethod;
         if (routeAssignMethod == 'new') {
             parameters += '&plate-no=' + document.forms['request-status-form']["new-route-vehicle-plate-no"].value;
         } else {

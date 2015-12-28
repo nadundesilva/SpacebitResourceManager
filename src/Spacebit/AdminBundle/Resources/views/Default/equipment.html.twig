@@ -39,7 +39,7 @@
                 {% if "now"|date('Y-m-d') > equipment_request.date_from|date('Y-m-d') %}
                     <th><button class="btn btn-xs btn-default" disabled>Past Request</button></th>
                 {% else %}
-                    <th><button class="btn btn-xs btn-primary" onclick="changeRequest('{{ equipment_request.request_id }}');"><span class="glyphicon glyphicon-edit"></span> Edit</button></th>
+                    <th><button class="btn btn-xs btn-primary" onclick="changeRequest('{{ equipment_request.request_id }}');"><span class="glyphicon glyphicon-pencil"></span> Change</button></th>
                 {% endif %}
             </tr>
         {% endfor %}

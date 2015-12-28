@@ -13,6 +13,16 @@ spacebit_admin_user_getByID:
     defaults: { _controller: SpacebitAdminBundle:User:getDetails }
     methods:  ['POST']
 
+spacebit_admin_user_activate:
+    path:     /users/activate
+    defaults: { _controller: SpacebitAdminBundle:User:activate }
+    methods:  ['POST']
+
+spacebit_admin_user_access_level_change:
+    path:     /users/changeAccessLevel
+    defaults: { _controller: SpacebitAdminBundle:User:changeAccessLevel }
+    methods:  ['POST']
+
 
 
 spacebit_admin_equipment:

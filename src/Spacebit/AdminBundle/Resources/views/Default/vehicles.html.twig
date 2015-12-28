@@ -25,32 +25,32 @@
         {% set request_status = ['Declined', 'Accepted', 'Pending'] %}
         {% for vehicle_request in vehicle_requests %}
             <tr>
-                <th>{{ vehicle_request.request_id }}</th>
+                <td>{{ vehicle_request.request_id }}</td>
                 {% if vehicle_request.route_group_id is empty %}
                     {% set temp = 'Unassigned' %}
-                    <th>{{ temp }}</th>
+                    <td>{{ temp }}</td>
                 {% else %}
-                    <th>{{ vehicle_request.route_group_id }}</th>
+                    <td>{{ vehicle_request.route_group_id }}</td>
                 {% endif %}
-                <th>{{ vehicle_request.user_id }}<br><button class="btn btn-xs btn-info" onclick="showUserModal('{{ vehicle_request.user_id }}')"><span class="glyphicon glyphicon-modal-window"></span> View User</button></th>
-                <th>{{ vehicle_request.date }}</th>
-                <th>{{ vehicle_request.time }}</th>
-                <th>{{ vehicle_request.number_of_passengers }}</th>
-                <th>{{ vehicle_request.requested_type }}</th>
-                <th>{{ vehicle_request.requested_town }}</th>
+                <td>{{ vehicle_request.user_id }}<br><button class="btn btn-xs btn-info" onclick="showUserModal('{{ vehicle_request.user_id }}')"><span class="glyphicon glyphicon-modal-window"></span> View User</button></td>
+                <td>{{ vehicle_request.date }}</td>
+                <td>{{ vehicle_request.time }}</td>
+                <td>{{ vehicle_request.number_of_passengers }}</td>
+                <td>{{ vehicle_request.requested_type }}</td>
+                <td>{{ vehicle_request.requested_town }}</td>
                 {% if vehicle_request.status == 0 %}
-                    <th style="color: #ff4d54;">
+                    <td style="color: #ff4d54;">
                 {% elseif vehicle_request.status == 1  %}
-                    <th style="color: #55ff5e;">
+                    <td style="color: #55ff5e;">
                 {% else %}
-                    <th style="color: #624cff;">
+                    <td style="color: #624cff;">
                 {% endif %}
                         {{ request_status[vehicle_request.status] }}
-                    </th>
+                    </td>
                 {% if "now"|date('Y-m-d') > vehicle_request.date|date('Y-m-d') %}
-                    <th><button class="btn btn-xs btn-default" disabled>Past Request</button></th>
+                    <td><button class="btn btn-xs btn-default" disabled>Past Request</button></td>
                 {% else %}
-                    <th><button class="btn btn-xs btn-primary" onclick="showEditVehicleRequestModal('{{ vehicle_request.request_id }}', '{{ vehicle_request.route_group_id }}', '{{ vehicle_request.user_id }}', '{{ vehicle_request.date }}', '{{ vehicle_request.time }}', '{{ vehicle_request.number_of_passengers }}', '{{ vehicle_request.requested_type }}', '{{ vehicle_request.requested_town }}', '{{ request_status[vehicle_request.status] }}');"><span class="glyphicon glyphicon-edit"></span> Edit</button></th>
+                    <td><button class="btn btn-xs btn-primary" onclick="showEditVehicleRequestModal('{{ vehicle_request.request_id }}', '{{ vehicle_request.route_group_id }}', '{{ vehicle_request.user_id }}', '{{ vehicle_request.date }}', '{{ vehicle_request.time }}', '{{ vehicle_request.number_of_passengers }}', '{{ vehicle_request.requested_type }}', '{{ vehicle_request.requested_town }}', '{{ vehicle_request.status }}');"><span class="glyphicon glyphicon-pencil"></span> Change</button></td>
                 {% endif %}
             </tr>
         {% endfor %}
@@ -119,7 +119,7 @@
                         <div class="form-group">
                             <label for="requested-destination">Requested Destination :</label>
                             <input type="text" id="requested-destination" class="form-control" name="requested-destination" disabled />
-                            <button id="requested-destination-view-location" class="btn btn-xs btn-info"><span class="glyphicon glyphicon-globe"></span> View in map</button>
+                            <button type="button" id="requested-destination-view-location" class="btn btn-xs btn-info" onclick="viewLocation(document.forms['request-status-form']['requested-destination'].value);"><span class="glyphicon glyphicon-globe"></span> View in map</button>
                         </div>
 
                         <div id="route-selection-radio-button-container" class="form-group">
@@ -148,9 +148,7 @@
                         <div id="new-route-division">
                             <div class="form-group">
                                 <label for="route-group-id">Select the vehicle you want to assign :</label>
-                                <div>
-                                    <select id="new-route-vehicle-plate-no" name="new-route-vehicle-plate-no" class="form-control" onclick="updateRouteTable();" required></select>
-                                </div>
+                                <select id="new-route-vehicle-plate-no" name="new-route-vehicle-plate-no" class="form-control" onclick="updateRouteTable();" required></select>
                             </div>
                         </div>
                         <div id="no-vehicles-message" style="display: none">
@@ -168,13 +166,11 @@
 
                         <div class="form-group">
                             <label for="request-status">Select the status you want the request to change to :</label>
-                            <div>
-                                <select id="request-status" name="request-status" class="form-control" required>
-                                    <option disabled>Pending</option>
-                                    <option>Declined</option>
-                                    <option>Accepted</option>
-                                </select>
-                            </div>
+                            <select id="request-status" name="request-status" class="form-control" required>
+                                <option value=2 disabled>Pending</option>
+                                <option value=0>Declined</option>
+                                <option value=1>Accepted</option>
+                            </select>
                         </div>
                         <button type="submit" id="vehicle-request-submit-button" class="btn btn-sm btn-success" name="vehicle-request-submit-button"><span class="glyphicon glyphicon-ok"></span> OK</button>
                     </form>

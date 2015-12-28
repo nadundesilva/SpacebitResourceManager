@@ -10,5 +10,60 @@
 {% endblock %}
 
 {% block body %}
+    <h2 style="text-align: center; padding-bottom: 10px">Users</h2>
+    <table class="table table-hover" style="padding: 20px">
+        <tr><th>User ID</th><th>First Name</th><th>Middle Name</th><th>Last Name</th><th>Email</th><th>Telephone Number</th><th>Access Level</th><th>Status</th>{% if app.session.get('access_level') == 5 or (app.session.get('access_level') > user.access_level and app.session.get('access_level') >= 3) %}<th></th>{% endif %}</tr>
+        {% set access_level_name = ['Guest', 'Student', 'Staff', 'Low Level Admin', 'Middle Level Admin', 'High Level Admin'] %}
+        {% for user in users %}
+            <tr>
+                <td>{{ user.user_id }}</td>
+                <td>{{ user.first_name }}</td>
+                <td>{{ user.middle_name }}</td>
+                <td>{{ user.last_name }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ '+94' ~ user.telephone_no }}</td>
+                <td id="accessLevelCell{{ user.user_id }}">{{ access_level_name[user.access_level] }}{% if app.session.get('access_level') == 5 or ( app.session.get('access_level') > user.access_level and app.session.get('access_level') >= 3) %}<br><button class="btn btn-xs btn-info" onclick="showChangeAccessLevelModal('{{ user.user_id }}', {{ user.access_level }});"><span class="glyphicon glyphicon-pencil"></span> Change</button>{% endif %}</td>
+                <td id="activeStatusCell{{ user.user_id }}">{% if user.active %}<span style="color: #55ff5e;">Activated</span>{% else %}<span style="color: #ff4d54;">Deactivated</span>{% endif %}</td>
+                {% if app.session.get('access_level') == 5 or (app.session.get('access_level') > user.access_level and app.session.get('access_level') >= 3) %}
+                    <td><button id="changeActiveStatusButton{{ user.user_id }}" class="btn btn-xs btn-{% if user.active %}danger" onclick="changeActiveStatus('{{ user.user_id }}', false);"><span class="glyphicon glyphicon-remove"></span> Deactivate{% else %}success" onclick="changeActiveStatus('{{ user.user_id }}', true);"><span class="glyphicon glyphicon-ok"></span> Activate{% endif %}</button></td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </table>
 
+    <div id="accessLevelModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div style="margin: 20px;">
+                    <h3 style="text-align: center;">Edit Access Level</h3>
+                    <form id="access-level-form" role="form" method="POST" name="access-level-form" onsubmit="changeAccessLevel(); return false;">.
+                        <div class="form-group">
+                            <label for="user-id">User ID :</label>
+                            <input type="text" id="user-id" class="form-control" name="user-id" disabled />
+                        </div>
+                        <div class="form-group">
+                            <label for="access-level">Select the access level you want to change to :</label>
+                            <select id="access-level" name="access-level" class="form-control" required>
+                                <option value=0>Guest</option>
+                                <option value=1>Student</option>
+                                <option value=2>Staff</option>
+                                <option value=3>Low Level Admin</option>
+                                <option value=4>Middle Level Admin</option>
+                                <option value=5>High Level Admin</option>
+                            </select>
+                        </div>
+                        <button type="submit" id="access-level-form-submit-button" class="btn btn-sm btn-success" name="access-level-form-submit-button"><span class="glyphicon glyphicon-ok"></span> OK</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="messageModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div style="margin: 20px;" id="messageModalContent"></div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

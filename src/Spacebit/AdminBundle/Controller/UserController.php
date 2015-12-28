@@ -11,13 +11,54 @@ class UserController extends Controller
     function usersAction()
     {
         $conn = $this->get('database_connection');
-        $stmt = $conn->prepare('SELECT * FROM user;');
+        $stmt = $conn->prepare('SELECT * FROM user ORDER BY active DESC;');
+        $stmt->bindValue(':access_level', $this->get('session')->get('access_level'));
         $stmt->execute();
         $users = $stmt->fetchAll();
 
         return $this->render('SpacebitAdminBundle:Default:users.html.twig', array(
             'users'=>$users,
         ));
+    }
+
+    function activateAction()
+    {
+        $request = Request::createFromGlobals();
+        $user_id = $request->request->get('user-id');
+        $active = ($request->request->get('status') == "true" ? 1 : 0);
+
+        $conn = $this->get('database_connection');
+
+        $stmt = $conn->prepare('UPDATE user SET active = :active WHERE user_id = :user_id;');
+        $stmt->bindValue(':active', $active);
+        $stmt->bindValue(':user_id', $user_id);
+
+        $response = 'success';
+        if(!$stmt->execute()) {
+            $response = $stmt->errorCode();
+        }
+
+        return new Response($response);
+    }
+
+    function changeAccessLevelAction()
+    {
+        $request = Request::createFromGlobals();
+        $user_id = $request->request->get('user-id');
+        $access_level = $request->request->get('access-level');
+
+        $conn = $this->get('database_connection');
+
+        $stmt = $conn->prepare('UPDATE user SET access_level = :access_level WHERE user_id = :user_id;');
+        $stmt->bindValue(':access_level', $access_level);
+        $stmt->bindValue(':user_id', $user_id);
+
+        $response = 'success';
+        if(!$stmt->execute()) {
+            $response = $stmt->errorCode();
+        }
+
+        return new Response($response);
     }
 
     function getDetailsAction()
