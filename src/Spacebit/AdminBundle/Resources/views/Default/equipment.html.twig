@@ -45,22 +45,22 @@
         {% endfor %}
     </table>
 
-    <div id="messageModal" class="modal fade" role="dialog">
+    <div id="message-modal" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div style="margin: 20px;" id="messageModalContent"></div>
+                <div style="margin: 20px;" id="message-modal-content"></div>
             </div>
         </div>
     </div>
 
-    <div id="manageEquipmentsModal" class="modal fade" role="dialog">
+    <div id="manage-equipments-modal" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div style="margin: 20px;">
                     <h3 style="text-align: center;">Manage Equipments</h3>
                     <div style="margin: 10px;">
                         <button class="btn btn-xs btn-primary" style="margin-bottom: 10px" onclick="showAddEquipmentModal();"><span class="glyphicon glyphicon-plus"></span> Add Equipment</button>
-                        <div id="manageEquipmentsModalContent">
+                        <div id="manage-equipments-modal-content">
 
                         </div>
                     </div>
@@ -69,7 +69,7 @@
         </div>
     </div>
 
-    <div id="editEquipmentsModal" class="modal fade" role="dialog">
+    <div id="edit-equipments-modal" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div style="margin: 20px;">
@@ -80,11 +80,11 @@
         </div>
     </div>
 
-    <div id="addEditEquipmentModal" class="modal fade" role="dialog">
+    <div id="add-edit-equipment-modal" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div style="margin: 20px;">
-                    <button class="btn btn-xs btn-primary" onclick="showManageEquipmentModal(); $('#addEditEquipmentModal').modal('hide');"><span class="glyphicon glyphicon-arrow-left"></span> Back</button>
+                    <button class="btn btn-xs btn-primary" onclick="showManageEquipmentModal(); $('#add-edit-equipment-modal').modal('hide');"><span class="glyphicon glyphicon-arrow-left"></span> Back</button>
                     <h3 id="addEditEquipmentTitle" style="text-align: center;">Add Equipment</h3>
                     <form id="add-equipment-form" role="form" method="POST" name="equipment-add-form" onsubmit="addEditEquipment(); return false;">
                         <div class="row">

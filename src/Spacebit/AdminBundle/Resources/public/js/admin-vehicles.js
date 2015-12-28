@@ -30,8 +30,8 @@ function showManageVehiclesModal() {
                     modalContent += '</tr>';
                 }
                 modalContent += '</table>'
-                document.getElementById('manageVehiclesModalContent').innerHTML = modalContent;
-                $('#manageVehiclesModal').modal();
+                document.getElementById('manage-vehicles-modal-content').innerHTML = modalContent;
+                $('#manage-vehicles-modal').modal();
             }
         }
 
@@ -53,8 +53,8 @@ function showAddVehicleModal() {
 
     document.getElementById('addEditVehicleTitle').innerHTML = 'Add Vehicle';
     document.forms['vehicle-add-form']['submit-button'].innerHTML = '<span class="glyphicon glyphicon-plus"></span> Add';
-    $('#manageVehiclesModal').modal('hide');
-    $('#addEditVehicleModal').modal();
+    $('#manage-vehicles-modal').modal('hide');
+    $('#add-edit-vehicle-modal').modal();
 }
 
 function showEditVehicleModal(plateNo) {
@@ -86,7 +86,7 @@ function showEditVehicleModal(plateNo) {
 
                 document.getElementById('addEditVehicleTitle').innerHTML = 'Edit Vehicle';
                 document.forms['vehicle-add-form']['submit-button'].innerHTML = '<span class="glyphicon glyphicon-ok"></span> OK';
-                $('#manageVehiclesModal').modal('hide');
+                $('#manage-vehicles-modal').modal('hide');
                 $('#addEditVehicleModal').modal();
             }
         }
@@ -125,15 +125,15 @@ function addEditVehicle() {
 
                 var modalContent = '<div style="margin: 10px;"><p>';
                 if (res == 'success') {
-                    modalContent += 'Vehicle with plate number ' + plateNo + ' was ' + (updateType == "Add" ? "added" : "edited") + ' successfully</p><button class="btn btn-sm btn-success" onclick=\'$("#messageModal").modal("hide"); showManageVehiclesModal();\'><span class="glyphicon glyphicon-ok"></span>';
+                    modalContent += 'Vehicle with plate number ' + plateNo + ' was ' + (updateType == "Add" ? "added" : "edited") + ' successfully</p><button class="btn btn-sm btn-success" onclick=\'$("#message-modal").modal("hide"); showManageVehiclesModal();\'><span class="glyphicon glyphicon-ok"></span>';
                 } else {
-                    modalContent += 'An error occurred in ' + (updateType == "Add" ? "adding" : "editing") + ' the vehicle with plate number ' + plateNo + '. Sorry for the inconvenience.</p><div style="text-align: center;"><button class="btn btn-sm btn-danger" onclick=\'$("#messageModal").modal("hide"); showManageVehiclesModal();\'><span class="glyphicon glyphicon-warning-sign"></span>';
+                    modalContent += 'An error occurred in ' + (updateType == "Add" ? "adding" : "editing") + ' the vehicle with plate number ' + plateNo + '. Sorry for the inconvenience.</p><div style="text-align: center;"><button class="btn btn-sm btn-danger" onclick=\'$("#message-modal").modal("hide"); showManageVehiclesModal();\'><span class="glyphicon glyphicon-warning-sign"></span>';
                 }
                 modalContent += ' Ok</button></div></div>';
-                document.getElementById('messageModalContent').innerHTML = modalContent;
+                document.getElementById('message-modal-content').innerHTML = modalContent;
 
-                $('#addEditVehicleModal').modal('hide');
-                $('#messageModal').modal();
+                $('#add-edit-vehicle-modal').modal('hide');
+                $('#message-modal').modal();
             }
         }
 
@@ -210,7 +210,7 @@ function showEditVehicleRequestModal(requestID, routeGroupID, requester, request
 
                 viewLocation(requestedDestination);
 
-                $('#editVehicleRequestModal').modal();
+                $('#edit-vehicle-request-modal').modal();
             }
         }
 
@@ -302,10 +302,10 @@ function changeVehicleRequest() {
                     modalContent += 'An error occurred in ' + (status == 1 ? "Accepting" : "Declining") + ' the vehicle request with request ID ' + requestID + '. Sorry for the inconvenience.</p><div style="text-align: center;"><button class="btn btn-sm btn-danger" onclick=\'location.reload();\'><span class="glyphicon glyphicon-warning-sign"></span>';
                 }
                 modalContent += ' Ok</button></div></div>';
-                document.getElementById('messageModalContent').innerHTML = modalContent;
+                document.getElementById('message-modal-content').innerHTML = modalContent;
 
-                $('#editVehicleRequestModal').modal('hide');
-                $('#messageModal').modal();
+                $('#edit-vehicle-request-modal').modal('hide');
+                $('#message-modal').modal();
             }
         }
 
@@ -333,7 +333,7 @@ function initialize() {
     };
     var map = new google.maps.Map(mapCanvas, mapOptions);
 
-    $("#editVehicleRequestModal").on('shown.bs.modal', function(){
+    $("#edit-vehicle-request-modal").on('shown.bs.modal', function(){
         google.maps.event.trigger(map, 'resize')
     });
 }

@@ -17,14 +17,14 @@ function changeActiveStatus(userID, status) {
 
                 var modalContent = '<div style="margin: 10px;"><p>';
                 if (res == 'success') {
-                    modalContent += 'User with user ID ' + userID + ' was ' + (status ? "activated" : "deactivate") + ' successfully</p><button class="btn btn-xs btn-success" onclick=\'$("#messageModal").modal("hide");\'><span class="glyphicon glyphicon-ok"></span>';
+                    modalContent += 'User with user ID ' + userID + ' was ' + (status ? "activated" : "deactivate") + ' successfully</p><button class="btn btn-xs btn-success" onclick=\'$("#message-modal").modal("hide");\'><span class="glyphicon glyphicon-ok"></span>';
                 } else {
-                    modalContent += 'An error occurred in ' + (status ? "activating" : "deactivating") + ' the user with user ID ' + userID + '. Sorry for the inconvenience.</p><div style="text-align: center;"><button class="btn btn-xs btn-danger" onclick=\'$("#messageModal").modal("hide");\'><span class="glyphicon glyphicon-warning-sign"></span>';
+                    modalContent += 'An error occurred in ' + (status ? "activating" : "deactivating") + ' the user with user ID ' + userID + '. Sorry for the inconvenience.</p><div style="text-align: center;"><button class="btn btn-xs btn-danger" onclick=\'$("#message-modal").modal("hide");\'><span class="glyphicon glyphicon-warning-sign"></span>';
                 }
                 modalContent += ' Ok</button></div></div>';
-                document.getElementById('messageModalContent').innerHTML = modalContent;
+                document.getElementById('message-modal-content').innerHTML = modalContent;
 
-                $('#messageModal').modal();
+                $('#message-modal').modal();
 
                 var button = document.getElementById('changeActiveStatusButton' + userID);
                 var activeStatusCell = document.getElementById('activeStatusCell' + userID);
@@ -51,7 +51,7 @@ function changeActiveStatus(userID, status) {
 function showChangeAccessLevelModal(userID, accessLevel) {
     document.forms['access-level-form']['user-id'].value = userID;
     document.forms['access-level-form']['access-level'].value = accessLevel;
-    $('#accessLevelModal').modal();
+    $('#access-level-modal').modal();
 }
 
 function changeAccessLevel() {
@@ -77,15 +77,15 @@ function changeAccessLevel() {
                 var accessLevelName = ['Guest', 'Student', 'Staff', 'Low Level Admin', 'Middle Level Admin', 'High Level Admin'];
                 var modalContent = '<div style="margin: 10px;"><p>';
                 if (res == 'success') {
-                    modalContent += 'The access level of the user with user ID ' + userID + ' was changed to ' + accessLevelName[accessLevel] + ' successfully</p><button class="btn btn-xs btn-success" onclick=\'$("#messageModal").modal("hide");\'><span class="glyphicon glyphicon-ok"></span>';
+                    modalContent += 'The access level of the user with user ID ' + userID + ' was changed to ' + accessLevelName[accessLevel] + ' successfully</p><button class="btn btn-xs btn-success" onclick=\'$("#message-modal").modal("hide");\'><span class="glyphicon glyphicon-ok"></span>';
                 } else {
-                    modalContent += 'An error occurred in changing the access level to ' + accessLevelName[accessLevel] + ' of the user with user ID ' + userID + '. Sorry for the inconvenience.</p><div style="text-align: center;"><button class="btn btn-xs btn-danger" onclick=\'$("#messageModal").modal("hide");\'><span class="glyphicon glyphicon-warning-sign"></span>';
+                    modalContent += 'An error occurred in changing the access level to ' + accessLevelName[accessLevel] + ' of the user with user ID ' + userID + '. Sorry for the inconvenience.</p><div style="text-align: center;"><button class="btn btn-xs btn-danger" onclick=\'$("#message-modal").modal("hide");\'><span class="glyphicon glyphicon-warning-sign"></span>';
                 }
                 modalContent += ' Ok</button></div></div>';
-                document.getElementById('messageModalContent').innerHTML = modalContent;
+                document.getElementById('message-modal-content').innerHTML = modalContent;
 
-                $('#accessLevelModal').modal('hide');
-                $('#messageModal').modal();
+                $('#access-level-modal').modal('hide');
+                $('#message-modal').modal();
 
                 document.getElementById('accessLevelCell' + userID).innerHTML = accessLevelName[accessLevel] + '<br><button class="btn btn-xs btn-info" onclick="showChangeAccessLevelModal(\'' + userID + '\', ' + accessLevel + ');"><span class="glyphicon glyphicon-pencil"></span> Change</button>';
             }

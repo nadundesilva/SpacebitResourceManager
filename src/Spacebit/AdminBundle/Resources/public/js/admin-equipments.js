@@ -31,8 +31,8 @@ function showManageEquipmentModal() {
                     modalContent += '</tr>';
                 }
                 modalContent += '</table>'
-                document.getElementById('manageEquipmentsModalContent').innerHTML = modalContent;
-                $('#manageEquipmentsModal').modal();
+                document.getElementById('manage-equipments-modal-content').innerHTML = modalContent;
+                $('#manage-equipments-modal').modal();
             }
         }
 
@@ -53,8 +53,8 @@ function showAddEquipmentModal() {
 
     document.getElementById('addEditEquipmentTitle').innerHTML = 'Add Equipment';
     document.forms['equipment-add-form']['submit-button'].innerHTML = '<span class="glyphicon glyphicon-plus"></span> Add';
-    $('#manageEquipmentsModal').modal('hide');
-    $('#addEditEquipmentModal').modal();
+    $('#manage-equipments-modal').modal('hide');
+    $('#add-edit-equipment-modal').modal();
 }
 
 function showEditEquipmentModal(resource_id) {
@@ -84,8 +84,8 @@ function showEditEquipmentModal(resource_id) {
 
                 document.getElementById('addEditEquipmentTitle').innerHTML = 'Edit Equipment';
                 document.forms['equipment-add-form']['submit-button'].innerHTML = '<span class="glyphicon glyphicon-ok"></span> OK';
-                $('#manageEquipmentsModal').modal('hide');
-                $('#addEditEquipmentModal').modal();
+                $('#manage-equipments-modal').modal('hide');
+                $('#add-edit-equipment-modal').modal();
             }
         }
 
@@ -96,7 +96,7 @@ function showEditEquipmentModal(resource_id) {
 }
 
 function changeRequest(requestId) {
-    $('#editEquipmentsModal').modal();
+    $('#edit-equipments-modal').modal();
 }
 
 function addEditEquipment() {
@@ -124,15 +124,15 @@ function addEditEquipment() {
 
                 var modalContent = '<div style="margin: 10px;"><p>';
                 if (res == 'success') {
-                    modalContent += 'Equipment with resource id ' + resource_id + ' was ' + (updateType == "Add" ? "added" : "edited") + ' successfully</p><button class="btn btn-sm btn-success" onclick=\'$("#messageModal").modal("hide"); showManageEquipmentsModal();\'><span class="glyphicon glyphicon-ok"></span>';
+                    modalContent += 'Equipment with resource id ' + resource_id + ' was ' + (updateType == "Add" ? "added" : "edited") + ' successfully</p><button class="btn btn-sm btn-success" onclick=\'$("#message-modal").modal("hide"); showManageEquipmentsModal();\'><span class="glyphicon glyphicon-ok"></span>';
                 } else {
-                    modalContent += 'An error occurred in ' + (updateType == "Add" ? "adding" : "editing") + ' the equipment with plate number ' + resource_id + '. Sorry for the inconvenience.</p><div style="text-align: center;"><button class="btn btn-sm btn-danger" onclick=\'$("#messageModal").modal("hide"); showManageEquipmentsModal();\'><span class="glyphicon glyphicon-warning-sign"></span>';
+                    modalContent += 'An error occurred in ' + (updateType == "Add" ? "adding" : "editing") + ' the equipment with plate number ' + resource_id + '. Sorry for the inconvenience.</p><div style="text-align: center;"><button class="btn btn-sm btn-danger" onclick=\'$("#message-modal").modal("hide"); showManageEquipmentsModal();\'><span class="glyphicon glyphicon-warning-sign"></span>';
                 }
                 modalContent += ' Ok</button><div></div>';
-                document.getElementById('messageModalContent').innerHTML = modalContent;
+                document.getElementById('message-modal-content').innerHTML = modalContent;
 
-                $('#addEditEquipmentModal').modal('hide');
-                $('#messageModal').modal();
+                $('#add-edit-equipment-modal').modal('hide');
+                $('#message-modal').modal();
             }
         }
 
