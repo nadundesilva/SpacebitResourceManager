@@ -12,7 +12,7 @@
 {% block body %}
     <h2 style="text-align: center; padding-bottom: 10px">Users</h2>
     <table class="table table-hover" style="padding: 20px">
-        <tr><th>User ID</th><th>First Name</th><th>Middle Name</th><th>Last Name</th><th>Email</th><th>Telephone Number</th><th>Access Level</th><th>Status</th>{% if app.session.get('access_level') == 5 or (app.session.get('access_level') > user.access_level and app.session.get('access_level') >= 3) %}<th></th>{% endif %}</tr>
+        <tr><th>User ID</th><th>First Name</th><th>Middle Name</th><th>Last Name</th><th>Email</th><th>Telephone Number</th><th>Access Level</th><th>Status</th></tr>
         {% set access_level_name = ['Guest', 'Student', 'Staff', 'Low Level Admin', 'Middle Level Admin', 'High Level Admin'] %}
         {% for user in users %}
             <tr>
