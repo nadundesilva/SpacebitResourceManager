@@ -1,19 +1,19 @@
 function showDiv(){
     var elem = document.getElementById("accessLevel");
     if(elem.value == "student") {
-        document.getElementById('studentDivision').style.display = "block";
-        document.getElementById('staffDivision').style.display = "none";
-        document.getElementById('guestDivision').style.display = "none";
+        document.getElementById('student-division').style.display = "block";
+        document.getElementById('staff-division').style.display = "none";
+        document.getElementById('guest-division').style.display = "none";
     }
     if(elem.value == "staff") {
-        document.getElementById('studentDivision').style.display = "none";
-        document.getElementById('staffDivision').style.display = "block";
-        document.getElementById('guestDivision').style.display = "none";
+        document.getElementById('student-division').style.display = "none";
+        document.getElementById('staff-division').style.display = "block";
+        document.getElementById('guest-division').style.display = "none";
     }
     if(elem.value == "guest") {
-        document.getElementById('studentDivision').style.display = "none";
-        document.getElementById('staffDivision').style.display = "none";
-        document.getElementById('guestDivision').style.display = "block";
+        document.getElementById('student-division').style.display = "none";
+        document.getElementById('staff-division').style.display = "none";
+        document.getElementById('guest-division').style.display = "block";
     }
 }
 
