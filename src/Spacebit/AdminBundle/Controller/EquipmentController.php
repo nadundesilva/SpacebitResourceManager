@@ -64,7 +64,7 @@ class EquipmentController extends Controller
 
         if($update_type == 'Add') {
             $stmt = $conn->prepare('INSERT into resource values(:resource_id, :availability, :description);');
-            $stmt->bindValue(':plate_no', $resource_id);
+            $stmt->bindValue(':resource_id', $resource_id);
             $stmt->bindValue(':availability', $availability);
             $stmt->bindValue(':description', $description);
 
