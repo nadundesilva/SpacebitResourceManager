@@ -126,22 +126,38 @@ class EquipmentController extends Controller
         return new Response($response);
     }
 
+
     function changeRequestStatusAction()
     {
         $request = Request::createFromGlobals();
         $request_id = $request->request->get('request-id');
         $resource_id = $request->request->get('resource_id');
-
+        $status = $request->request->get('status');
 
         $conn = $this->get('database_connection');
-        $stmt = $conn->prepare('SELECT * FROM equipment LEFT OUTER  JOIN  resource WHERE resource_id = :resource_id;');
-        $stmt->bindValue(':resource_id', $resource_id);
+        $conn->beginTransaction();
 
         $response = 'success';
-        if(!$stmt->execute()) {
-            $response = $stmt->errorCode();
+        try {
+
+
+            $stmt = $conn->prepare('UPDATE resource_request SET status = :status,WHERE request_id = :request_id;');
+            $stmt->bindValue(':status', $status);
+            $stmt->bindValue(':request_id', $request_id);
+            if (!$stmt->execute()) {
+                throw new \Symfony\Component\Config\Definition\Exception\Exception();
+            }
+
+            $conn->commit();
+        } catch (Exception $e) {
+            $conn->rollBack();
+            $response = $e->getCode();
         }
+
+        $response = new Response($response);
+        $response->headers->set('Content-Type', 'application/json');
 
         return $response;
     }
+
 }
