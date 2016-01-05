@@ -1,17 +1,17 @@
 {% extends 'base.html.twig' %}
 
 {% set link_to_home = '../' %}
-{% set active = {link:'Admin', sub_link:'Manage Equipment'} %}
+{% set active = {link:'Admin', sub_link:'Manage Venue'} %}
 
-{% block title %}Manage Equipment{% endblock %}
+{% block title %}Manage Venue{% endblock %}
 
 {% block javascripts %}
-    <script src="{{ asset('bundles/spacebitadmin/js/admin-equipments.js') }}"></script>
+    <script src="{{ asset('bundles/spacebitadmin/js/admin-venues.js') }}"></script>
 {% endblock %}
 
 {% block body %}
     <div style="margin: 10px;">
-        <button class="btn btn-sm btn-primary" onclick="showManageEquipmentModal();"><span class="glyphicon glyphicon-edit"></span> Manage Equipment</button>
+        <button class="btn btn-sm btn-primary" onclick="showManageVenueModal();"><span class="glyphicon glyphicon-edit"></span> Manage Venue</button>
     </div>
 
     <h2 style="text-align: center; padding-bottom: 10px">Equipment Requests</h2>
@@ -53,14 +53,14 @@
         </div>
     </div>
 
-    <div id="manage-equipments-modal" class="modal fade" role="dialog">
+    <div id="manage-venues-modal" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div style="margin: 20px;">
-                    <h3 style="text-align: center;">Manage Equipments</h3>
+                    <h3 style="text-align: center;">Manage Venues</h3>
                     <div style="margin: 10px;">
-                        <button class="btn btn-xs btn-primary" style="margin-bottom: 10px" onclick="showAddEquipmentModal();"><span class="glyphicon glyphicon-plus"></span> Add Equipment</button>
-                        <div id="manage-equipments-modal-content">
+                        <button class="btn btn-xs btn-primary" style="margin-bottom: 10px" onclick="showAddVenueModal();"><span class="glyphicon glyphicon-plus"></span>Add Venue</button>
+                        <div id="manage-venues-modal-content">
 
                         </div>
                     </div>
@@ -80,39 +80,63 @@
         </div>
     </div>
 
-    <div id="add-edit-equipment-modal" class="modal fade" role="dialog">
+    <div id="add-edit-venue-modal" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div style="margin: 20px;">
-                    <button class="btn btn-xs btn-primary" onclick="showManageEquipmentModal(); $('#add-edit-equipment-modal').modal('hide');"><span class="glyphicon glyphicon-arrow-left"></span> Back</button>
-                    <h3 id="addEditEquipmentTitle" style="text-align: center;">Add Equipment</h3>
-                    <form id="add-equipment-form" role="form" method="POST" name="equipment-add-form" onsubmit="addEditEquipment(); return false;">
+                    <button class="btn btn-xs btn-primary" onclick="showManageVenueModal(); $('#add-edit-venue-modal').modal('hide');"><span class="glyphicon glyphicon-arrow-left"></span>Back</button>
+                    <h3 id="addEditVenueTitle" style="text-align: center;">Add Venue</h3>
+                    <form id="add-venue-form" role="form" method="POST" name="venue-add-form" onsubmit="addEditVenue(); return false;">
                         <div class="row">
                             <div class="form-group col-lg-12">
                                 <label for="resource_id">Resource ID :</label>
                                 <input type="text" id=resource_id" class="form-control" name="resource_id" placeholder="Enter Resource ID" required />
                             </div>
                             <div class="form-group col-lg-12">
-                                <label><input type="checkbox" id="availability" name = "availability">Equipment is Available</label>
+                                <label><input type="checkbox" id="availability" name = "availability">Venue is Available</label>
                             </div>
                             <div class="form-group col-lg-12">
                                 <label for="description">Description :</label>
                                 <input type="text" id="description" class="form-control" name = "description" placeholder="Enter Description of the Equipment" required />
                             </div>
                             <div class="form-group col-lg-6">
-                                <label for="value">Appraised Value :</label>
-                                <input type="numeric" class="form-control" id="value" name = "value" placeholder="Enter the Value of the equipment" />
+                                <label for="value">Capacity :</label>
+                                <input type="numeric" class="form-control" id="capacity" name = "capacity" placeholder="Enter the Capacity of the equipment" />
                             </div>
+
                             <div class="form-group col-lg-6">
-                                <label for="equipment_type">Equipment Type :</label>
-                                <input type="text" id="equipment_type" class="form-control" name = "equipment_type"  placeholder="Enter the Equipment Type" required />
+                                <label for="value">Closing Time :</label>
+                                <input type="text" class="form-control" id="closing_time" name = "closing_time" placeholder="Enter the Closing Time of the equipment" />
                             </div>
+
+
+                            <div class="form-group col-lg-6">
+                                <label for="value">Department Name :</label>
+                                <input type="text" class="form-control" id="dept_name" name = "dept_name" placeholder="Enter the Department Name of the equipment" />
+                            </div>
+
+                            <div class="form-group col-lg-6">
+                                <label for="value">Name :</label>
+                                <input type="text" class="form-control" id="name" name = "name" placeholder="Enter the  Name of the equipment" />
+                            </div>
+
+                            <div class="form-group col-lg-6">
+                                <label for="value">Opening Time :</label>
+                                <input type="text" class="form-control" id="opening_time" name = "opening_time" placeholder="Enter the Opening Time of the equipment" />
+                            </div>
+
+                            <div class="form-group col-lg-6">
+                                <label for="value">Venue Type :</label>
+                                <input type="text" class="form-control" id="venue_type" name = "venue_type" placeholder="Enter the Venue Type of the equipment" />
+                            </div>
+
+
                         </div>
 
 
 
 
-                        <button id="submit-button" type="submit" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-plus"></span> Add</button>
+                        <button id="submit-button" type="submit" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-plus"></span>Add</button>
                     </form>
                 </div>
             </div>
