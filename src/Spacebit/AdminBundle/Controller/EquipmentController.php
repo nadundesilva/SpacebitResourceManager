@@ -23,7 +23,7 @@ class EquipmentController extends Controller
     public function getAllAction()
     {
         $conn = $this->get('database_connection');
-        $stmt = $conn->prepare('SELECT resource_id, availability, description, value, equipment_type FROM equipment INNER JOIN resource USING(resource_id);');
+        $stmt = $conn->prepare('SELECT resource_id,  description, value, equipment_type FROM equipment INNER JOIN resource USING(resource_id);');
         $stmt->execute();
         $result = $stmt->fetchAll();
 
@@ -64,7 +64,7 @@ class EquipmentController extends Controller
 
         if($update_type == 'Add') {
             $stmt = $conn->prepare('INSERT into resource values(:resource_id, :availability, :description);');
-            $stmt->bindValue(':plate_no', $resource_id);
+            $stmt->bindValue(':resource_id', $resource_id);
             $stmt->bindValue(':availability', $availability);
             $stmt->bindValue(':description', $description);
 
@@ -126,22 +126,38 @@ class EquipmentController extends Controller
         return new Response($response);
     }
 
+
     function changeRequestStatusAction()
     {
         $request = Request::createFromGlobals();
         $request_id = $request->request->get('request-id');
         $resource_id = $request->request->get('resource_id');
-
+        $status = $request->request->get('status');
 
         $conn = $this->get('database_connection');
-        $stmt = $conn->prepare('SELECT * FROM equipment LEFT OUTER  JOIN  resource WHERE resource_id = :resource_id;');
-        $stmt->bindValue(':resource_id', $resource_id);
+        $conn->beginTransaction();
 
         $response = 'success';
-        if(!$stmt->execute()) {
-            $response = $stmt->errorCode();
+        try {
+
+
+            $stmt = $conn->prepare('UPDATE resource_request SET status = :status,WHERE request_id = :request_id;');
+            $stmt->bindValue(':status', $status);
+            $stmt->bindValue(':request_id', $request_id);
+            if (!$stmt->execute()) {
+                throw new \Symfony\Component\Config\Definition\Exception\Exception();
+            }
+
+            $conn->commit();
+        } catch (Exception $e) {
+            $conn->rollBack();
+            $response = $e->getCode();
         }
+
+        $response = new Response($response);
+        $response->headers->set('Content-Type', 'application/json');
 
         return $response;
     }
+
 }
