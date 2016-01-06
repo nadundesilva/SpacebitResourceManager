@@ -23,6 +23,8 @@ spacebit_admin_user_access_level_change:
     defaults: { _controller: SpacebitAdminBundle:User:changeAccessLevel }
     methods:  ['POST']
 
+
+
 spacebit_admin_equipment:
     path:     /equipment
     defaults: { _controller: SpacebitAdminBundle:Equipment:equipment }
@@ -51,6 +53,28 @@ spacebit_admin_equipment_accept_request:
 spacebit_admin_venues:
     path:     /venues
     defaults: { _controller: SpacebitAdminBundle:Venues:venues }
+
+
+
+spacebit_admin_venues_get_all:
+    path:     /venues/getAll
+    defaults: { _controller: SpacebitAdminBundle:Venues:getAll }
+
+spacebit_admin_venues_get_by_resource_id:
+    path:     /venues/getByResourceID
+    defaults: { _controller: SpacebitAdminBundle:Venues:getByResourceID }
+    methods:  ['POST']
+
+spacebit_admin_venues_add_edit:
+    path:     /venues/addEdit
+    defaults: { _controller: SpacebitAdminBundle:Venues:addEdit }
+    methods:  ['POST']
+
+spacebit_admin_venue_accept_request:
+    path:     /venues/changeRequest
+    defaults: { _controller: SpacebitAdminBundle:Venues:changeRequestStatus }
+    methods:  ['POST']
+
 
 
 

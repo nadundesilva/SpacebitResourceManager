@@ -23,7 +23,7 @@ class EquipmentController extends Controller
     public function getAllAction()
     {
         $conn = $this->get('database_connection');
-        $stmt = $conn->prepare('SELECT resource_id, availability, description, value, equipment_type FROM equipment INNER JOIN resource USING(resource_id);');
+        $stmt = $conn->prepare('SELECT resource_id,  description, value, equipment_type FROM equipment INNER JOIN resource USING(resource_id);');
         $stmt->execute();
         $result = $stmt->fetchAll();
 
