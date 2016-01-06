@@ -42,16 +42,17 @@ function showManageVehiclesModal() {
 }
 
 function showAddVehicleModal() {
-    document.forms['vehicle-add-form']['plate-no'].value = '';
-    document.forms['vehicle-add-form']['type'].value = '';
-    document.forms['vehicle-add-form']['model'].value = '';
-    document.forms['vehicle-add-form']['capacity'].value = '';
-    document.forms['vehicle-add-form']['value'].value = '';
-    document.forms['vehicle-add-form']['availability'].checked = false;
-    document.forms['vehicle-add-form']['driver-first-name'].value = '';
-    document.forms['vehicle-add-form']['driver-last-name'].value = '';
+    document.forms['add-vehicle-form']['plate-no'].value = '';
+    document.forms['add-vehicle-form']['type'].value = '';
+    document.forms['add-vehicle-form']['model'].value = '';
+    document.forms['add-vehicle-form']['capacity'].value = '';
+    document.forms['add-vehicle-form']['value'].value = '';
+    document.forms['add-vehicle-form']['availability'].checked = false;
+    document.forms['add-vehicle-form']['driver-first-name'].value = '';
+    document.forms['add-vehicle-form']['driver-last-name'].value = '';
+    document.forms['add-vehicle-form']['submit-button'].value = "Add";
 
-    document.getElementById('addEditVehicleTitle').innerHTML = 'Add Vehicle';
+    document.getElementById('add-edit-vehicle-title').innerHTML = 'Add Vehicle';
     document.forms['vehicle-add-form']['submit-button'].innerHTML = '<span class="glyphicon glyphicon-plus"></span> Add';
     $('#manage-vehicles-modal').modal('hide');
     $('#add-edit-vehicle-modal').modal();
@@ -75,19 +76,20 @@ function showEditVehicleModal(plateNo) {
                 var res = obj.responseText;
                 var vehicle = JSON.parse(res).result;
 
-                document.forms['vehicle-add-form']['plate-no'].value = vehicle.plate_no;
-                document.forms['vehicle-add-form']['type'].value = vehicle.type;
-                document.forms['vehicle-add-form']['model'].value = vehicle.model;
-                document.forms['vehicle-add-form']['capacity'].value = vehicle.capacity;
-                document.forms['vehicle-add-form']['value'].value = vehicle.value;
-                document.forms['vehicle-add-form']['availability'].checked = vehicle.availability;
-                document.forms['vehicle-add-form']['driver-first-name'].value = vehicle.driver_first_name;
-                document.forms['vehicle-add-form']['driver-last-name'].value = vehicle.driver_last_name;
+                document.forms['add-vehicle-form']['plate-no'].value = vehicle.plate_no;
+                document.forms['add-vehicle-form']['type'].value = vehicle.type;
+                document.forms['add-vehicle-form']['model'].value = vehicle.model;
+                document.forms['add-vehicle-form']['capacity'].value = vehicle.capacity;
+                document.forms['add-vehicle-form']['value'].value = vehicle.value;
+                document.forms['add-vehicle-form']['availability'].checked = vehicle.availability;
+                document.forms['add-vehicle-form']['driver-first-name'].value = vehicle.driver_first_name;
+                document.forms['add-vehicle-form']['driver-last-name'].value = vehicle.driver_last_name;
+                document.forms['add-vehicle-form']['submit-button'].value = "Edit";
 
-                document.getElementById('addEditVehicleTitle').innerHTML = 'Edit Vehicle';
+                document.getElementById('add-edit-vehicle-title').innerHTML = 'Edit Vehicle';
                 document.forms['vehicle-add-form']['submit-button'].innerHTML = '<span class="glyphicon glyphicon-ok"></span> OK';
                 $('#manage-vehicles-modal').modal('hide');
-                $('#addEditVehicleModal').modal();
+                $('#add-edit-vehicle-modal').modal();
             }
         }
 

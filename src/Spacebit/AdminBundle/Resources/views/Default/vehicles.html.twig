@@ -184,7 +184,7 @@
             <div class="modal-content">
                 <div style="margin: 20px;">
                     <button class="btn btn-xs btn-primary" onclick="showManageVehiclesModal(); $('#add-edit-vehicle-modal').modal('hide');"><span class="glyphicon glyphicon-arrow-left"></span> Back</button>
-                    <h3 id="addEditVehicleTitle" style="text-align: center;">Add Vehicle</h3>
+                    <h3 id="add-edit-vehicle-title" style="text-align: center;">Add Vehicle</h3>
                     <form id="add-vehicle-form" role="form" method="POST" name="vehicle-add-form" onsubmit="addEditVehicle(); return false;">
                         <div class="row">
                             <div class="form-group col-lg-6">
@@ -223,7 +223,7 @@
                                 <input type="text" id="driver-last-name" class="form-control" name="driver-last-name" placeholder="Enter the Last name of the designated Driver" required />
                             </div>
                         </div>
-                        <button type="submit" id="submit-button" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-plus"></span> Add</button>
+                        <button type="submit" id="submit-button" name="submit-button" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-plus"></span> Add</button>
                     </form>
                 </div>
             </div>

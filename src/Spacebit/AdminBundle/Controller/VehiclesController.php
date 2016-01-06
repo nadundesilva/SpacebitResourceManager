@@ -87,7 +87,7 @@ class VehiclesController extends Controller
         } else {
             if ($update_type == 'Add') {
                 $stmt = $conn->prepare('INSERT INTO vehicle_administration VAlUES(:user_id, :plate_no)');
-                $stmt->bindValue(':user_id', $_SESSION['user_id']);
+                $stmt->bindValue(':user_id', $this->get('session')->get('user_id'));
                 $stmt->bindValue(':plate_no', $plate_no);
 
                 if (!$stmt->execute()) {
