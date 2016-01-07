@@ -29,3 +29,7 @@ spacebit_resources_vehicles_get_by_category:
     path:     /vehicles/getByCategory
     defaults: { _controller: SpacebitResourcesBundle:Vehicles:getByCategory }
     methods:  ['POST']
+
+spacebit_resources_vehicles_get_past_requests:
+    path:     /vehicles/getPastRequests
+    defaults: { _controller: SpacebitResourcesBundle:Vehicles:getPastRequests }

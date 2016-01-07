@@ -68,4 +68,22 @@ class VehiclesController extends Controller
 
         return new Response($response);
     }
+
+    public function getPastRequestsAction()
+    {
+        $this->get('session')->set('user_id', '130109V');
+        $this->get('session')->set('first_name', 'John');
+        $this->get('session')->set('last_name', 'Doe');
+        $this->get('session')->set('access_level', 5);
+        $conn = $this->get('database_connection');
+        $stmt = $conn->prepare('SELECT request_id, date, time, status, number_of_passengers, requested_type, requested_town, vehicle_plate_no FROM vehicle_request LEFT JOIN route ON route_group_id = group_id WHERE user_id = :user_id;');
+        $stmt->bindValue(':user_id', $this->get('session')->get('user_id'));
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+
+        $response = new Response(json_encode(array('result' => $result)));
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
+    }
 }

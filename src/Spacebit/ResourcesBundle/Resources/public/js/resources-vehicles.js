@@ -33,8 +33,8 @@ function loadVehiclesByCategory(category) {
                 }
                 modalContent += '</table>';
 
-                document.getElementById('vehiclesModalContent').innerHTML = modalContent;
-                $('#vehiclesModal').modal();
+                document.getElementById('vehicles-modal-content').innerHTML = modalContent;
+                $('#vehicles-modal').modal();
             }
         }
 
@@ -68,11 +68,11 @@ function addRequest() {
                 } else {
                     modalContent += 'An error occured in adding your request. Sorry for the inconvenience.</p><div style="text-align: center;"><button class="btn btn-sm btn-danger"';
                 }
-                modalContent += ' onclick=\'$("#vehiclesModal").modal("hide");\'>Ok</button><div></div>';
-                document.getElementById('vehiclesModalContent').innerHTML = modalContent;
+                modalContent += ' onclick=\'$("#vehicles-modal").modal("hide");\'>Ok</button><div></div>';
+                document.getElementById('vehicles-modal-content').innerHTML = modalContent;
 
-                $('#requestModal').modal('hide');
-                $('#vehiclesModal').modal();
+                $('#request-modal').modal('hide');
+                $('#vehicles-modal').modal();
             }
         }
 
@@ -105,7 +105,7 @@ function initialize() {
     };
     var map = new google.maps.Map(mapCanvas, mapOptions);
 
-    $("#requestModal").on('shown.bs.modal', function(){
+    $("#request-modal").on('shown.bs.modal', function(){
         google.maps.event.trigger(map, 'resize')
     });
 }
@@ -152,6 +152,56 @@ function search() {
         }
 
         obj.open("GET", "https://maps.googleapis.com/maps/api/geocode/json?address=" + address, true);
+        obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        obj.send();
+    }
+}
+
+function showPastRequestsModal() {
+    var obj;
+
+    if (window.XMLHttpRequest) {
+        obj = new XMLHttpRequest();
+    } else if (window.ActiveXObject) {
+        obj = new ActiveXObject("Microsoft.XMLHTTP");
+    } else {
+        alert("Browser Doesn't Support AJAX!");
+    }
+
+    if (obj !== null) {
+        obj.onreadystatechange = function () {
+            if (obj.readyState < 4) {
+                // progress
+            } else if (obj.readyState === 4) {
+                var res = obj.responseText;
+                var result = JSON.parse(res).result;
+
+                var pastRequestsTableContent = '<tr><th>Request ID</th><th>Date</th><th>Time</th><th>Number of Passengers</th><th>Destination</th><th>Requested Type</th><th>Assigned Vehicle</th><th>Status</th><th></th></tr>';
+                for(var i = 0; i < result.length; i++) {
+                    pastRequestsTableContent += '<tr><td>' + result[i].request_id + '</td>'
+                    pastRequestsTableContent += '<td>' + result[i].date + '</td>';
+                    pastRequestsTableContent += '<td>' + result[i].time + '</td>';
+                    pastRequestsTableContent += '<td>' + result[i].number_of_passengers + '</td>';
+                    pastRequestsTableContent += '<td>' + result[i].requested_town + '</td>';
+                    pastRequestsTableContent += '<td>' + result[i].requested_type + '</td>';
+                    pastRequestsTableContent += '<td>' + result[i].vehicle_plate_no + '</td>';
+                    var status;
+                    if (result[i].status == 0) {
+                        pastRequestsTableContent += '<td style = "color: #ff4d54;">Declined</td>';
+                    } else if (result[i].status == 1) {
+                        pastRequestsTableContent += '<td style = "color: #1dff46;">Accepted</td>';
+                    } else {
+                        pastRequestsTableContent += '<td style = "color: #624cff;">Pending</td>';
+                        pastRequestsTableContent += '<td><button class="btn btn-xs btn-primary"><span class="glyphicon glyphicon-pencil"></span> Edit</button></td>';
+                    }
+                }
+
+                document.getElementById('past-request-table-content').innerHTML = pastRequestsTableContent;
+                $('#past-requests-modal').modal();
+            }
+        }
+
+        obj.open("GET", "./vehicles/getPastRequests", true);
         obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         obj.send();
     }

@@ -29,3 +29,11 @@
     animation-duration: 2s;
     animation-timing-function: ease-out;
 }
+
+@media screen and (min-width: 768px) {
+    #past-requests-modal .modal-dialog  {width:900px;}
+}
+
+#past-requests-modal .modal-dialog {
+    width:75%;
+}
