@@ -5,6 +5,50 @@
 
 {% block title %}Equipment{% endblock %}
 
+{% block javascripts %}
+    <script src="{{ asset('bundles/spacebitresources/js/resources-equipment.js') }}"></script>
+{% endblock %}
+
 {% block body %}
+    <form role="form">
+        <div class="container col-lg-6">
+            <div class="form-group ">
+                <label for="sel1">Faculty</label>
+
+                <!--give id to select-->
+                <select id="faculty" class="form-control" name="value" onchange="loadDepartments();">
+                    <option disabled selected> *Please select a faculty*</option>;
+                    {% for fac in facNames %}
+                        <option value="{{ fac.faculty_name }}"> {{ fac.faculty_name }}</option>;
+                    {% endfor %}
+
+
+                </select>
+            </div>
+
+        </div>
+
+
+        <div class="container col-lg-6">
+
+            <div class="form-group ">
+                <label for="sel1">Department</label>
+                <select class="form-control"  id="department" onchange="loadEquipmentByCatagory()" disabled>
+
+                </select>
+            </div>
+        </div>
+
+        <div id="equipmentArea" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div style="margin: 20px;" id="equipmentTableContent">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
 
 {% endblock %}
