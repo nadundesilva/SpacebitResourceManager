@@ -69,7 +69,7 @@ function loadEquipmentByCatagory() {
                 for (var i = 0; i < deptEquipments.length; i++) {
                     tableContent += '<tr>';
                     tableContent += '<td>' + deptEquipments[i].equipment_type + '</td>';
-                    tableContent += '<td>' + '"REQUEST"' + '</td>';
+                    tableContent += '<td>' + '<button type="button" id = "equpimentSelect" class="btn btn-info btn-lg btn-padding" data-toggle="modal" data-target="#myModal">View</button>' + '</td>';
                     tableContent += '</tr>';
                 }
                 tableContent += '</table>';
