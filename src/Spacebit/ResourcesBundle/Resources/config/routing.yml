@@ -8,6 +8,16 @@ spacebit_resources_equipment:
     path:     /equipment
     defaults: { _controller: SpacebitResourcesBundle:Equipment:equipment }
 
+spacebit_resources_equipment_get_departments:
+    path:     /equipment/getDepartments
+    defaults: { _controller: SpacebitResourcesBundle:Equipment:getDepartments }
+    methods:  ['POST']
+
+spacebit_resources_equipment_get_by_category:
+    path:     /equipment/getByCategory
+    defaults: { _controller: SpacebitResourcesBundle:Equipment:getByCategory }
+    methods:  ['POST']
+
 
 
 spacebit_resources_venues:
