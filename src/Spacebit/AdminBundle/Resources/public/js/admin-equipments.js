@@ -80,7 +80,7 @@ function showEditEquipmentModal(resource_id) {
                 document.forms['equipment-add-form']['equipment_type'].value = equipment.equipment_type;
                 document.forms['equipment-add-form']['value'].value = equipment.value;
                 document.forms['equipment-add-form']['availability'].checked = equipment.availability;
-                document.forms['equipment-add-form']['description'].checked = equipment.description;
+                document.forms['equipment-add-form']['description'].value = equipment.description;
 
                 document.getElementById('addEditEquipmentTitle').innerHTML = 'Edit Equipment';
                 document.forms['equipment-add-form']['submit-button'].innerHTML = '<span class="glyphicon glyphicon-ok"></span> OK';
@@ -126,7 +126,7 @@ function addEditEquipment() {
                 if (res == 'success') {
                     modalContent += 'Equipment with resource id ' + resource_id + ' was ' + (updateType == "Add" ? "added" : "edited") + ' successfully</p><button class="btn btn-sm btn-success" onclick=\'$("#message-modal").modal("hide"); showManageEquipmentsModal();\'><span class="glyphicon glyphicon-ok"></span>';
                 } else {
-                    modalContent += 'An error occurred in ' + (updateType == "Add" ? "adding" : "editing") + ' the equipment with plate number ' + resource_id + '. Sorry for the inconvenience.</p><div style="text-align: center;"><button class="btn btn-sm btn-danger" onclick=\'$("#message-modal").modal("hide"); showManageEquipmentsModal();\'><span class="glyphicon glyphicon-warning-sign"></span>';
+                    modalContent += 'An error occurred in ' + (updateType == "Add" ? "adding" : "editing") + ' the equipment with Resource ID ' + resource_id + '. Sorry for the inconvenience.</p><div style="text-align: center;"><button class="btn btn-sm btn-danger" onclick=\'$("#message-modal").modal("hide"); showManageEquipmentsModal();\'><span class="glyphicon glyphicon-warning-sign"></span>';
                 }
                 modalContent += ' Ok</button><div></div>';
                 document.getElementById('message-modal-content').innerHTML = modalContent;
