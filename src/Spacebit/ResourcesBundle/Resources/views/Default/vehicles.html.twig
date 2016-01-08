@@ -15,6 +15,9 @@
 {% endblock %}
 
 {% block body %}
+    <button id="request-button" class="btn btn-sm btn-primary" style="margin: 10px;" onclick="$('#request-modal').modal();">Request a Vehicle</button>
+    <button id="request-button" class="btn btn-sm btn-primary" style="margin: 10px;" onclick="showPastRequestsModal();">Show Past Requests</button>
+
     {% set categories = ['Cars', 'Vans', 'Busses', 'Other'] %}
     <div class="row" style="width: 100%; text-align: center; padding: 50px;">
         {% for category in categories %}
@@ -28,21 +31,17 @@
         {% endfor %}
     </div>
 
-    <div style="width: 100%; text-align: center;">
-        <button id="request-button" class="btn btn-md btn-primary" style="margin: 10px;" onclick="$('#requestModal').modal();">Request a Vehicle</button>
-    </div>
-
-    <div id="vehiclesModal" class="modal fade" role="dialog">
+    <div id="vehicles-modal" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div style="margin: 20px;" id="vehiclesModalContent">
+                <div style="margin: 20px;" id="vehicles-modal-content">
 
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="requestModal" class="modal fade" role="dialog">
+    <div id="request-modal" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div style="margin: 20px;">
@@ -79,6 +78,19 @@
                         </div>
                         <input type="submit" class="btn btn-sm btn-success" value="Request">
                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="past-requests-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div style="margin: 20px;">
+                    <h3 style="text-align: center;">My Past Requests</h3>
+                    <div style="margin: 10px;">
+                        <table  class="table table-hover" style="padding: 20px" id="past-request-table-content"></table>
+                    </div>
                 </div>
             </div>
         </div>
