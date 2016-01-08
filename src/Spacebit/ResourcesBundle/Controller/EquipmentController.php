@@ -62,4 +62,21 @@ class EquipmentController extends Controller
         return $response;
     }
 
+    public function getFromCatagoryAction(){
+        $request = Request::createFromGlobals();
+        $equipCatagory = $request->query->get('equipCatagory'); //query : post //in js what is posted obj.send("department=" + department);
+
+        $conn = $this->get('database_connection');
+        $stmt = $conn->prepare('SELECT * FROM equipment WHERE equipment_type = :equipCatagory');
+        $stmt->bindValue(':equipCatagory', $equipCatagory);
+        $stmt->execute();
+        $deptEquipments = $stmt->fetchAll();
+
+        $response = new Response(json_encode(array('catogaryEquipments' => $deptEquipments)));
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
+
+    }
+
 }
