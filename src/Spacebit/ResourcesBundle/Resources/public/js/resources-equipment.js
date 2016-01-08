@@ -69,7 +69,7 @@ function loadEquipmentByCatagory() {
                 for (var i = 0; i < deptEquipments.length; i++) {
                     tableContent += '<tr>';
                     tableContent += '<td>' + deptEquipments[i].equipment_type + '</td>';
-                    tableContent += '<td>' + '<button type="button" id = "equpimentSelect" class="btn btn-info btn-lg btn-padding" data-toggle="modal" data-target="#myModal">View</button>' + '</td>';
+                    tableContent += '<td>' + '<button type="button" id = "equpimentSelect" class="btn btn-info btn-lg btn-padding" data-toggle="modal" data-target="#catagoryModal" onclick="loadModalByCatagory(\'' +deptEquipments[i].equipment_type + '\')">View</button>' + '</td>';
                     tableContent += '</tr>';
                 }
                 tableContent += '</table>';
@@ -83,4 +83,41 @@ function loadEquipmentByCatagory() {
     obj.open("POST", "./equipment/getByCategory", true);
     obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     obj.send("department=" + department);
+}
+
+function loadModalByCatagory(equipmentCatagory) {
+    var equipCatagory = equipmentCatagory;
+
+    var obj;
+
+    if (window.XMLHttpRequest) {
+        obj = new XMLHttpRequest();
+    } else if (window.ActiveXObject) {
+        obj = new ActiveXObject("Microsoft.XMLHTTP");
+    } else {
+        alert("Browser Doesn't Support AJAX!");
+    }
+
+    if (obj !== null) {
+        obj.onreadystatechange = function () {
+            if (obj.readyState < 4) {
+                // progress
+            } else if (obj.readyState === 4) {
+                var res = obj.responseText;
+
+                alert(res);
+                var modalContent = '';
+                modalContent = '"This is the modal kkk"';
+
+                document.getElementById('equipmentModalContent').innerHTML = modalContent;
+                $('#modalArea').modal();
+
+            }
+
+            obj.open("POST", "./equipment/getFromCatagory", true);
+            obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            obj.send("equipCatagory" + equipCatagory);
+
+        }
+    }
 }
