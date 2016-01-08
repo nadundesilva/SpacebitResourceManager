@@ -183,7 +183,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div style="margin: 20px;">
-                    <button class="btn btn-xs btn-primary" onclick="showManageVehiclesModal(); $('#add-edit-vehicle-modal').modal('hide');"><span class="glyphicon glyphicon-arrow-left"></span> Back</button>
+                    <button class="btn btn-xs btn-primary" onclick="$('#add-edit-vehicle-modal').modal('hide'); setTimeout('showManageVehiclesModal();', 1000);"><span class="glyphicon glyphicon-arrow-left"></span> Back</button>
                     <h3 id="add-edit-vehicle-title" style="text-align: center;">Add Vehicle</h3>
                     <form id="add-vehicle-form" role="form" method="POST" name="vehicle-add-form" onsubmit="addEditVehicle(); return false;">
                         <div class="row">

@@ -1,4 +1,3 @@
-
 function loadVehiclesByCategory(category) {
     var obj;
 
@@ -44,7 +43,45 @@ function loadVehiclesByCategory(category) {
     }
 }
 
-function addRequest() {
+function showAddRequestModal() {
+    document.forms['request-form']['request-date'].value = '';
+    document.forms['request-form']['request-time'].value = '';
+    document.forms['request-form']['request-vehicle-type'].value = '';
+    document.forms['request-form']['request-passenger-count'].value = '';
+    document.forms['request-form']['request-destination'].value = '';
+    document.getElementById('request-modal-title').innerHTML = 'Request a Vehicle';
+    document.getElementById('back-button').style.display= 'none';
+    document.getElementById('request-id-container').style.display = 'none';
+    document.forms['request-form']['submit-button'].innerHTML = '<span class="glyphicon glyphicon-plus"></span> Request';
+    document.forms['request-form']['submit-button'].value = "Add";
+    $('#request-modal').modal();
+}
+
+function showEditPastRequestModal(requestID, date, time, noOfPassengers, requestedTown, requestedType) {
+    document.forms['request-form']['request-id'].value = requestID;
+    document.forms['request-form']['request-date'].value = date;
+    document.forms['request-form']['request-time'].value = time;
+    document.forms['request-form']['request-vehicle-type'].value = requestedType;
+    document.forms['request-form']['request-passenger-count'].value = noOfPassengers;
+    document.forms['request-form']['request-destination'].value = requestedTown;
+    document.getElementById('request-modal-title').innerHTML = 'Edit Past Request';
+    document.getElementById('back-button').style.display= 'block';
+    document.getElementById('request-id-container').style.display = 'block';
+    document.forms['request-form']['submit-button'].innerHTML = '<span class="glyphicon glyphicon-ok"></span> Ok';
+    document.forms['request-form']['submit-button'].value = "Edit";
+    search();
+    $('#past-requests-modal').modal('hide');
+    setTimeout("$('#request-modal').modal();", 1000);
+}
+
+function addEditRequest() {
+    var date = document.forms["request-form"]["request-date"].value;
+    var time = document.forms["request-form"]["request-time"].value;
+    var vehicleType = document.forms["request-form"]["request-vehicle-type"].value;
+    var passengerCount = document.forms["request-form"]["request-passenger-count"].value;
+    var destination = document.forms["request-form"]["request-destination"].value;
+    var updateType = document.forms["request-form"]["submit-button"].value;
+
     var obj;
 
     if (window.XMLHttpRequest) {
@@ -64,27 +101,25 @@ function addRequest() {
 
                 var modalContent = '<div style="margin: 10px;"><p>';
                 if (res == 'success') {
-                    modalContent += 'You request was added successfully. An admin will review your request and accept it if possible</p><button class="btn btn-sm btn-success"';
+                    modalContent += 'You request was ' + (updateType == 'Add' ? 'added' : 'edited') + ' successfully. An admin will review your request and accept it if possible</p><button class="btn btn-sm btn-success"';
                 } else {
-                    modalContent += 'An error occured in adding your request. Sorry for the inconvenience.</p><div style="text-align: center;"><button class="btn btn-sm btn-danger"';
+                    modalContent += 'An error occured in ' + (updateType == 'Add' ? 'adding' : 'editing') + ' your request. Sorry for the inconvenience.</p><div style="text-align: center;"><button class="btn btn-sm btn-danger"';
                 }
-                modalContent += ' onclick=\'$("#vehicles-modal").modal("hide");\'>Ok</button><div></div>';
+                modalContent += ' onclick=\'$("#vehicles-modal").modal("hide"); setTimeout("showPastRequestsModal();", 1000);\'>Ok</button><div></div>';
                 document.getElementById('vehicles-modal-content').innerHTML = modalContent;
 
                 $('#request-modal').modal('hide');
-                $('#vehicles-modal').modal();
+                setTimeout("$('#vehicles-modal').modal();", 1000);
             }
         }
 
-        obj.open("POST", "./vehicles/addRequest", true);
+        obj.open("POST", "./vehicles/addEditRequest", true);
         obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        var date = document.forms["request-form"]["request-date"].value;
-        var time = document.forms["request-form"]["request-time"].value;
-        var vehicleType = document.forms["request-form"]["request-vehicle-type"].value;
-        var passengerCount = document.forms["request-form"]["request-passenger-count"].value;
-        var destination = document.forms["request-form"]["request-map-search"].value;
-        var parameter = "date=" + date + '&time=' + time + '&vehicle-type=' + vehicleType + '&passenger-count=' + passengerCount + '&destination=' + destination;
-        obj.send(parameter);
+        var parameters = "date=" + date + '&time=' + time + '&vehicle-type=' + vehicleType + '&passenger-count=' + passengerCount + '&destination=' + destination + '&update-type=' + updateType;
+        if (updateType == 'Edit') {
+            parameters += '&request-id=' + document.forms["request-form"]["request-id"].value
+        }
+        obj.send(parameters);
     }
 }
 
@@ -112,7 +147,7 @@ function initialize() {
 google.maps.event.addDomListener(window, 'load', initialize);
 
 function search() {
-    var address = document.forms["request-form"]["request-map-search"].value;
+    var address = document.forms["request-form"]["request-destination"].value;
     var obj;
 
     if (window.XMLHttpRequest) {
@@ -192,7 +227,7 @@ function showPastRequestsModal() {
                         pastRequestsTableContent += '<td style = "color: #1dff46;">Accepted</td>';
                     } else {
                         pastRequestsTableContent += '<td style = "color: #624cff;">Pending</td>';
-                        pastRequestsTableContent += '<td><button class="btn btn-xs btn-primary"><span class="glyphicon glyphicon-pencil"></span> Edit</button></td>';
+                        pastRequestsTableContent += '<td><button class="btn btn-xs btn-primary" onclick="showEditPastRequestModal(\'' + result[i].request_id + '\', \'' + result[i].date + '\', \'' + result[i].time + '\', \'' + result[i].number_of_passengers + '\', \'' + result[i].requested_town + '\', \'' + result[i].requested_type + '\');"><span class="glyphicon glyphicon-pencil"></span> Edit</button></td>';
                     }
                 }
 
