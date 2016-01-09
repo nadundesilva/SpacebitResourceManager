@@ -21,7 +21,7 @@ spacebit_resources_equipment_get_by_category:
 spacebit_resources_equipment_get_from_category:
     path:     /equipment/getFromCategory
     defaults: { _controller: SpacebitResourcesBundle:Equipment:getFromCategory }
-    methods:  ['GET']
+    methods:  ['POST']
 
 
 

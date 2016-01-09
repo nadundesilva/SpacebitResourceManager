@@ -10,7 +10,6 @@ class VehiclesController extends Controller
 {
     public function vehiclesAction()
     {
-        $this->get('session')->set('user_id', '130109V');
         $conn = $this->get('database_connection');
         $stmt = $conn->prepare('SELECT DISTINCT type AS name FROM vehicle;');
         $stmt->execute();
