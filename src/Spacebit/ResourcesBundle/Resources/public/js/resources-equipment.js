@@ -69,8 +69,8 @@ function loadEquipmentByCatagory() {
                 for (var i = 0; i < deptEquipments.length; i++) {
                     tableContent += '<tr>';
                     tableContent += '<td>' + deptEquipments[i].equipment_type + '</td>';
-                    tableContent += '<td>' + '<button type="button" id = "equpimentSelect" class="btn btn-info btn-lg btn-padding" data-toggle="modal" data-target="#catagoryModal" onclick="loadModalByCatagory(\'' +deptEquipments[i].equipment_type + '\')">View</button>' + '</td>';
-                    tableContent += '</tr>';
+                    modalContent += '<td><button type="button" id="equipmentSelect" class="btn btn-info btn-lg btn-padding" data-toggle="modal" data-target="#catagoryModal" onclick="loadModalByCatagory(\'' + deptEquipments[i].equipment_type+ '\')"><span class="glyphicon glyphicon-pencil"></span> View</button></td>';
+                    modalContent += '</tr>';
                 }
                 tableContent += '</table>';
 
