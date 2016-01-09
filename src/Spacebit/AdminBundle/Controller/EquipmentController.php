@@ -10,6 +10,12 @@ class EquipmentController extends Controller
 {
     public function equipmentAction()
     {
+        /*
+        $this->get('session')->set('user_id', 'AB1234');
+        $this->get('session')->set('first_name', 'John');
+        $this->get('session')->set('last_name', 'Doe');
+        $this->get('session')->set('access_level', 5);
+        */
         $conn = $this->get('database_connection');
         $stmt = $conn->prepare('SELECT request_id, user_id,resource_id, date_from,date_to, time_from,time_to, status FROM resource_request ORDER BY status DESC, date_from DESC, time_from DESC;');
         $stmt->execute();
@@ -58,7 +64,7 @@ class EquipmentController extends Controller
         $description = $request->request->get('description');
         $availability = $request->request->get('availability');
         $value = $request->request->get('value');
-        $update_type = $request->request->get('update-type');
+        $update_type = $request->request->get('update_type');
 
         $conn = $this->get('database_connection');
 
@@ -72,15 +78,15 @@ class EquipmentController extends Controller
             if(!$stmt->execute()) {
                 $response = $stmt->errorCode();
             } else {
-                if ($update_type == 'Add') {
+
                     $stmt = $conn->prepare('INSERT INTO resource_administration VAlUES(:user_id, :resource_id)');
-                    $stmt->bindValue(':user_id', $_SESSION['user_id']);
+                    $stmt->bindValue(':user_id', $this->get('session')->get("user_id"));
                     $stmt->bindValue(':resource_id', $resource_id);
 
                     if (!$stmt->execute()) {
                         $response = $stmt->errorCode();
                     }
-                }
+
             }
 
             $stmt = $conn->prepare('INSERT into equipment values(:resource_id, :value, :equipment_type);');
@@ -123,6 +129,7 @@ class EquipmentController extends Controller
             }
 
         }
+        $response->headers->set('Content-Type', 'application/json');
         return new Response($response);
     }
 
