@@ -11,6 +11,29 @@
 
 {% block javascripts %}
     <script src="{{ asset('bundles/spacebituser/js/user-signup.js') }}"></script>
+
+    <script>
+        function showDiv(elem){
+
+            //var elem = document.getElementById("accessLevel");
+            //window.alert("keet")
+            if(elem.value == "student") {
+                document.getElementById('studentDivision').style.display = "block";
+                document.getElementById('staffDivision').style.display = "none";
+                document.getElementById('guestDivision').style.display = "none";
+            }
+            if(elem.value == "staff") {
+                document.getElementById('staffDivision').style.display = "block";
+                document.getElementById('studentDivision').style.display = "none";
+                document.getElementById('guestDivision').style.display = "none";
+            }
+            if(elem.value == "guest") {
+                document.getElementById('guestDivision').style.display = "block";
+                document.getElementById('studentDivision').style.display = "none";
+                document.getElementById('staffDivision').style.display = "none";
+            }
+        }
+    </script>
 {% endblock %}
 
 {% block body %}
@@ -58,19 +81,19 @@
                     <br>
                 </div>
             </div>
-            <div id="student-division" style="display: none;">
+            <div id="studentDivision" style="display: none;">
                 <div class="form-group">
                     <label for="batch">Batch</label>
                     <input type="number" class="form-control" id="batch" name="batch" placeholder="Batch" required />
                 </div>
             </div>
-            <div id="staff-division" style="display: none;">
+            <div id="staffDivision" style="display: none;">
                 <div class="form-group">
                     <label for="designation">Designation</label>
                     <input type="text" class="form-control" id="designation" name="designation" placeholder="Designation" required />
                 </div>
             </div>
-            <div id="guest-division" style="display: block;">
+            <div id="guestDivision" style="display: block;">
                 <h4>Organization Details</h4>
                 <div class="form-group">
                     <label for="title">Organization Title</label>

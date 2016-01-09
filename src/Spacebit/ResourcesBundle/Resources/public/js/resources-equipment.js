@@ -42,6 +42,8 @@ function loadDepartments() {
 function loadEquipmentByCatagory() {
     var department = document.getElementById('department').value;
 
+    alert("Keet");
+
     var obj;
 
     if (window.XMLHttpRequest) {
@@ -89,6 +91,8 @@ function loadModalByCatagory(equipmentCatagory) {
     var equipCatagory = equipmentCatagory;
 
     var obj;
+
+
 
     if (window.XMLHttpRequest) {
         obj = new XMLHttpRequest();

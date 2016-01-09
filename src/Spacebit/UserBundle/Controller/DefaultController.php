@@ -40,7 +40,8 @@ class DefaultController extends Controller
         $password = $request->request->get('password');
 
         $conn = $this->get('database_connection');
-        $stmt = $conn->prepare('SELECT user_id,password FROM login WHERE user_id = :name;');
+        //$stmt = $conn->prepare('SELECT user_id,password FROM login WHERE user_id = :name;');
+        $stmt = $conn->prepare('SELECT * FROM login INNER JOIN user USING (user_id) WHERE user_id = :name;');
         $stmt->bindValue(':name', $name);
         $stmt->execute();
         $result = $stmt->fetchall();
