@@ -46,6 +46,7 @@ function showAddEquipmentModal() {
     document.forms['equipment-add-form']['resource_id'].value = '';
     document.forms['equipment-add-form']['description'].value = '';
     document.forms['equipment-add-form']['equipment_type'].value = '';
+    document.forms['equipment-add-form']['submit-button'].value = 'Add';
 
     document.forms['equipment-add-form']['value'].value = '';
     document.forms['equipment-add-form']['availability'].checked = false;

@@ -55,7 +55,7 @@ function showAddVehicleModal() {
     document.getElementById('add-edit-vehicle-title').innerHTML = 'Add Vehicle';
     document.forms['vehicle-add-form']['submit-button'].innerHTML = '<span class="glyphicon glyphicon-plus"></span> Add';
     $('#manage-vehicles-modal').modal('hide');
-    $('#add-edit-vehicle-modal').modal();
+    setTimeout("$('#add-edit-vehicle-modal').modal();", 1000);
 }
 
 function showEditVehicleModal(plateNo) {
@@ -89,7 +89,7 @@ function showEditVehicleModal(plateNo) {
                 document.getElementById('add-edit-vehicle-title').innerHTML = 'Edit Vehicle';
                 document.forms['vehicle-add-form']['submit-button'].innerHTML = '<span class="glyphicon glyphicon-ok"></span> OK';
                 $('#manage-vehicles-modal').modal('hide');
-                $('#add-edit-vehicle-modal').modal();
+                setTimeout("$('#add-edit-vehicle-modal').modal();", 1000);
             }
         }
 
@@ -135,7 +135,7 @@ function addEditVehicle() {
                 document.getElementById('message-modal-content').innerHTML = modalContent;
 
                 $('#add-edit-vehicle-modal').modal('hide');
-                $('#message-modal').modal();
+                setTimeout("$('#message-modal').modal();", 1000);
             }
         }
 
@@ -307,7 +307,7 @@ function changeVehicleRequest() {
                 document.getElementById('message-modal-content').innerHTML = modalContent;
 
                 $('#edit-vehicle-request-modal').modal('hide');
-                $('#message-modal').modal();
+                setTimeout("$('#message-modal').modal();", 1000);
             }
         }
 

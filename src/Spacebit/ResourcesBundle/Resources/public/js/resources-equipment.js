@@ -1,7 +1,3 @@
-/**
- * Created by Achini on 07/01/2016.
- */
-
 function loadDepartments() {
     var faculty = document.getElementById('faculty').value; //get the value selected via id.value & assign to variable
 
@@ -23,7 +19,7 @@ function loadDepartments() {
                 var res = obj.responseText;
                 var depts = JSON.parse(res).depts;
 
-                var content = '<option disabled selected>*Please select a department*</option>;';
+                var content = '<option disabled selected>--Please select a department--</option>;';
                 for (var i = 0; i < depts.length; i++) {
                     content += '<option value="' + depts[i].dept_name + '">' + depts[i].dept_name + '</option>';
                 }
@@ -39,7 +35,7 @@ function loadDepartments() {
     }
 }
 
-function loadEquipmentByCatagory() {
+function loadEquipmentByCategory() {
     var department = document.getElementById('department').value;
 
     alert("Keet");
@@ -62,16 +58,12 @@ function loadEquipmentByCatagory() {
                 var res = obj.responseText;
                 var deptEquipments = JSON.parse(res).deptEquipment;
 
-                alert(res);
-
-                var tableContent = '';
-
-                tableContent = '<h2 style="text-align: center;">' + '</h2><table class="table table-hover">';
-                tableContent += '<tr><th>Equipment Catogary</th><th>Equipment Request</th></tr>';
+                var tableContent = '<h2 style="text-align: center;">' + '</h2><table class="table table-hover">';
+                tableContent += '<tr><th>Equipment Catogary</th><th></th></tr>';
                 for (var i = 0; i < deptEquipments.length; i++) {
                     tableContent += '<tr>';
                     tableContent += '<td>' + deptEquipments[i].equipment_type + '</td>';
-                    tableContent += '<td>' + '<button type="button" id = "equpimentSelect" class="btn btn-info btn-lg btn-padding" data-toggle="modal" data-target="#catagoryModal" onclick="loadModalByCatagory(\'' +deptEquipments[i].equipment_type + '\')">View</button>' + '</td>';
+                    tableContent += '<td><button type="button" id="equipmentSelect" class="btn btn-info btn-xs" onclick="loadModalByCategory(\'' + deptEquipments[i].equipment_type+ '\')"><span class="glyphicon glyphicon-pencil"></span> View</button></td>';
                     tableContent += '</tr>';
                 }
                 tableContent += '</table>';
@@ -87,9 +79,7 @@ function loadEquipmentByCatagory() {
     obj.send("department=" + department);
 }
 
-function loadModalByCatagory(equipmentCatagory) {
-    var equipCatagory = equipmentCatagory;
-
+function loadModalByCategory(equipCategory) {
     var obj;
 
 
@@ -109,19 +99,17 @@ function loadModalByCatagory(equipmentCatagory) {
             } else if (obj.readyState === 4) {
                 var res = obj.responseText;
 
-                alert(res);
-                var modalContent = '';
-                modalContent = '"This is the modal kkk"';
+                var modalContent = '"This is the modal kkk"';
 
                 document.getElementById('equipmentModalContent').innerHTML = modalContent;
-                $('#modalArea').modal();
+                $('#equipmentArea').modal('hide');
+                setTimeout("$('#modalArea').modal();", 1000);
 
             }
-
-            obj.open("POST", "./equipment/getFromCatagory", true);
-            obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            obj.send("equipCatagory" + equipCatagory);
-
         }
+
+        obj.open("POST", "./equipment/getFromCategory", true);
+        obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        obj.send("equipCategory=" + equipCategory);
     }
 }

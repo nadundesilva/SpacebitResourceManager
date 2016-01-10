@@ -15,7 +15,7 @@
 {% endblock %}
 
 {% block body %}
-    <button id="request-button" class="btn btn-sm btn-primary" style="margin: 10px;" onclick="$('#request-modal').modal();">Request a Vehicle</button>
+    <button id="request-button" class="btn btn-sm btn-primary" style="margin: 10px;" onclick="showAddRequestModal();">Request a Vehicle</button>
     <button id="request-button" class="btn btn-sm btn-primary" style="margin: 10px;" onclick="showPastRequestsModal();">Show Past Requests</button>
 
     {% set categories = ['Cars', 'Vans', 'Busses', 'Other'] %}
@@ -45,8 +45,13 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div style="margin: 20px;">
-                    <h2 style="text-align: center;">Request a Vehicle</h2>
-                    <form id="request-form" role="form" method="POST" name="request-form" onsubmit="addRequest(); return false;">
+                    <button id="back-button" class="btn btn-xs btn-primary" onclick="$('#request-modal').modal('hide'); setTimeout('showPastRequestsModal();', 1000);"><span class="glyphicon glyphicon-arrow-left"></span> Back</button>
+                    <h2 id="request-modal-title" style="text-align: center;">Request a Vehicle</h2>
+                    <form id="request-form" role="form" method="POST" name="request-form" onsubmit="addEditRequest(); return false;">
+                        <div class="form-group" id="request-id-container">
+                            <label for="request-id">Request ID :</label>
+                            <input id="request-id" type="number" name="request-id" class="form-control" onkeypress="onAddRequestFormKeyPress(event);" disabled />
+                        </div>
                         <div class="form-group">
                             <label for="request-date">Date :</label>
                             <input id="request-date" type="date" min="{{ 'now' | date('Y-m-d') }}" name="request-date" class="form-control" onkeypress="onAddRequestFormKeyPress(event);" required />
@@ -70,13 +75,13 @@
                             <input type="number" name="request-passenger-count" min="1" class="form-control" placeholder="Enter the number of passengers" onkeypress="onAddRequestFormKeyPress(event);" required />
                         </div>
                         <div class="form-group">
-                            <label for="request-passenger-count">Your Destination :</label>
-                            <input type="text" id="request-map-search" name="request-destination" class="form-control" placeholder="Enter the destination of you wish to go to" onkeyup="search();" required />
+                            <label for="request-destination">Your Destination :</label>
+                            <input type="text" id="request-destination" name="request-destination" class="form-control" placeholder="Enter the destination of you wish to go to" onkeyup="search();" required />
                             <div class="container" style="padding: 25px">
                                 <div id="google-map" class="container col-sm-5" style="width: 500px; height: 400px; background-color: #CCC;"></div>
                             </div>
                         </div>
-                        <input type="submit" class="btn btn-sm btn-success" value="Request">
+                        <button id="submit-button" name="submit-button" type="submit" class="btn btn-sm btn-success">Request</button>
                     </form>
                 </div>
             </div>
