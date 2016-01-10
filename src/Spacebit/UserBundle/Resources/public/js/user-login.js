@@ -1,10 +1,9 @@
 function login() {
-
+    //set authentication
 }
 
 function validateUser() {
     var obj;
-
 
     var name =document.getElementById("userID").value;
     var password = document.getElementById("password").value;
@@ -37,7 +36,11 @@ function validateUser() {
 
                     }
                     else{
+                        var rows = JSON.parse(res).result;
+
+                        window.alert(rows[0].access_level);
                         window.alert("Log in successful");
+
                     }
 
                 }
