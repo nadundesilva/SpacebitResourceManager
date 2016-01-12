@@ -53,7 +53,7 @@
         </div>
     </div>
 
-    <div id="manage-venues-modal" class="modal fade" role="dialog">
+    <div id="manage-venues-modal" class="modal fade" role="dialog" >
         <div class="modal-dialog">
             <div class="modal-content">
                 <div style="margin: 20px;">
@@ -69,12 +69,12 @@
         </div>
     </div>
 
-    <div id="edit-equipments-modal" class="modal fade" role="dialog">
+    <div id="edit-venues-modal" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div style="margin: 20px;">
                     <h3 style="text-align: center;">Edit Venue Request</h3>
-
+                        <div id="edit-request-div"></div>
                 </div>
             </div>
         </div>
@@ -86,7 +86,7 @@
                 <div style="margin: 20px;">
                     <button class="btn btn-xs btn-primary" onclick="showManageVenueModal(); $('#add-edit-venue-modal').modal('hide');"><span class="glyphicon glyphicon-arrow-left"></span>Back</button>
                     <h3 id="addEditVenueTitle" style="text-align: center;">Add Venue</h3>
-                    <form id="add-venue-form" role="form" method="POST" name="venue-add-form" onsubmit="addEditVenue(); return false;">
+                    <form id=venue-add-form" role="form" method="POST" name="venue-add-form" onsubmit="addEditVenue(); return false;">
                         <div class="row">
                             <div class="form-group col-lg-12">
                                 <label for="resource_id">Resource ID :</label>
@@ -97,33 +97,37 @@
                             </div>
                             <div class="form-group col-lg-12">
                                 <label for="description">Description :</label>
-                                <input type="text" id="description" class="form-control" name = "description" placeholder="Enter Description of the Equipment" required />
+                                <input type="text" id="description" class="form-control" name = "description" placeholder="Enter Description of the Venue" required />
                             </div>
                             <div class="form-group col-lg-6">
                                 <label for="value">Capacity :</label>
-                                <input type="numeric" class="form-control" id="capacity" name = "capacity" placeholder="Enter the Capacity of the equipment" />
+                                <input type="numeric" class="form-control" id="capacity" name = "capacity" placeholder="Enter the Capacity of the venue" />
+                            </div>
+
+
+                            <div class="form-group col-lg-6">
+                                <label for="value">Opening Time :</label>
+                                <input type="time" class="form-control" id="opening_time" name = "opening_time" placeholder="Enter the Opening Time of the venue" />
                             </div>
 
                             <div class="form-group col-lg-6">
                                 <label for="value">Closing Time :</label>
-                                <input type="text" class="form-control" id="closing_time" name = "closing_time" placeholder="Enter the Closing Time of the equipment" />
+
+                                <input type="time" class="form-control" id="closing_time" name = "closing_time" placeholder="Enter the Closing Time of the venue" />
                             </div>
 
 
                             <div class="form-group col-lg-6">
                                 <label for="value">Department Name :</label>
-                                <input type="text" class="form-control" id="dept_name" name = "dept_name" placeholder="Enter the Department Name of the equipment" />
+                                <input type="text" class="form-control" id="dept_name" name = "dept_name" placeholder="Enter the Department Name of the venue" />
                             </div>
 
                             <div class="form-group col-lg-6">
                                 <label for="value">Name :</label>
-                                <input type="text" class="form-control" id="name" name = "name" placeholder="Enter the  Name of the equipment" />
+                                <input type="text" class="form-control" id="name" name = "name" placeholder="Enter the  Name of the venue" />
                             </div>
 
-                            <div class="form-group col-lg-6">
-                                <label for="value">Opening Time :</label>
-                                <input type="text" class="form-control" id="opening_time" name = "opening_time" placeholder="Enter the Opening Time of the equipment" />
-                            </div>
+
 
                             <div class="form-group col-lg-6">
                                 <label for="value">Venue Type :</label>

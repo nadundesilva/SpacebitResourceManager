@@ -74,7 +74,10 @@
             <div class="modal-content">
                 <div style="margin: 20px;">
                     <h3 style="text-align: center;">Edit Equipment Request</h3>
+                        <div id="edit-request-div" align="center">
 
+
+                        </div>
                 </div>
             </div>
         </div>
@@ -86,7 +89,7 @@
                 <div style="margin: 20px;">
                     <button class="btn btn-xs btn-primary" onclick="showManageEquipmentModal(); $('#add-edit-equipment-modal').modal('hide');"><span class="glyphicon glyphicon-arrow-left"></span> Back</button>
                     <h3 id="addEditEquipmentTitle" style="text-align: center;">Add Equipment</h3>
-                    <form id="add-equipment-form" role="form" method="POST" name="equipment-add-form" onsubmit="addEditEquipment(); return false;">
+                    <form id="equipment-add-form" role="form" method="POST" name="equipment-add-form" onsubmit="addEditEquipment(); return false;">
                         <div class="row">
                             <div class="form-group col-lg-12">
                                 <label for="resource_id">Resource ID :</label>
