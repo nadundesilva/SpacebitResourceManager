@@ -79,4 +79,32 @@ class EquipmentController extends Controller
 
     }
 
+    public function addRequestAction()
+    {
+        $request = Request::createFromGlobals();
+        $date = $request->request->get('date');
+        $time = $request->request->get('time');
+        //$passenger_count = $request->request->get('passenger-count');
+       // $vehicle_type = $request->request->get('vehicle-type');
+       // $destination = $request->request->get('destination');
+
+        $conn = $this->get('database_connection');
+
+        $stmt = $conn->prepare('INSERT INTO vehicle_request(user_id, date, time, status, number_of_passengers, requested_type, requested_town) VALUES(:user_id, :date, :time, :status, :number_of_passengers, :requested_type, :requested_town);');
+        $stmt->bindValue(':user_id', $_SESSION['user_id']);
+        $stmt->bindValue(':date', $date);
+        $stmt->bindValue(':time', $time);
+        $stmt->bindValue(':status', 2);
+       // $stmt->bindValue(':number_of_passengers', $passenger_count);
+       // $stmt->bindValue(':requested_type', $vehicle_type);
+       // $stmt->bindValue(':requested_town', $destination);
+
+        $response = 'success';
+        if(!$stmt->execute()) {
+            $response = $stmt->errorCode();
+        }
+
+        return new Response($response);
+    }
+
 }

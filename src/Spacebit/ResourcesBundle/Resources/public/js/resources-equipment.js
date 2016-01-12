@@ -88,6 +88,42 @@ function loadEquipmentByCatagory() {
 function loadModalByCatagory(equipmentCatagory) {
     var equipCatagory = equipmentCatagory;
 
+    alert(equipCatagory);
+    var obj1;
+
+    if (window.XMLHttpRequest) {
+        obj1 = new XMLHttpRequest();
+    } else if (window.ActiveXObject) {
+        obj1 = new ActiveXObject("Microsoft.XMLHTTP");
+    } else {
+        alert("Browser Doesn't Support AJAX!");
+    }
+
+    if (obj1 !== null) {
+        obj1.onreadystatechange = function () {
+            if (obj1.readyState < 4) {
+                // progress
+            } else if (obj1.readyState === 4) {
+                var res = obj1.responseText;
+
+                alert(res);
+                var modalContent = '';
+                modalContent = '"This is the modal kkk"';
+
+                document.getElementById('equipmentModalContent').innerHTML = modalContent;
+                $('#modalArea').modal();
+
+            }
+
+            obj1.open("POST", "./equipment/getFromCatagory", true);
+            obj1.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            obj1.send("equipCatagory" + equipCatagory);
+
+        }
+    }
+}
+
+function addRequest() {
     var obj;
 
     if (window.XMLHttpRequest) {
@@ -105,19 +141,40 @@ function loadModalByCatagory(equipmentCatagory) {
             } else if (obj.readyState === 4) {
                 var res = obj.responseText;
 
-                alert(res);
-                var modalContent = '';
-                modalContent = '"This is the modal kkk"';
+                var modalContent = '<div style="margin: 10px;"><p>';
+                if (res == 'success') {
+                    modalContent += 'You request was added successfully. An admin will review your request and accept it if possible</p><button class="btn btn-sm btn-success"';
+                } else {
+                    modalContent += 'An error occured in adding your request. Sorry for the inconvenience.</p><div style="text-align: center;"><button class="btn btn-sm btn-danger"';
+                }
+                modalContent += ' onclick=\'$("#equipmentArea").modal("hide");\'>Ok</button><div></div>';
+                document.getElementById('equipmentTableContent').innerHTML = modalContent;
 
-                document.getElementById('equipmentModalContent').innerHTML = modalContent;
-                $('#modalArea').modal();
-
+                $('#equipmentArea').modal('hide');
+                //$('#vehicles-modal').modal();
             }
-
-            obj.open("POST", "./equipment/getFromCatagory", true);
-            obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            obj.send("equipCatagory" + equipCatagory);
-
         }
+
+        obj.open("POST", "./equipment/addRequest", true);
+        obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        var date = document.forms["request-form"]["request-date"].value;
+        var time = document.forms["request-form"]["request-time"].value;
+       // var vehicleType = document.forms["request-form"]["request-vehicle-type"].value;
+       // var passengerCount = document.forms["request-form"]["request-passenger-count"].value;
+       // var destination = document.forms["request-form"]["request-map-search"].value;
+        //var parameter = "date=" + date + '&time=' + time + '&vehicle-type=' + vehicleType + '&passenger-count=' + passengerCount + '&destination=' + destination;
+       // obj.send(parameter);
     }
+}
+
+function onAddRequestFormKeyPress(e) {
+    if(e.keyCode == 13) {
+        addRequest();
+    }
+}
+
+function equipmentRequest(){
+   //equipment is passed
+
+
 }
