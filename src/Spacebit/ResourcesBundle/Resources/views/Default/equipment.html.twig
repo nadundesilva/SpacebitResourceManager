@@ -13,97 +13,33 @@
     <form role="form">
         <div class="container col-lg-6">
             <div class="form-group ">
-                <label for="sel1">Faculty</label>
-
+                <label for="sel1">Faculty :</label>
                 <!--give id to select-->
                 <select id="faculty" class="form-control" name="value" onchange="loadDepartments();">
-                    <option disabled selected> *Please select a faculty*</option>;
+                    <option disabled selected>--Please select a faculty--</option>;
                     {% for fac in facNames %}
                         <option value="{{ fac.faculty_name }}"> {{ fac.faculty_name }}</option>;
                     {% endfor %}
-
-
                 </select>
             </div>
-
         </div>
-
-
         <div class="container col-lg-6">
-
             <div class="form-group ">
-                <label for="sel1">Department</label>
-                <select class="form-control"  id="department" onchange="loadEquipmentByCatagory()" disabled>
-
-                </select>
+                <label for="sel1">Department :</label>
+                <select class="form-control"  id="department" onchange="loadEquipmentByCategory()" disabled></select>
             </div>
         </div>
-
-        <div id="equipmentArea" class="modal fade" role="dialog" align="left">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div style="margin: 20px;" id="equipmentTableContent">
-
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <div id="modalArea" class="modal fade" role="dialog" align="left">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div style="margin: 20px;" id="equipmentModalContent">
-
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <div>
-            <button id = "requestButton" type="button" class="btn btn-info btn-lg btn-padding" data-toggle="modal" onclick="$('#request-modal').modal();">Request</button>
-        </div>
-
-        <div id="request-modal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div style="margin: 20px;">
-                        <h2 style="text-align: center;">Request a Equipment</h2>
-                        <form id="request-form" role="form" method="POST" name="request-form" onsubmit="addRequest(); return false;">
-                            <div class="form-group">
-                                <label for="request-date-From">Date From:</label>
-                                <input id="request-date-From" type="date" min="{{ 'now' | date('Y-m-d') }}" name="request-date" class="form-control" onkeypress="onAddRequestFormKeyPress(event);" required />
-                            </div>
-
-                            <div class="form-group">
-                                <label for="request-date-To">Date To:</label>
-                                <input id="request-date-To" type="date" min="{{ 'now' | date('Y-m-d') }}" name="request-date" class="form-control" onkeypress="onAddRequestFormKeyPress(event);" required />
-                            </div>
-
-                            <div class="form-group">
-                                <label for="request-time-From">Time From:</label>
-                                <input type="time" name="request-time-From" class="form-control" onkeypress="onAddRequestFormKeyPress(event);" required />
-                            </div>
-                            <div class="form-group">
-                                <label for="request-time-To">Time To:</label>
-                                <input type="time" name="request-time-To" class="form-control" onkeypress="onAddRequestFormKeyPress(event);" required />
-                            </div>
-
-                            <div class="form-group">
-                                <label for="request-time">Equipment Status: </label>
-                                <label for="request-passenger-count">Time slot: availability:</label>
-                            </div>
-                           <input type="submit" class="btn btn-sm btn-success" value="Request">
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </form>
 
-    <form>
+    <div id="equipmentArea" class="modal fade" role="dialog" align="left">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div style="margin: 20px;" id="equipmentTableContent">
+
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div id="modalArea" class="modal fade" role="dialog" align="left">
         <div class="modal-dialog">
@@ -114,9 +50,4 @@
             </div>
         </div>
     </div>
-    </form>
-
-
-
-
 {% endblock %}

@@ -11,7 +11,7 @@ class VenuesController extends Controller
     public function venuesAction()
     {
         $conn = $this->get('database_connection');
-        $stmt = $conn->prepare('SELECT request_id, user_id,resource_id, date_from,date_to, time_from,time_to, status FROM resource_request ORDER BY status DESC, date_from DESC, time_from DESC;');
+        $stmt = $conn->prepare('SELECT request_id, user_id,venue.resource_id, date_from,date_to, time_from,time_to, status FROM resource_request INNER JOIN venue on  venue.resource_id = resource_request.resource_id ORDER BY status DESC, date_from DESC, time_from DESC;');
         $stmt->execute();
         $venues_requests = $stmt->fetchAll();
 
@@ -63,9 +63,6 @@ class VenuesController extends Controller
         $opening_time = $request->request->get('opening_time');
         $venue_type = $request->request->get('venue_type');
         $update_type = $request->request->get('update-type');
-
-
-
         $conn = $this->get('database_connection');
 
         if($update_type == 'Add') {
@@ -145,7 +142,6 @@ class VenuesController extends Controller
     {
         $request = Request::createFromGlobals();
         $request_id = $request->request->get('request-id');
-        $resource_id = $request->request->get('resource_id');
         $status = $request->request->get('status');
 
         $conn = $this->get('database_connection');

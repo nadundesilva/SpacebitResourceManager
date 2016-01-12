@@ -31,7 +31,7 @@ class EquipmentController extends Controller
     public function getDepartmentsAction()
     {
         $request = Request::createFromGlobals();
-        $faculty = $request->request->get('faculty'); //query : post
+        $faculty = $request->request->get('faculty'); //request : post
 
         $conn = $this->get('database_connection');
         $stmt = $conn->prepare('SELECT dept_name FROM department WHERE faculty_name=:faculty_name');
@@ -48,7 +48,7 @@ class EquipmentController extends Controller
     public function getByCategoryAction()
     {
         $request = Request::createFromGlobals();
-        $department = $request->request->get('department'); //query : post //in js what is posted obj.send("department=" + department);
+        $department = $request->request->get('department'); //request : post //in js what is posted obj.send("department=" + department);
 
         $conn = $this->get('database_connection');
         $stmt = $conn->prepare('SELECT DISTINCT equipment_type FROM equipment WHERE department_name = :department_name');
@@ -62,9 +62,10 @@ class EquipmentController extends Controller
         return $response;
     }
 
-    public function getFromCatagoryAction(){
+    public function getFromCategoryAction()
+    {
         $request = Request::createFromGlobals();
-        $equipCatagory = $request->query->get('equipCatagory'); //query : post //in js what is posted obj.send("department=" + department);
+        $equipCatagory = $request->request->get('equipCatagory'); //request : post //in js what is posted obj.send("department=" + department);
 
         $conn = $this->get('database_connection');
         $stmt = $conn->prepare('SELECT * FROM equipment WHERE equipment_type = :equipCatagory');

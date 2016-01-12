@@ -46,6 +46,7 @@ function showAddEquipmentModal() {
     document.forms['equipment-add-form']['resource_id'].value = '';
     document.forms['equipment-add-form']['description'].value = '';
     document.forms['equipment-add-form']['equipment_type'].value = '';
+    document.forms['equipment-add-form']['submit-button'].value = 'Add';
 
     document.forms['equipment-add-form']['value'].value = '';
     document.forms['equipment-add-form']['availability'].checked = false;
@@ -96,10 +97,63 @@ function showEditEquipmentModal(resource_id) {
 }
 
 function changeRequest(requestId) {
+    //can't find the bug
+    modalContent = '<button value="0" id="DeclineButton" class="btn btn-xs btn-info" onclick="EditRequest(requestID,0)"><span class="glyphicon glyphicon-pencil"></span> Decline</button> ';
+    modalContent += '<button value="1" id="ApproveButton" class="btn btn-xs btn-info" onclick="EditRequest(requestID,1)"><span class="glyphicon glyphicon-pencil"></span> Approve</button> ';
+    modalContent += '<button value="2" id="ApproveButton" class="btn btn-xs btn-info" onclick="EditRequest(requestID,2)"><span class="glyphicon glyphicon-pencil"></span> Pendin</button> ';
+
+
+    document.getElementById('edit-request-div').innerHTML = modalContent;
     $('#edit-equipments-modal').modal();
+}
+function EditRequest(request_id,status){
+    alert("fuck");
+    alert("Fuck");
+
+    var obj;
+
+    if (window.XMLHttpRequest) {
+        obj = new XMLHttpRequest();
+    } else if (window.ActiveXObject) {
+        obj = new ActiveXObject("Microsoft.XMLHTTP");
+    } else {
+        alert("Browser Doesn't Support AJAX!");
+    }
+    if (obj !== null) {
+        obj.onreadystatechange = function () {
+            if (obj.readyState < 4) {
+                // progress
+            } else if (obj.readyState === 4) {
+                var res = obj.responseText;
+
+                var modalContent = '<div style="margin: 10px;"><p>';
+                if (res == 'success') {
+                    modalContent += 'Request with request id ' + request_id + ' was changed successfully</p><button class="btn btn-sm btn-success" onclick=\'$("#message-modal").modal("hide"); \'><span class="glyphicon glyphicon-ok"></span>';
+                } else {
+                    modalContent += 'An error occurred  Sorry for the inconvenience.</p><div style="text-align: center;"><button class="btn btn-sm btn-danger" onclick=\'$("#message-modal").modal("hide"); \'><span class="glyphicon glyphicon-warning-sign"></span>';
+                }
+                modalContent += ' Ok</button><div></div>';
+                document.getElementById('message-modal-content').innerHTML = modalContent;
+
+                $('#edit-equipments-modal').modal('hide');
+                $('#message-modal').modal();
+            }
+        }
+
+        obj.open("POST", "./equipment/ changeRequestStatus", true);
+        obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        obj.send("request_id=" + request_id+ '&status=' + status );
+    }
+
+
+
+
+
+
 }
 
 function addEditEquipment() {
+    alert("Fuck");
     var resource_id = document.forms['equipment-add-form']['resource_id'].value;
     var description= document.forms['equipment-add-form']['description'].value;
     var equipment_type = document.forms['equipment-add-form']['equipment_type'].value;

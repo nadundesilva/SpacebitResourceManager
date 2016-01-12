@@ -41,7 +41,7 @@ class VehiclesController extends Controller
         return $response;
     }
 
-    public function addRequestAction()
+    public function addEditRequestAction()
     {
         $request = Request::createFromGlobals();
         $date = $request->request->get('date');
@@ -49,11 +49,18 @@ class VehiclesController extends Controller
         $passenger_count = $request->request->get('passenger-count');
         $vehicle_type = $request->request->get('vehicle-type');
         $destination = $request->request->get('destination');
+        $update_type = $request->request->get('update-type');
 
         $conn = $this->get('database_connection');
 
-        $stmt = $conn->prepare('INSERT INTO vehicle_request(user_id, date, time, status, number_of_passengers, requested_type, requested_town) VALUES(:user_id, :date, :time, :status, :number_of_passengers, :requested_type, :requested_town);');
-        $stmt->bindValue(':user_id', $_SESSION['user_id']);
+        if ($update_type == 'Add') {
+            $stmt = $conn->prepare('INSERT INTO vehicle_request(user_id, date, time, status, number_of_passengers, requested_type, requested_town) VALUES(:user_id, :date, :time, :status, :number_of_passengers, :requested_type, :requested_town);');
+        } else {
+            $request_id = $request->request->get('request-id');
+            $stmt = $conn->prepare('UPDATE vehicle_request SET date = :date, time = :time, status = :status, number_of_passengers = :number_of_passengers, requested_type = :requested_type, requested_town = :requested_town WHERE user_id = :user_id and request_id = :request_id;');
+            $stmt->bindValue(':request_id', $request_id);
+        }
+        $stmt->bindValue(':user_id', $this->get('session')->get('user_id'));
         $stmt->bindValue(':date', $date);
         $stmt->bindValue(':time', $time);
         $stmt->bindValue(':status', 2);
@@ -71,10 +78,6 @@ class VehiclesController extends Controller
 
     public function getPastRequestsAction()
     {
-        $this->get('session')->set('user_id', '130109V');
-        $this->get('session')->set('first_name', 'John');
-        $this->get('session')->set('last_name', 'Doe');
-        $this->get('session')->set('access_level', 5);
         $conn = $this->get('database_connection');
         $stmt = $conn->prepare('SELECT request_id, date, time, status, number_of_passengers, requested_type, requested_town, vehicle_plate_no FROM vehicle_request LEFT JOIN route ON route_group_id = group_id WHERE user_id = :user_id;');
         $stmt->bindValue(':user_id', $this->get('session')->get('user_id'));
