@@ -37,7 +37,10 @@ class DefaultController extends Controller
 
     public function myProfileAction()
     {
-        return $this->render('SpacebitUserBundle:Default:myProfile.html.twig');
+        if ($this->get('login_authenticator')->authenticateGuestLogin()) {
+            return $this->render('SpacebitUserBundle:Default:myProfile.html.twig');
+        }
+        return $this->render('SpacebitUserBundle:Default:login.html.twig');
     }
 
     public function validateUserAction()
@@ -214,5 +217,16 @@ class DefaultController extends Controller
 
     }
 
+    public function loadMyProfileAction(){
+
+
+    }
+
+    public function getSessionAccessLevelAction(){
+
+        $variable = $this->get('session')->get('access_level');
+        return $variable;
+
+    }
 
 }
