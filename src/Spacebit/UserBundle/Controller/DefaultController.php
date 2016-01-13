@@ -32,7 +32,7 @@ class DefaultController extends Controller
 
     public function logoutAction() {
         $this->get('session')->invalidate();
-        return new Response('success');
+        return new RedirectResponse($this->generateUrl('spacebit_index'));
     }
 
     public function forgotPasswordAction()

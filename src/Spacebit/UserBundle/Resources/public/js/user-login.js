@@ -22,7 +22,7 @@ function validateUser() {
             } else if (obj.readyState === 4) {
 
                 var res = obj.responseText;
-                window.alert(res);
+                //window.alert(res);
                 if (res == "fail"){
                     window.alert("***Please enter correct username and password***");
                     document.getElementById("password").value = "";
