@@ -65,10 +65,12 @@ class EquipmentController extends Controller
     public function getFromCategoryAction(){
         $request = Request::createFromGlobals();
         $equipCategory = $request->request->get('equipCategory'); //query : post //in js what is posted obj.send("department=" + department);
+        $deptName = $request->request->get('department');
 
         $conn = $this->get('database_connection');
-        $stmt = $conn->prepare('SELECT * FROM equipment WHERE equipment_type = :equipCategory');
+        $stmt = $conn->prepare('SELECT * FROM equipment WHERE equipment_type = :equipCategory AND department_name = :department_name');
         $stmt->bindValue(':equipCategory', $equipCategory);
+        $stmt->bindValue(':department_name', $deptName);
         $stmt->execute();
         $deptEquipments = $stmt->fetchAll();
 
