@@ -101,7 +101,7 @@ function addNewUser() {
                     "title=" + title + "& organizationEmail=" + organizationEmail + "& "+
                     "organizationTelephone=" + organizationTelephone + "& nic=" + nic + "& "+
                     "organizationAddress=" + organizationAddress;
-                window.alert(s);
+
                 obj.send(s);
             }
             if (accessLevel == 1) {
@@ -110,7 +110,7 @@ function addNewUser() {
                     "email=" + email + "& telephoneNumber=" + telephoneNumber + "& "+
                     "accessLevel=" + accessLevel + " & passwordOne=" + passwordOne + "& "+
                     "batch=" + batch + "& department=" + department;
-                window.alert(s);
+                
                 obj.send(s);
 
 
