@@ -41,161 +41,27 @@
 
 {% block body %}
     {% block content %}
-
-<div class="container col-lg-6">
-    <form role="form">
-        <div class="form-group ">
-            <label for="sel1">Faculty</label>
-            <select class="form-control "   id="sel1">
-
-                <option>Engineering Faculty</option>
-
-            </select>
-        </div>
-      </form>
-    </div>
-
-
-        <div class="container col-lg-6">
-            <form role="form">
+        <form role="form">
+            <div class="container col-lg-6">
                 <div class="form-group ">
-                    <label for="sel1">Department</label>
-                    <select class="form-control"   id="sel1">
-
-                        <option>Computer Science & Engineering</option>
-
+                    <label for="sel1">Faculty :</label>
+                    <!--give id to select-->
+                    <select id="faculty" class="form-control" name="value" onchange="loadDepartments();">
+                        <option disabled selected>**-Please select a faculty-**</option>;
+                        {% for fac in facNames %}
+                            <option value="{{ fac.faculty_name }}"> {{ fac.faculty_name }}</option>;
+                        {% endfor %}
                     </select>
                 </div>
-            </form>
-        </div>
-
-        <div style="display: inline;">
-            <!-- Trigger the modal with a button -->
-            <button type="button" class="btn btn-info btn-lg btn-padding" data-toggle="modal" data-target="#myModal">Computer Labs</button>
-            <!-- Trigger the modal with a button -->
-            <button type="button" class="btn btn-info btn-lg btn-padding" data-toggle="modal" data-target="#myModal1">Tutorial Halls</button>
-        </div>
-
-        <div class="container" style="display: inline" >
-            <!-- Modal -->
-            <div class="modal fade" id="myModal" role="dialog">
-                <div class="modal-dialog  modal-dialog modal-lg">
-
-                    <!-- Modal content-->
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 align="center" class="modal-title">CSE Computer Labs</h4>
-                        </div>
-                        <div class="modal-body">
-                            <p>
-                            <div>
-                                <div class="container">
-
-                                    <table class="table table-hover">
-                                        <thead>
-
-                                        <tr>
-                                            <th>Resourse Name</th>
-                                            <th>Resourse ID</th>
-                                            <th>Capasity</th>
-                                            <th>Opening Time</th>
-                                            <th>Closing Time</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        {% for venue in venue_categories %}
-                                        {% if (venue.venue_type=="Computer Labs") %}
-                                            <tr>
-
-                                                <td>{{venue.name}}</td>
-                                                <td>{{ venue.resource_id }}</td>
-                                                <td>{{ venue.capacity }}</td>
-                                                <td>{{ venue.opening_time }}</td>
-                                                <td>{{ venue.closing_time }}</td>
-
-                                            </tr>
-                                        {% endif %}
-                                        {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                            </div>
-
-                            </p>
-
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-
+            </div>
+            <div class="container col-lg-6">
+                <div class="form-group ">
+                    <label for="sel1">Department :</label>
+                    <select class="form-control"  id="department" onchange="loadEquipmentByCategory()" disabled></select>
                 </div>
             </div>
+        </form>
 
-        </div>
-
-        <div class="container" style="display: inline">
-
-            <!-- Modal -->
-            <div class="modal fade" id="myModal1" role="dialog">
-                <div class="modal-dialog  modal-dialog modal-lg">
-
-                    <!-- Modal content-->
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 align="center" class="modal-title">CSE Tutorial Halls</h4>
-                        </div>
-                        <div class="modal-body">
-                            <p>
-                            <div>
-                                <div class="container">
-
-                                    <table class="table table-hover">
-                                        <thead>
-
-                                        <tr>
-                                            <th>Resourse Name</th>
-                                            <th>Resourse ID</th>
-                                            <th>Capasity</th>
-                                            <th>Opening Time</th>
-                                            <th>Closing Time</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        {% for venue in venue_categories %}
-                                        {% if (venue.venue_type=="Tutorial Hall") %}
-                                            <tr>
-
-                                                <td>{{venue.name}}</td>
-                                                <td>{{ venue.resource_id }}</td>
-                                                <td>{{ venue.capacity }}</td>
-                                                <td>{{ venue.opening_time }}</td>
-                                                <td>{{ venue.closing_time }}</td>
-
-                                            </tr>
-                                        {% endif %}
-                                        {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                            </div>
-
-                            </p>
-
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-        </div>
 
 
 

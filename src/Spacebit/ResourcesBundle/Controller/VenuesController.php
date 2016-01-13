@@ -10,17 +10,20 @@ class VenuesController extends Controller
 {
     public function venuesAction()
     {
-        //$request = Request::createFromGlobals();
-        //$category = $request->query->get('category');
-
         $conn = $this->get('database_connection');
-        $stmt = $conn->prepare('SELECT * FROM venue');
+        $stmt = $conn->prepare('SELECT * FROM ');
         //$stmt->bindValue(':category', $category);
         $stmt->execute();
-        $result = $stmt->fetchAll();
+        $equipment = $stmt->fetchAll();
 
-        return $this->render('SpacebitResourcesBundle:Default:venues.html.twig', array(
-            'venue_categories'=>$result,
+        $stmt = $conn->prepare('SELECT DISTINCT department.faculty_name FROM department');
+        //$stmt->bindValue(':category', $category);
+        $stmt->execute();
+        $facNames = $stmt->fetchAll();
+
+        return $this->render('SpacebitResourcesBundle:Default:equipment.html.twig', array(
+            'equipment'=>$equipment,
+            'facNames'=>$facNames,
         ));
     }
 }
