@@ -5,6 +5,7 @@ namespace Spacebit\UserBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use \Symfony\Component\HttpFoundation\Response;
 use \Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class DefaultController extends Controller
 {
@@ -15,6 +16,9 @@ class DefaultController extends Controller
 
     public function loginAction()
     {
+        if ($this->get('login_authenticator')->authenticateGuestLogin()) {
+            return new RedirectResponse($this->generateUrl('spacebit_index'));
+        }
         return $this->render('SpacebitUserBundle:Default:login.html.twig');
     }
 
@@ -64,30 +68,9 @@ class DefaultController extends Controller
         $variable->set('first_name', $firstName );
         $variable->set('last_name', $lastName );
         $variable->set('access_level', $accessLevel );
-//        $response = new Response(json_encode(array('result' => $result)));
-//        $response->headers->set('Content-Type', 'application/json');
-//
-//        return $response;
+
         return new Response("success");
     }
-
-//    public function createSessionAction(){
-//        $request = Request::createFromGlobals();
-//        $userId = $request->request->get('userID');
-//        $firstName = $request->request->get('firstName');
-//        $lastName = $request->request->get('lastName');
-//        $accessLevel = $request->request->get('accessLevel');
-//
-//        $variable = $this->get('session');
-//
-//        $variable->set('user_id', $userId );
-//        $variable->set('first_name', $firstName );
-//        $variable->set('last_name', $lastName );
-//        $variable->set('access_level', $accessLevel );
-//
-//        return new Response("success");
-//
-//    }
 
 
     public function addUserAction()
@@ -215,9 +198,8 @@ class DefaultController extends Controller
         else{
             return new Response("success");
         }
-//        $response = new Response(json_encode(array('result' => $result)));
-//        $response->headers->set('Content-Type', 'application/json');
-//
-//        return $response;
+
     }
+
+
 }
