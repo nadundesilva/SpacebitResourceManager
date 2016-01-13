@@ -37,3 +37,4 @@ spacebit_check_user_availability:
     path:     /checkUserAvailability
     defaults: { _controller: SpacebitUserBundle:Default:checkUserAvailability }
     methods:  ['POST']
+

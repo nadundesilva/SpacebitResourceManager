@@ -37,7 +37,7 @@ class DefaultController extends Controller
     {
         $request = Request::createFromGlobals();
         $name = $request->request->get('name');
-        //$password = $request->request->get('password');
+        $password = $request->request->get('password');
 
         $conn = $this->get('database_connection');
         //$stmt = $conn->prepare('SELECT user_id,password FROM login WHERE user_id = :name;');
@@ -49,15 +49,45 @@ class DefaultController extends Controller
         if ( $result == false){
             return new Response("fail");
         }
-        else{
-
+        if ( $result[0]["password"] != $password){
+            return new Response("incorrect");
         }
 
-        $response = new Response(json_encode(array('result' => $result)));
-        $response->headers->set('Content-Type', 'application/json');
+        $userId = $result[0]["user_id"];
+        $firstName = $result[0]["first_name"];
+        $lastName = $result[0]["last_name"];
+        $accessLevel = $result[0]["access_level"];
 
-        return $response;
+        $variable = $this->get('session');
+
+        $variable->set('user_id', $userId );
+        $variable->set('first_name', $firstName );
+        $variable->set('last_name', $lastName );
+        $variable->set('access_level', $accessLevel );
+//        $response = new Response(json_encode(array('result' => $result)));
+//        $response->headers->set('Content-Type', 'application/json');
+//
+//        return $response;
+        return new Response("success");
     }
+
+//    public function createSessionAction(){
+//        $request = Request::createFromGlobals();
+//        $userId = $request->request->get('userID');
+//        $firstName = $request->request->get('firstName');
+//        $lastName = $request->request->get('lastName');
+//        $accessLevel = $request->request->get('accessLevel');
+//
+//        $variable = $this->get('session');
+//
+//        $variable->set('user_id', $userId );
+//        $variable->set('first_name', $firstName );
+//        $variable->set('last_name', $lastName );
+//        $variable->set('access_level', $accessLevel );
+//
+//        return new Response("success");
+//
+//    }
 
 
     public function addUserAction()
