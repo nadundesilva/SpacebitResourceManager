@@ -29,6 +29,7 @@ spacebit_resources_equipment_add_request:
     methods:  ['POST']
 
 
+
 spacebit_resources_venues:
     path:     /venues
     defaults: { _controller: SpacebitResourcesBundle:Venues:venues }
@@ -40,8 +41,8 @@ spacebit_resources_vehicles:
     defaults: { _controller: SpacebitResourcesBundle:Vehicles:vehicles }
 
 spacebit_resources_vehicles_add_request:
-    path:     /vehicles/addEditRequest
-    defaults: { _controller: SpacebitResourcesBundle:Vehicles:addEditRequest }
+    path:     /vehicles/addRequest
+    defaults: { _controller: SpacebitResourcesBundle:Vehicles:addRequest }
     methods:  ['POST']
 
 spacebit_resources_vehicles_get_by_category:

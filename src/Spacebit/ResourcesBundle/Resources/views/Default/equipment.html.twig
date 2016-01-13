@@ -31,21 +31,53 @@
         </div>
     </form>
 
-    <div id="equipmentArea" class="modal fade" role="dialog" align="left">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div style="margin: 20px;" id="equipmentTableContent">
-
-                </div>
-            </div>
-        </div>
-    </div>
+    <div id="equipmentTableContent" class="offset6 col-lg-6"></div>
 
     <div id="modalArea" class="modal fade" role="dialog" align="left">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div style="margin: 20px;" id="equipmentModalContent">
 
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="request-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div style="margin: 20px;" id = "equipmentModalContent">
+                    <h2 style="text-align: center;">Request</h2>
+                    <form id="request-form" role="form" method="POST" name="request-form" onsubmit="addRequest(); return false;">
+                        <div class="form-group" id="request-id-container">
+                            <label for="request-id">Request ID :</label>
+                            <input id="request-id" type="number" name="request-id" class="form-control" onkeypress="onAddRequestFormKeyPress(event);" disabled />
+                        </div>
+                        <div class="form-group">
+                            <label for="request-date-From">Date From:</label>
+                            <input id="request-date-From" type="date" min="{{ 'now' | date('Y-m-d') }}" name="request-date-From" class="form-control" onkeypress="onAddRequestFormKeyPress(event);" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="request-date-To">Date To:</label>
+                            <input id="request-date-To" type="date" min="{{ 'now' | date('Y-m-d') }}" name="request-date-To" class="form-control" onkeypress="onAddRequestFormKeyPress(event);" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="request-time-From">Time From:</label>
+                            <input type="time" name="request-time-From" class="form-control" onkeypress="onAddRequestFormKeyPress(event);" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="request-time-To">Time To:</label>
+                            <input type="time" name="request-time-To" class="form-control" onkeypress="onAddRequestFormKeyPress(event);" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="request-time">Equipment Status: </label>
+                            <label for="request-passenger-count">Time slot: availability:</label>
+                        </div>
+                       <input type="submit" class="btn btn-sm btn-success" value="Submit">
+                    </form>
                 </div>
             </div>
         </div>
