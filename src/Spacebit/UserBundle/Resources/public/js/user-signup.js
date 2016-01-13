@@ -43,6 +43,7 @@ function addNewUser() {
     var organizationAddress;
 
 
+
     if(accessLevel == "student") {
         accessLevel = 1;
         batch = document.getElementById("batch").value;
@@ -91,20 +92,25 @@ function addNewUser() {
             obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
             if (accessLevel == 0) {
-                obj.send("userID=" + userID + "& firstName=" + firstName + "&"+
-                    "middleName=" + middleName + "& lastName=" + lastName + "&"+
-                    "email=" + email + "& telephoneNumber=" + telephoneNumber + "&"+
-                    "accessLevel=" + accessLevel + "& passwordOne=" + passwordOne + "&"+
-                    "title=" + title + "& organizationEmail=" + organizationEmail + "&"+
-                    "organizationTelephone=" + organizationTelephone + "& nic=" + nic + "&"+
-                    "organizationAddress=" + organizationAddress);
+                var s= "userID=" + userID + " & firstName =" + firstName + " & "+
+                    " middleName = " + middleName + " & lastName = " + lastName + " & "+
+                    " email = " + email + " & telephoneNumber = " + telephoneNumber + " & "+
+                    " accessLevel = " + accessLevel + " & passwordOne = " + passwordOne + " & "+
+                    " title = " + title + " & organizationEmail = " + organizationEmail + " & "+
+                    " organizationTelephone = " + organizationTelephone + " & nic = " + nic + " & "+
+                    " organizationAddress = " + organizationAddress;
+                window.alert(s);
+                obj.send(s);
             }
             if (accessLevel == 1) {
-                obj.send("userID=" + userID + "& firstName=" + firstName + "&"+
-                    "middleName=" + middleName + "& lastName=" + lastName + "&"+
-                    "email=" + email + "& telephoneNumber=" + telephoneNumber + "&"+
-                    "accessLevel=" + accessLevel + "& passwordOne=" + passwordOne + "&"+
-                    "batch=" + batch + "& department=" + department);
+                var s = "userID=" + userID + "&firstName=" + firstName + "&"+
+                    "middleName=" + middleName + "&lastName=" + lastName + "&"+
+                    "email=" + email + "&telephoneNumber=" + telephoneNumber + " & "+
+                    "accessLevel=" + accessLevel + " & passwordOne=" + passwordOne + " & "+
+                    "batch=" + batch + " & department=" + department;
+                window.alert(s);
+                obj.send(s);
+
 
             }
             if (accessLevel == 1) {
