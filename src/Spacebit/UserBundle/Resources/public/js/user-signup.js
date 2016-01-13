@@ -110,7 +110,7 @@ function addNewUser() {
                     "email=" + email + "& telephoneNumber=" + telephoneNumber + "& "+
                     "accessLevel=" + accessLevel + " & passwordOne=" + passwordOne + "& "+
                     "batch=" + batch + "& department=" + department;
-                
+
                 obj.send(s);
 
 
