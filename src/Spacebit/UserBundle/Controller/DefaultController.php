@@ -24,6 +24,9 @@ class DefaultController extends Controller
 
     public function signupAction()
     {
+        if ($this->get('login_authenticator')->authenticateGuestLogin()) {
+            return new RedirectResponse($this->generateUrl('spacebit_index'));
+        }
         return $this->render('SpacebitUserBundle:Default:signup.html.twig');
     }
 
@@ -98,7 +101,7 @@ class DefaultController extends Controller
 
         $stmt->execute();
 
-        $stmt = $conn->prepare('INSERT INTO login VALUES (:userId ,:passwordOne);');
+        $stmt = $conn->prepare('INSERT INTO login (user_id,password) VALUES (:userId ,:passwordOne);');
         $stmt->bindValue(':userId', $userID);
         $stmt->bindValue(':passwordOne', $passwordOne);
 
@@ -152,6 +155,16 @@ class DefaultController extends Controller
             $stmt->execute();
 
         }
+
+        $variable = $this->get('session');
+
+        $variable->set('user_id', $userID );
+        $variable->set('first_name', $firstName );
+        $variable->set('last_name', $lastName );
+        $variable->set('access_level', $accessLevel );
+
+        return new Response("success");
+
 
     }
 

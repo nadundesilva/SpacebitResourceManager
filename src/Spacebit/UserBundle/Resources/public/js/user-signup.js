@@ -24,7 +24,7 @@ function showDiv(elem){
 function addNewUser() {
     var obj;
 
-    var userId = document.getElementById("userID").value;
+    var userID = document.getElementById("userID").value;
     var firstName = document.getElementById("firstName").value;
     var middleName = document.getElementById("middleName").value;
     var lastName = document.getElementById("lastName").value;
@@ -82,9 +82,11 @@ function addNewUser() {
                 } else if (obj.readyState === 4) {
 
                     var res = obj.responseText;
-                    window.alert(res);
-                    var rows = JSON.parse(res).result;
                     //window.alert(res);
+                    if (res == "success"){
+                        window.location.href = "../";
+                    }
+
                 }
             }
 
@@ -92,32 +94,32 @@ function addNewUser() {
             obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
             if (accessLevel == 0) {
-                var s= "userID=" + userID + " & firstName =" + firstName + " & "+
-                    " middleName = " + middleName + " & lastName = " + lastName + " & "+
-                    " email = " + email + " & telephoneNumber = " + telephoneNumber + " & "+
-                    " accessLevel = " + accessLevel + " & passwordOne = " + passwordOne + " & "+
-                    " title = " + title + " & organizationEmail = " + organizationEmail + " & "+
-                    " organizationTelephone = " + organizationTelephone + " & nic = " + nic + " & "+
-                    " organizationAddress = " + organizationAddress;
+                var s= "userID=" + userID + "& firstName=" + firstName + "& "+
+                    "middleName=" + middleName + "& lastName=" + lastName + "& "+
+                    "email=" + email + "& telephoneNumber=" + telephoneNumber + "& "+
+                    "accessLevel=" + accessLevel + "& passwordOne=" + passwordOne + "& "+
+                    "title=" + title + "& organizationEmail=" + organizationEmail + "& "+
+                    "organizationTelephone=" + organizationTelephone + "& nic=" + nic + "& "+
+                    "organizationAddress=" + organizationAddress;
                 window.alert(s);
                 obj.send(s);
             }
             if (accessLevel == 1) {
-                var s = "userID=" + userID + "&firstName=" + firstName + "&"+
-                    "middleName=" + middleName + "&lastName=" + lastName + "&"+
-                    "email=" + email + "&telephoneNumber=" + telephoneNumber + " & "+
-                    "accessLevel=" + accessLevel + " & passwordOne=" + passwordOne + " & "+
-                    "batch=" + batch + " & department=" + department;
+                var s = "userID=" + userID + "& firstName=" + firstName + "& "+
+                    "middleName=" + middleName + "& lastName=" + lastName + "& "+
+                    "email=" + email + "& telephoneNumber=" + telephoneNumber + "& "+
+                    "accessLevel=" + accessLevel + " & passwordOne=" + passwordOne + "& "+
+                    "batch=" + batch + "& department=" + department;
                 window.alert(s);
                 obj.send(s);
 
 
             }
             if (accessLevel == 1) {
-                obj.send("userID=" + userID + "& firstName=" + firstName + "&" +
-                    "middleName=" + middleName + "& lastName=" + lastName + "&" +
-                    "email=" + email + "& telephoneNumber=" + telephoneNumber + "&" +
-                    "accessLevel=" + accessLevel + "& passwordOne=" + passwordOne + "&" +
+                obj.send("userID=" + userID + "& firstName=" + firstName + "& " +
+                    "middleName=" + middleName + "& lastName=" + lastName + "& " +
+                    "email=" + email + "& telephoneNumber=" + telephoneNumber + "& " +
+                    "accessLevel=" + accessLevel + "& passwordOne=" + passwordOne + "& " +
                     "designation=" + designation + "& department=" + department);
             }
         }
