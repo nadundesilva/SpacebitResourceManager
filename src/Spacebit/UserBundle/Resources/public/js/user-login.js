@@ -1,10 +1,7 @@
-function login() {
-
-}
 
 function validateUser() {
-    var obj;
 
+    var obj;
 
     var name =document.getElementById("userID").value;
     var password = document.getElementById("password").value;
@@ -17,6 +14,7 @@ function validateUser() {
         alert("Browser Doesn't Support AJAX!");
     }
 
+
     if (obj !== null) {
         obj.onreadystatechange = function () {
             if (obj.readyState < 4) {
@@ -24,22 +22,17 @@ function validateUser() {
             } else if (obj.readyState === 4) {
 
                 var res = obj.responseText;
+                window.alert(res);
                 if (res == "fail"){
                     window.alert("***Please enter correct username and password***");
                     document.getElementById("password").value = "";
                 }
-                else{
-                    var rows = JSON.parse(res).result;
-                    //window.alert(rows[0].user_id);
-                    if (rows[0].password != password){
-                        window.alert("Log in failed");
-                        document.getElementById("password").value = "";
-
-                    }
-                    else{
-                        window.alert("Log in successful");
-                    }
-
+                if (res == "incorrect"){
+                    window.alert("***Please enter correct username and password***");
+                    document.getElementById("password").value = "";
+                }
+                if (res == "success"){
+                    window.location.href = "../";
                 }
 
             }

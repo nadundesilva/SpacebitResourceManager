@@ -26,4 +26,15 @@ spacebit_user_validate:
 spacebit_user_add:
     path:     /addUser
     defaults: { _controller: SpacebitUserBundle:Default:addUser }
-    methods:  ['GET']
+    methods:  ['POST']
+
+spacebit_load_departments:
+    path:     /loadDepartments
+    defaults: { _controller: SpacebitUserBundle:Default:loadDepartments }
+    methods:  ['POST']
+
+spacebit_check_user_availability:
+    path:     /checkUserAvailability
+    defaults: { _controller: SpacebitUserBundle:Default:checkUserAvailability }
+    methods:  ['POST']
+

@@ -51,7 +51,7 @@ class LoginAuthenticator
         $access_level = $this->session->get('access_level');
         $user_id = $this->session->get('user_id');
 
-        if ($access_level >= $authenticated_access_level) {
+        if (isset($access_level) && $access_level >= $authenticated_access_level) {
             $stmt = $this->connection->prepare('SELECT access_level FROM login INNER JOIN user USING(user_id) WHERE user_id = :user_id AND active = true;');
             $stmt->bindValue(':user_id', $user_id);
             $stmt->execute();

@@ -9,8 +9,9 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+    <!--<script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>-->
     <script src="{{ asset('bundles/spacebituser/js/user-login.js') }}"></script>
+
 {% endblock %}
 
 {% block body %}
@@ -19,16 +20,16 @@
         <form role="form">
             <div class="form-group">
                 <label for="user-id" style="padding-right:3em">User ID</label>
-                <input name="user-id" type="text" class="form-control" id="user-id" placeholder="Enter your user ID" required autofocus>
+                <input id="userID" name="userID" type="text" class="form-control" id="user-id" placeholder="Enter your user ID" required autofocus>
             </div>
             <div class="form-group">
                 <label for="password" style="padding-right:2.4em">Password</label>
-                <input name="password" type="password" class="form-control" id="password" placeholder="Enter password" required>
+                <input id="password" name="password" type="password" class="form-control" id="password" placeholder="Enter password" required>
             </div>
             <div class="form-group">
                 <label><input type="checkbox" value="remember_me" id="remember_me">Remember me</label>
             </div>
-            <button id="submit-button" type="submit" class="btn btn-sm btn-success" onclick="login(); return false;">Log In</button>  or <a href="signup">Sign Up</a>
+            <button class="btn btn-sm btn-success" onclick="validateUser(); return false;">Log In</button>  or <a href="signup">Sign Up</a>
             <a style="display: block; padding-top: 10px;" href="forgotPassword">Forgot Password?</a>
         </form>
     </div>

@@ -38,6 +38,8 @@ function loadDepartments() {
 function loadEquipmentByCategory() {
     var department = document.getElementById('department').value;
 
+    alert("Keet");
+
     var obj;
 
     if (window.XMLHttpRequest) {
@@ -80,9 +82,6 @@ function loadEquipmentByCategory() {
 
 function loadModalByCategory(equipCategory) {
     var obj;
-
-   // alert(equipCategory);
-
     if (window.XMLHttpRequest) {
         obj = new XMLHttpRequest();
     } else if (window.ActiveXObject) {
