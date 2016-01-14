@@ -37,9 +37,6 @@ function loadDepartments() {
 
 function loadEquipmentByCategory() {
     var department = document.getElementById('department').value;
-
-    alert("Keet");
-
     var obj;
 
     if (window.XMLHttpRequest) {
@@ -81,6 +78,8 @@ function loadEquipmentByCategory() {
 }
 
 function loadModalByCategory(equipCategory) {
+
+    var department = document.getElementById('department').value;
     var obj;
     if (window.XMLHttpRequest) {
         obj = new XMLHttpRequest();
@@ -103,10 +102,11 @@ function loadModalByCategory(equipCategory) {
                 var modalContent = '"This is the modal"';
 
                 modalContent = '<h2 id = "equipmentCategory" style="text-align: center;">' + equipCategory  + '</h2><table class="table table-hover">';
-                modalContent += '<tr><th>Equipment ID</th></tr>';
+                modalContent += '<tr><th>Equipment ID</th><th>Description</th></tr>';
                 for (var i = 0; i < rows.length; i++) {
                     modalContent += '<tr>';
                     modalContent += '<td>' + rows[i].resource_id + '</td>';
+                    modalContent += '<td>' + rows[i].description + '</td>';
                     modalContent += '</tr>';
                 }
                 modalContent += '</table>';
@@ -122,7 +122,11 @@ function loadModalByCategory(equipCategory) {
 
         obj.open("POST", "./equipment/getFromCategory", true);
         obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        obj.send("equipCategory=" + equipCategory);
+
+        var pass = "equipCategory=" + equipCategory + "&department=" +department;
+
+       // alert(pass);
+        obj.send(pass);
     }
 }
 
