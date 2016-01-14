@@ -1,0 +1,53 @@
+<link rel="stylesheet" type="text/css" href="{{ asset('bundles/app/css/loading.css') }}">
+
+<style type="text/css">
+    :focus {outline:none;}
+    #loading-container {
+        text-align: center;
+        background-color: black;
+        position: fixed;
+        opacity: 0.7;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-align-items: center;
+        align-items: center;
+        -webkit-justify-content: center;
+        justify-content: center;
+    }
+    #clock {
+        position: fixed;
+        left: 50%;
+        top: 50%;
+    }
+</style>
+
+<script>
+    function showLoadingOverlay() {
+        var loadingContainer = document.getElementById('loading-container');
+        loadingContainer.style.display = 'block';
+        var clock = document.getElementById('clock');
+        clock.style.display = 'block';
+    }
+
+    function hideLoadingOverlay() {
+        var loadingContainer = document.getElementById('loading-container');
+        loadingContainer.style.display = 'none';
+        var clock = document.getElementById('clock');
+        clock.style.display = 'none';
+    }
+</script>
+
+<div id="loading-container" style="display: none;"></div>
+<div class="spinner clock" id="clock" style="display: none;">
+    <div class="shadow"></div>
+    <div class="dial">
+        <div class="hour hand"></div>
+        <div class="minute hand"></div>
+    </div>
+</div>

@@ -3,7 +3,7 @@
     100% {opacity: 1.0;}
 }
 
-#existing-route-selection-division, #new-route-division {
+#existing-route-selection-division, #new-route-division{
     animation-name: division-in;
     animation-duration: 1s;
     animation-timing-function: ease-out;

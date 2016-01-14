@@ -115,7 +115,7 @@ function addNewUser() {
 
 
             }
-            if (accessLevel == 1) {
+            if (accessLevel == 2) {
                 obj.send("userID=" + userID + "& firstName=" + firstName + "& " +
                     "middleName=" + middleName + "& lastName=" + lastName + "& " +
                     "email=" + email + "& telephoneNumber=" + telephoneNumber + "& " +
@@ -155,6 +155,7 @@ function loadDepartments() {
                 var res = obj.responseText;
                 var rows = JSON.parse(res).result;
 
+                var currentDept = document.getElementById('department').value;
 
                 var content = '<option disabled selected>Select Department</option>;';
                 for (var i = 0; i < rows.length; i++) {
