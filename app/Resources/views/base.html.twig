@@ -62,6 +62,9 @@
         <![endif]-->
         <!-- Navigation bar plugin ends here -->
 
+        <!-- Animation -->
+        <link rel="stylesheet" href="{{ asset('bundles/app/css/animate.min.css') }}">
+
         <link rel="stylesheet" href="{{ asset('bundles/app/css/main-theme.css') }}">
 
         {% block javascripts %}{% endblock %}
@@ -119,7 +122,11 @@
                     <ul class="nav navbar-nav side-nav">
                         {% for page in pages %}
                         <li{% if active.link is defined and active.link == page.name %} class="active"{% endif %}>
-                            {% set link = link_to_home ~ page.link %}
+                            {% if page.link is defined %}
+                                {% set link = link_to_home ~ page.link %}
+                            {% else %}
+                                {% set link = '' %}
+                            {% endif %}
                             <a href="{{ link }}" data-toggle="collapse" data-target="#{{ page.name }}">{% if page.glyphicon is defined %}<span class="{{ page.glyphicon }}"></span> {% endif %}{{ page.name }}{% if page.sub_menu is defined %} <i class="caret"></i>{% endif %}</a>
                             {% if page.sub_menu is defined %}
                                 <ul id="{{ page.name }}" class="{% if active.link is defined and active.link == page.name %}dropdown{% else %}collapse{% endif %}" data-target="#{{ page.name }}">
@@ -140,7 +147,7 @@
 
             <div id="page-wrapper">
                 <div class="container-fluid">
-                    <div id="body">
+                    <div id="body animated fadeInLeft">
                         {% block body %}{% endblock %}
                     </div>
                 </div>
