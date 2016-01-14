@@ -9,11 +9,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class DefaultController extends Controller
 {
-    public function homeAction()
-    {
-        return $this->render('SpacebitUserBundle:Default:home.html.twig');
-    }
-
     public function loginAction()
     {
         if ($this->get('login_authenticator')->authenticateGuestLogin()) {
@@ -38,6 +33,14 @@ class DefaultController extends Controller
     public function forgotPasswordAction()
     {
         return $this->render('SpacebitUserBundle:Default:forgot-password.html.twig');
+    }
+
+    public function myProfileAction()
+    {
+        if ($this->get('login_authenticator')->authenticateGuestLogin()) {
+            return $this->render('SpacebitUserBundle:Default:myProfile.html.twig');
+        }
+        return $this->render('SpacebitUserBundle:Default:login.html.twig');
     }
 
     public function validateUserAction()
@@ -214,5 +217,16 @@ class DefaultController extends Controller
 
     }
 
+    public function loadMyProfileAction(){
+
+
+    }
+
+    public function getSessionAccessLevelAction(){
+
+        $variable = $this->get('session')->get('access_level');
+        return $variable;
+
+    }
 
 }
