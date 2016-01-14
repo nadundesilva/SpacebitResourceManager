@@ -8,43 +8,12 @@
 {% endblock %}
 
 {% block stylesheets %}
-    <style>
-        .faculty {
-            width: 500px ;
-        }
-
-        .drop-btn{
-            width: 500px;
-            text-align: left;
-            margin: 1px 10px 0px;
-
-        }
-
-        #txt1 {
-            padding-bottom: 0px;
-            padding-left: 20px;
-        }
-
-        .btn-padding{
-            top : 25px;
-            position: relative;
-            left : 10px;
-            width:250px ;
-            display: inline-block;
-        }
-
-        .modal-dialog {
-            width:1250px;
-        }
-    </style>
-
-
+    <link rel="stylesheet" href="{{ asset('bundles/spacebitresources/css/resources-theme.css') }}">
 {% endblock %}
 
 {% block title %}Venues{% endblock %}
 
 {% block body %}
-    {% block content %}
         <form role="form">
             <div class="container col-lg-6">
                 <div class="form-group ">
@@ -66,7 +35,7 @@
             </div>
         </form>
 
-        <div id="venuePictures" class="offset6 col-lg-6"></div>
+        <div id="venuePictures"></div>
 
         <div id="modalArea" class="modal fade" role="dialog" align="left">
             <div class="modal-dialog">
@@ -117,10 +86,6 @@
                 </div>
             </div>
         </div>
-
-
-
-    {% endblock %}
 {% endblock %}
 
 
