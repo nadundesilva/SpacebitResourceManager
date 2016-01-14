@@ -1,4 +1,5 @@
 function showManageVehiclesModal() {
+    showLoadingOverlay();
     var obj;
 
     if (window.XMLHttpRequest) {
@@ -31,6 +32,8 @@ function showManageVehiclesModal() {
                 }
                 modalContent += '</table>'
                 document.getElementById('manage-vehicles-modal-content').innerHTML = modalContent;
+
+                hideLoadingOverlay();
                 $('#manage-vehicles-modal').modal();
             }
         }

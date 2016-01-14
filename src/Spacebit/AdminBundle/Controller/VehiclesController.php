@@ -66,36 +66,44 @@ class VehiclesController extends Controller
         $update_type = $request->request->get('update-type');
 
         $conn = $this->get('database_connection');
-
-        if($update_type == 'Add') {
-            $stmt = $conn->prepare('INSERT into vehicle values(:plate_no, :type, :model, :capacity,:driver_first_name, :driver_last_name, :availability, :value);');
-        } else {
-            $stmt = $conn->prepare('UPDATE vehicle SET type = :type, model = :model, capacity = :capacity,driver_first_name = :driver_first_name, driver_last_name = :driver_last_name, availability = :availability , value = :value WHERE plate_no = :plate_no;');
-        }
-        $stmt->bindValue(':plate_no', $plate_no);
-        $stmt->bindValue(':type', $type);
-        $stmt->bindValue(':model', $model);
-        $stmt->bindValue(':capacity',$capacity);
-        $stmt->bindValue(':driver_first_name',$driver_first_name);
-        $stmt->bindValue(':driver_last_name',$driver_last_name);
-        $stmt->bindValue(':availability',$availability);
-        $stmt->bindValue(':value',$value);
+        $conn->beginTransaction();
 
         $response = 'success';
-        if(!$stmt->execute()) {
-            $response = $stmt->errorCode();
-        } else {
-            if ($update_type == 'Add') {
-                $stmt = $conn->prepare('INSERT INTO vehicle_administration VAlUES(:user_id, :plate_no)');
-                $stmt->bindValue(':user_id', $this->get('session')->get('user_id'));
-                $stmt->bindValue(':plate_no', $plate_no);
+        try {
+            if($update_type == 'Add') {
+                $stmt = $conn->prepare('INSERT into vehicle values(:plate_no, :type, :model, :capacity,:driver_first_name, :driver_last_name, :availability, :value);');
+            } else {
+                $stmt = $conn->prepare('UPDATE vehicle SET type = :type, model = :model, capacity = :capacity,driver_first_name = :driver_first_name, driver_last_name = :driver_last_name, availability = :availability , value = :value WHERE plate_no = :plate_no;');
+            }
+            $stmt->bindValue(':plate_no', $plate_no);
+            $stmt->bindValue(':type', $type);
+            $stmt->bindValue(':model', $model);
+            $stmt->bindValue(':capacity',$capacity);
+            $stmt->bindValue(':driver_first_name',$driver_first_name);
+            $stmt->bindValue(':driver_last_name',$driver_last_name);
+            $stmt->bindValue(':availability',$availability);
+            $stmt->bindValue(':value',$value);
 
-                if (!$stmt->execute()) {
-                    $response = $stmt->errorCode();
+            if(!$stmt->execute()) {
+                $conn->rollBack();
+                $response = $stmt->errorCode();
+            } else {
+                if ($update_type == 'Add') {
+                    $stmt = $conn->prepare('INSERT INTO vehicle_administration VAlUES(:user_id, :plate_no)');
+                    $stmt->bindValue(':user_id', $this->get('session')->get('user_id'));
+                    $stmt->bindValue(':plate_no', $plate_no);
+
+                    if (!$stmt->execute()) {
+                        $response = $stmt->errorCode();
+                    }
                 }
             }
-        }
 
+            $conn->commit();
+        } catch (Exception $e) {
+            $conn->rollBack();
+            $response = $e->getCode();
+        }
         return new Response($response);
     }
 
@@ -189,9 +197,6 @@ class VehiclesController extends Controller
             $response = $e->getCode();
         }
 
-        $response = new Response($response);
-        $response->headers->set('Content-Type', 'application/json');
-
-        return $response;
+        return new Response($response);
     }
 }
