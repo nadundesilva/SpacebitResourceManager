@@ -19,3 +19,4 @@ app/logs/*
 build/
 vendor
 composer.phar
+node_modules/
