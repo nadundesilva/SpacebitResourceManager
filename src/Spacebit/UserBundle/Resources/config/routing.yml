@@ -1,7 +1,3 @@
-spacebit_user_home:
-    path:     /
-    defaults: { _controller: SpacebitUserBundle:Default:home }
-
 spacebit_user_login:
     path:     /login
     defaults: { _controller: SpacebitUserBundle:Default:login }
@@ -18,6 +14,10 @@ spacebit_user_forgot_password:
     path:     /forgotPassword
     defaults: { _controller: SpacebitUserBundle:Default:forgotPassword }
 
+spacebit_user_profile:
+    path:     /myProfile
+    defaults: { _controller: SpacebitUserBundle:Default:myProfile }
+
 spacebit_user_validate:
     path:     /validateUser
     defaults: { _controller: SpacebitUserBundle:Default:validateUser }
@@ -26,4 +26,25 @@ spacebit_user_validate:
 spacebit_user_add:
     path:     /addUser
     defaults: { _controller: SpacebitUserBundle:Default:addUser }
-    methods:  ['GET']
+    methods:  ['POST']
+
+spacebit_load_departments:
+    path:     /loadDepartments
+    defaults: { _controller: SpacebitUserBundle:Default:loadDepartments }
+    methods:  ['POST']
+
+spacebit_check_user_availability:
+    path:     /checkUserAvailability
+    defaults: { _controller: SpacebitUserBundle:Default:checkUserAvailability }
+    methods:  ['POST']
+
+spacebit_check_user_availability:
+    path:     /checkUserAvailability
+    defaults: { _controller: SpacebitUserBundle:Default:checkUserAvailability }
+    methods:  ['POST']
+
+spacebit_check_user_availability:
+    path:     /checkUserAvailability
+    defaults: { _controller: SpacebitUserBundle:Default:checkUserAvailability }
+    methods:  ['POST']
+

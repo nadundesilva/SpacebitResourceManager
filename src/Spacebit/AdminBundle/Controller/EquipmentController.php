@@ -10,14 +10,14 @@ class EquipmentController extends Controller
 {
     public function equipmentAction()
     {
-        /*
+    /*
         $this->get('session')->set('user_id', 'AB1234');
         $this->get('session')->set('first_name', 'John');
         $this->get('session')->set('last_name', 'Doe');
         $this->get('session')->set('access_level', 5);
-        */
+    */
         $conn = $this->get('database_connection');
-        $stmt = $conn->prepare('SELECT request_id, user_id,resource_id, date_from,date_to, time_from,time_to, status FROM resource_request ORDER BY status DESC, date_from DESC, time_from DESC;');
+        $stmt = $conn->prepare('SELECT request_id, user_id,equipment.resource_id, date_from,date_to, time_from,time_to, status FROM resource_request INNER JOIN equipment on  equipment.resource_id = resource_request.resource_id ORDER BY status DESC, date_from DESC, time_from DESC;');
         $stmt->execute();
         $equipment_requests = $stmt->fetchAll();
 
@@ -138,7 +138,6 @@ class EquipmentController extends Controller
     {
         $request = Request::createFromGlobals();
         $request_id = $request->request->get('request-id');
-        $resource_id = $request->request->get('resource_id');
         $status = $request->request->get('status');
 
         $conn = $this->get('database_connection');

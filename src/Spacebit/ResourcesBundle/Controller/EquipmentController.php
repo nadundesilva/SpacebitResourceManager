@@ -31,7 +31,7 @@ class EquipmentController extends Controller
     public function getDepartmentsAction()
     {
         $request = Request::createFromGlobals();
-        $faculty = $request->request->get('faculty'); //request : post
+        $faculty = $request->request->get('faculty'); //query : post
 
         $conn = $this->get('database_connection');
         $stmt = $conn->prepare('SELECT dept_name FROM department WHERE faculty_name=:faculty_name');
@@ -48,7 +48,7 @@ class EquipmentController extends Controller
     public function getByCategoryAction()
     {
         $request = Request::createFromGlobals();
-        $department = $request->request->get('department'); //request : post //in js what is posted obj.send("department=" + department);
+        $department = $request->request->get('department'); //query : post //in js what is posted obj.send("department=" + department);
 
         $conn = $this->get('database_connection');
         $stmt = $conn->prepare('SELECT DISTINCT equipment_type FROM equipment WHERE department_name = :department_name');
@@ -62,22 +62,55 @@ class EquipmentController extends Controller
         return $response;
     }
 
-    public function getFromCategoryAction()
-    {
+    public function getFromCategoryAction(){
         $request = Request::createFromGlobals();
-        $equipCatagory = $request->request->get('equipCatagory'); //request : post //in js what is posted obj.send("department=" + department);
+        $equipCategory = $request->request->get('equipCategory'); //query : post //in js what is posted obj.send("department=" + department);
+        $deptName = $request->request->get('department');
 
         $conn = $this->get('database_connection');
-        $stmt = $conn->prepare('SELECT * FROM equipment WHERE equipment_type = :equipCatagory');
-        $stmt->bindValue(':equipCatagory', $equipCatagory);
+        $stmt = $conn->prepare('SELECT * FROM equipment WHERE equipment_type = :equipCategory AND department_name = :department_name');
+        $stmt->bindValue(':equipCategory', $equipCategory);
+        $stmt->bindValue(':department_name', $deptName);
         $stmt->execute();
         $deptEquipments = $stmt->fetchAll();
 
-        $response = new Response(json_encode(array('catogaryEquipments' => $deptEquipments)));
+        $response = new Response(json_encode(array('categoryEquipments' => $deptEquipments)));
         $response->headers->set('Content-Type', 'application/json');
 
         return $response;
 
+    }
+
+    public function addRequestAction()
+    {
+        $request = Request::createFromGlobals();
+        $dateFrom = $request->request->get('dateFrom');
+        $dateTo = $request->request->get('dateTo');
+        $timeFrom = $request->request->get('timeFrom');
+        $timeTo = $request->request->get('timeTo');
+        $type = $request->request->get('equipType');
+        $department = $request->request->get('department');
+
+        $conn = $this->get('database_connection');
+
+        $stmt = $conn->prepare('INSERT INTO resource_request(user_id, date_from, date_to, time_from, time_to, status, type, department_name) VALUES(:user_id, :date_from, :date_to, :time_from, :time_to, :status, :type, :department);');
+
+        $stmt->bindValue(':user_id', $this->get('session')->get('user_id'));
+        $stmt->bindValue(':date_from', $dateFrom);
+        $stmt->bindValue(':date_to', $dateTo);
+        $stmt->bindValue(':time_from', $timeFrom);
+        $stmt->bindValue(':time_to', $timeTo);
+        $stmt->bindValue(':status', 2);
+        $stmt->bindValue(':type' ,$type );
+        $stmt->bindValue(':department', $department);
+
+
+        $response = 'success';
+        if(!$stmt->execute()) {
+            $response = $stmt->errorCode();
+        }
+
+        return new Response($response);
     }
 
 }

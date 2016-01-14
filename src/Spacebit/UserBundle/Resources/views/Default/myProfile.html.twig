@@ -1,0 +1,177 @@
+{% extends 'base.html.twig' %}
+
+{% set link_to_home = '../' %}
+{% set active = {link:'My Profile'} %}
+
+{% block title %}My Profile{% endblock %}
+
+{% block javascripts %}
+    <script>
+        function editProfile(id){
+            var elem = document.getElementById("submitButton");
+            if (elem.value=="Edit Profile"){
+                elem.value = "Done Editing";
+
+                //user fields visible
+                //document.getElementById('userID').disabled = false;
+                document.getElementById('firstName').disabled = false;
+                document.getElementById('middleName').disabled = false;
+                document.getElementById('lastName').disabled = false;
+                document.getElementById('email').disabled = false;
+                document.getElementById('telephoneNumber').disabled = false;
+
+                if (id == 0){
+                    //guest fields visible
+                    document.getElementById('title').disabled = false;
+                    document.getElementById('organizationEmail').disabled = false;
+                    document.getElementById('organizationTelephone').disabled = false;
+                    document.getElementById('nic').disabled = false;
+                    document.getElementById('organizationAddress').disabled = false;
+                }
+                if (id ==1){
+                    //student fields visible
+                    document.getElementById('batch').disabled = false;
+                    document.getElementById('department').disabled = false;
+                }
+                if (id >1){
+                    //staff fields visible
+                    document.getElementById('designation').disabled = false;
+                    document.getElementById('department').disabled = false;
+                }
+            }
+            else {
+                elem.value = "Edit Profile";
+                //user fields visible
+
+                document.getElementById('firstName').disabled = true;
+                document.getElementById('middleName').disabled = true;
+                document.getElementById('lastName').disabled = true;
+                document.getElementById('email').disabled = true;
+                document.getElementById('telephoneNumber').disabled = true;
+
+                if (id == 0){
+                    //guest fields visible
+                    document.getElementById('title').disabled = true;
+                    document.getElementById('organizationEmail').disabled = true;
+                    document.getElementById('organizationTelephone').disabled = true;
+                    document.getElementById('nic').disabled = true;
+                    document.getElementById('organizationAddress').disabled = true;
+                }
+                if (id ==1){
+                    //student fields visible
+                    document.getElementById('batch').disabled = true;
+                    document.getElementById('department').disabled = true;
+                }
+                if (id >1){
+                    //staff fields visible
+                    document.getElementById('designation').disabled = true;
+                    document.getElementById('department').disabled = true;
+                }
+            }
+        }
+    </script>
+
+{% endblock %}
+
+{% block body %}
+    <div class="col-lg-7" style="padding: 0px 125px 0px 65px">
+
+        <button type="submit" class="btn btn-md btn-primary" onclick="addNewUser(); return false;">Change Password</button>
+        <h2 style="margin-left: 130px;margin-right: 110px; display: inline-block;">My Profile</h2>
+
+
+        <form role="form">
+            <div>
+                <div class="form-group">
+                    <label for="userID">User ID</label>
+                    <input type="text" class="form-control" name="userID" id="userID"  placeholder="User ID" value={{ profile_details[0].user_id}} required disabled/>
+                </div>
+                <div class="form-group">
+                    <label for="firstName">First Name</label>
+                    <input type="text" class="form-control" name="firstName" id="firstName" placeholder="First Name" value={{ profile_details[0].first_name}} required disabled/>
+                </div>
+                <div class="form-group">
+                    <label for="middleName">Middle Name</label>
+                    <input type="text" class="form-control" name="middleName" id="middleName" placeholder="Middle Name" value={{ profile_details[0].middle_name}} disabled/>
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Last Name" value={{ profile_details[0].last_name}} required disabled/>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="text" class="form-control" id="email" name="email" placeholder="Email Address" value={{ profile_details[0].email}} required disabled/>
+                </div>
+                <div class="form-group">
+                    <label for="telephoneNumber">Telephone Number</label>
+                    <input type="number" class="form-control" id="telephoneNumber" name="telephoneNumber" placeholder="Telephone Number" value={{ profile_details[0].telephone_no}} required disabled/>
+                </div>
+
+                {#guest check#}
+                {% if app.session.get('access_level')==0 %}
+                    <h4>Organization Details</h4>
+                    <div class="form-group">
+                        <label for="title">Organization Title</label>
+                        <input type="text" class="form-control" id="title" name="title" placeholder="Organization Title" value={{ profile_details[0].organizational_title}} required disabled/>
+                    </div>
+                    <div class="form-group">
+                        <label for="organizationEmail">Organization Email</label>
+                        <input type="email" class="form-control" id="organizationEmail" name="organizationEmail" placeholder="Organization Email"  value={{ profile_details[0].organizational_email}} required disabled/>
+                    </div>
+                    <div class="form-group">
+                        <label for="organizationTelephone">Organization Telephone</label>
+                        <input type="text" class="form-control" id="organizationTelephone" name="organizationTelephone" placeholder="Organization Telephone"  value={{ profile_details[0].organizational_telephone}} required disabled/>
+                    </div>
+                    <div class="form-group">
+                        <label for="nic">National ID Card Number (NIC)</label>
+                        <input type="text" class="form-control" id="nic" name="nic" placeholder="National ID Card Number"  value={{ profile_details[0].nic}} required disabled/>
+                    </div>
+                    <div class="form-group">
+                        <label for="organizationAddress">Organization Address</label>
+                        <input type="text" class="form-control" id="organizationAddress" name="organizationAddress" placeholder="Organization Address"  value={{ profile_details[0].address}} required disabled/>
+                    </div>
+
+                {% endif %}
+                {#student check#}
+                {% if app.session.get('access_level')==1 %}
+                    <div class="form-group">
+                        <label for="batch">Batch</label>
+                        <input type="number" class="form-control" id="batch" name="batch" placeholder="Batch" value={{ profile_details[0].batch}} required disabled/>
+                    </div>
+
+                    <div id="departmentDivision" class="form-group" >
+                        <label for="department">Select Department</label>
+                        <select class="form-control"  id="department"  disabled>
+                            <option disabled selected>{{ profile_details[0].dept_name}}</option>
+
+                        </select>
+                    </div>
+
+
+                {% endif %}
+                {#staff check#}
+                {% if app.session.get('access_level')>1 %}
+                    <div class="form-group">
+                        <label for="designation">Designation</label>
+                        <input type="text" class="form-control" id="designation" name="designation" placeholder="Designation" {{ profile_details[0].designation}}  required disabled/>
+                    </div>
+                    <div id="departmentDivision" class="form-group" >
+                        <label for="department">Select Department</label>
+                        <select class="form-control"  id="department"  disabled>
+                            <option disabled selected>{{ profile_details[0].dept_name}}</option>
+
+                        </select>
+                    </div>
+
+
+                {% endif %}
+
+
+
+
+                <input type="button" class="btn btn-md btn-primary" id="submitButton" onclick="editProfile({{ app.session.get('access_level')}})" value="Edit Profile">
+            </div>
+        </form>
+    </div>
+
+{% endblock %}
