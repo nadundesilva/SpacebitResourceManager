@@ -9,7 +9,7 @@
 #}
 {% set pages = [
     {name:'Home', link:'./', glyphicon:'glyphicon glyphicon-home'},
-    {name:'Resources', link:'resources', glyphicon:'glyphicon glyphicon-duplicate',
+    {name:'Resources', glyphicon:'glyphicon glyphicon-duplicate',
         sub_menu:[
             {name:'Equipment', link:'resources/equipment'},
             {name:'Venues', link:'resources/venues'},
@@ -32,7 +32,7 @@
     {% endif %}
 
     {% set pages = pages | merge([
-        {name:'Admin', link:'admin', glyphicon:'glyphicon glyphicon-cog',
+        {name:'Admin', glyphicon:'glyphicon glyphicon-cog',
             sub_menu:sub_menu_array
         }
     ]) %}
@@ -125,7 +125,7 @@
                             {% if page.link is defined %}
                                 {% set link = link_to_home ~ page.link %}
                             {% else %}
-                                {% set link = '' %}
+                                {% set link = '#' %}
                             {% endif %}
                             <a href="{{ link }}" data-toggle="collapse" data-target="#{{ page.name }}">{% if page.glyphicon is defined %}<span class="{{ page.glyphicon }}"></span> {% endif %}{{ page.name }}{% if page.sub_menu is defined %} <i class="caret"></i>{% endif %}</a>
                             {% if page.sub_menu is defined %}

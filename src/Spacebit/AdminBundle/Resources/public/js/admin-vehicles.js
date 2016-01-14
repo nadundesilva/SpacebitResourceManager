@@ -45,6 +45,7 @@ function showManageVehiclesModal() {
 }
 
 function showAddVehicleModal() {
+    showLoadingOverlay();
     document.forms['add-vehicle-form']['plate-no'].value = '';
     document.forms['add-vehicle-form']['type'].value = '';
     document.forms['add-vehicle-form']['model'].value = '';
@@ -58,10 +59,11 @@ function showAddVehicleModal() {
     document.getElementById('add-edit-vehicle-title').innerHTML = 'Add Vehicle';
     document.forms['vehicle-add-form']['submit-button'].innerHTML = '<span class="glyphicon glyphicon-plus"></span> Add';
     $('#manage-vehicles-modal').modal('hide');
-    setTimeout("$('#add-edit-vehicle-modal').modal();", 1000);
+    setTimeout("hideLoadingOverlay(); $('#add-edit-vehicle-modal').modal();", 1000);
 }
 
 function showEditVehicleModal(plateNo) {
+    showLoadingOverlay();
     var obj;
 
     if (window.XMLHttpRequest) {
@@ -92,7 +94,7 @@ function showEditVehicleModal(plateNo) {
                 document.getElementById('add-edit-vehicle-title').innerHTML = 'Edit Vehicle';
                 document.forms['vehicle-add-form']['submit-button'].innerHTML = '<span class="glyphicon glyphicon-ok"></span> OK';
                 $('#manage-vehicles-modal').modal('hide');
-                setTimeout("$('#add-edit-vehicle-modal').modal();", 1000);
+                setTimeout("hideLoadingOverlay(); $('#add-edit-vehicle-modal').modal();", 1000);
             }
         }
 
@@ -103,6 +105,7 @@ function showEditVehicleModal(plateNo) {
 }
 
 function addEditVehicle() {
+    showLoadingOverlay();
     var plateNo = document.forms['vehicle-add-form']['plate-no'].value;
     var type = document.forms['vehicle-add-form']['type'].value;
     var model = document.forms['vehicle-add-form']['model'].value;
@@ -138,7 +141,7 @@ function addEditVehicle() {
                 document.getElementById('message-modal-content').innerHTML = modalContent;
 
                 $('#add-edit-vehicle-modal').modal('hide');
-                setTimeout("$('#message-modal').modal();", 1000);
+                setTimeout("hideLoadingOverlay(); $('#message-modal').modal();", 1000);
             }
         }
 
@@ -149,6 +152,7 @@ function addEditVehicle() {
 }
 
 function showEditVehicleRequestModal(requestID, routeGroupID, requester, requestedDate, requestedTime, noOfPassengers, requestedVehicleType, requestedDestination, status) {
+    showLoadingOverlay();
     var obj;
 
     if (window.XMLHttpRequest) {
@@ -215,6 +219,7 @@ function showEditVehicleRequestModal(requestID, routeGroupID, requester, request
 
                 viewLocation(requestedDestination);
 
+                hideLoadingOverlay();
                 $('#edit-vehicle-request-modal').modal();
             }
         }
@@ -238,6 +243,7 @@ function routeSelectionMethodOnClick() {
 }
 
 function updateRouteTable() {
+    showLoadingOverlay();
     document.getElementById('locations-table').innerHTML = '';
     var obj;
 
@@ -269,6 +275,7 @@ function updateRouteTable() {
                 } else {
                     document.getElementById('locations-table').innerHTML = '';
                 }
+                hideLoadingOverlay();
             }
         }
 
@@ -279,6 +286,7 @@ function updateRouteTable() {
 }
 
 function changeVehicleRequest() {
+    showLoadingOverlay();
     var status = document.forms['request-status-form']['request-status'].value;
     if (status == 2) { return; }
     var requestID = document.forms['request-status-form']["request-id"].value;
@@ -310,7 +318,7 @@ function changeVehicleRequest() {
                 document.getElementById('message-modal-content').innerHTML = modalContent;
 
                 $('#edit-vehicle-request-modal').modal('hide');
-                setTimeout("$('#message-modal').modal();", 1000);
+                setTimeout("hideLoadingOverlay(); $('#message-modal').modal();", 1000);
             }
         }
 
