@@ -6,11 +6,7 @@
 {% block title %}My Profile{% endblock %}
 
 {% block javascripts %}
-<script>
 
-
-
-</script>
 {% endblock %}
 
 {% block body %}
@@ -24,86 +20,91 @@
             <div>
                 <div class="form-group">
                     <label for="userID">User ID</label>
-                    <input type="text" class="form-control" name="userID" id="userID" placeholder="User ID" required disabled/>
+                    <input type="text" class="form-control" name="userID" id="userID"  placeholder="User ID" value={{ profile_details[0].user_id}} required disabled/>
                 </div>
                 <div class="form-group">
                     <label for="firstName">First Name</label>
-                    <input type="text" class="form-control" name="firstName" id="firstName" placeholder="First Name" required disabled/>
+                    <input type="text" class="form-control" name="firstName" id="firstName" placeholder="First Name" value={{ profile_details[0].first_name}} required disabled/>
                 </div>
                 <div class="form-group">
                     <label for="middleName">Middle Name</label>
-                    <input type="text" class="form-control" name="middleName" id="middleName" placeholder="Middle Name" disabled/>
+                    <input type="text" class="form-control" name="middleName" id="middleName" placeholder="Middle Name" value={{ profile_details[0].middle_name}} disabled/>
                 </div>
                 <div class="form-group">
                     <label for="lastName">Last Name</label>
-                    <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Last Name" required disabled/>
+                    <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Last Name" value={{ profile_details[0].last_name}} required disabled/>
                 </div>
                 <div class="form-group">
                     <label for="email">Email Address</label>
-                    <input type="text" class="form-control" id="email" name="email" placeholder="Email Address" required disabled/>
+                    <input type="text" class="form-control" id="email" name="email" placeholder="Email Address" value={{ profile_details[0].email}} required disabled/>
                 </div>
                 <div class="form-group">
                     <label for="telephoneNumber">Telephone Number</label>
-                    <input type="number" class="form-control" id="telephoneNumber" name="telephoneNumber" placeholder="Telephone Number" required disabled/>
-                </div>
-                <div class="form-group">
-                    <label for="passwordOne">Password</label>
-                    <input type="password" class="form-control" id="passwordOne" name="passwordOne" placeholder="Password" required disabled/>
-                    <label for="passwordTwo">Re-enter Password</label>
-                    <input type="password" class="form-control" id="passwordTwo" name="passwordTwo" placeholder="Confirm Password" required disabled />
-                </div>
-                <div class="form-group">
-                    <label for="accessLevel">Select User Category:</label>
-                    <select class="form-control" id="accessLevel" name="accessLevel" onchange="showDiv(this)">
-                        <option value="student">Student</option>
-                        <option value="staff">Staff</option>
-                        <option value="guest" selected>Guest</option>
-                    </select>
-                    <br>
+                    <input type="number" class="form-control" id="telephoneNumber" name="telephoneNumber" placeholder="Telephone Number" value={{ profile_details[0].telephone_no}} required disabled/>
                 </div>
 
-                <div id="studentDivision" style="display: none;">
-                    <div class="form-group">
-                        <label for="batch">Batch</label>
-                        <input type="number" class="form-control" id="batch" name="batch" placeholder="Batch" required />
-                    </div>
-
-                </div>
-                <div id="staffDivision" style="display: none;">
-                    <div class="form-group">
-                        <label for="designation">Designation</label>
-                        <input type="text" class="form-control" id="designation" name="designation" placeholder="Designation" required />
-                    </div>
-                </div>
-                <div id="departmentDivision" class="form-group" style="display: none;">
-                    <label for="department">Select Department</label>
-                    <select class="form-control"  id="department"  disabled>
-
-                    </select>
-                </div>
-                <div id="guestDivision" style="display: block;">
+                {#guest check#}
+                {% if app.session.get('access_level')==0 %}
                     <h4>Organization Details</h4>
                     <div class="form-group">
                         <label for="title">Organization Title</label>
-                        <input type="text" class="form-control" id="title" name="title" placeholder="Organization Title" required />
+                        <input type="text" class="form-control" id="title" name="title" placeholder="Organization Title" value={{ profile_details[0].organizational_title}} required disabled/>
                     </div>
                     <div class="form-group">
                         <label for="organizationEmail">Organization Email</label>
-                        <input type="email" class="form-control" id="organizationEmail" name="organizationEmail" placeholder="Organization Email" required />
+                        <input type="email" class="form-control" id="organizationEmail" name="organizationEmail" placeholder="Organization Email"  value={{ profile_details[0].organizational_email}} required disabled/>
                     </div>
                     <div class="form-group">
                         <label for="organizationTelephone">Organization Telephone</label>
-                        <input type="text" class="form-control" id="organizationTelephone" name="organizationTelephone" placeholder="Organization Telephone" required />
+                        <input type="text" class="form-control" id="organizationTelephone" name="organizationTelephone" placeholder="Organization Telephone"  value={{ profile_details[0].organizational_telephone}} required disabled/>
                     </div>
                     <div class="form-group">
                         <label for="nic">National ID Card Number (NIC)</label>
-                        <input type="text" class="form-control" id="nic" name="nic" placeholder="National ID Card Number" required />
+                        <input type="text" class="form-control" id="nic" name="nic" placeholder="National ID Card Number"  value={{ profile_details[0].nic}} required disabled/>
                     </div>
                     <div class="form-group">
                         <label for="organizationAddress">Organization Address</label>
-                        <input type="text" class="form-control" id="organizationAddress" name="organizationAddress" placeholder="Organization Address" required />
+                        <input type="text" class="form-control" id="organizationAddress" name="organizationAddress" placeholder="Organization Address"  value={{ profile_details[0].address}} required disabled/>
                     </div>
-                </div>
+
+                {% endif %}
+                {#student check#}
+                {% if app.session.get('access_level')==1 %}
+                    <div class="form-group">
+                        <label for="batch">Batch</label>
+                        <input type="number" class="form-control" id="batch" name="batch" placeholder="Batch" value={{ profile_details[0].batch}} required disabled/>
+                    </div>
+
+                    <div id="departmentDivision" class="form-group" >
+                        <label for="department">Select Department</label>
+                        <select class="form-control"  id="department"  disabled>
+                            <option disabled selected>{{ profile_details[0].dept_name}}</option>
+
+                        </select>
+                    </div>
+
+
+                {% endif %}
+                {#staff check#}
+                {% if app.session.get('access_level')>1 %}
+                    <div class="form-group">
+                        <label for="designation">Designation</label>
+                        <input type="text" class="form-control" id="designation" name="designation" placeholder="Designation" {{ profile_details[0].designation}}  required disabled/>
+                    </div>
+                    <div id="departmentDivision" class="form-group" >
+                        <label for="department">Select Department</label>
+                        <select class="form-control"  id="department"  disabled>
+                            <option disabled selected>{{ profile_details[0].dept_name}}</option>
+
+                        </select>
+                    </div>
+
+
+                {% endif %}
+
+
+
+
                 <button type="submit" class="btn btn-md btn-primary" onclick="addNewUser(); return false;">Done Editing</button><br>
             </div>
         </form>

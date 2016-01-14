@@ -37,10 +37,35 @@ class DefaultController extends Controller
 
     public function myProfileAction()
     {
+        $conn = $this->get('database_connection');
+        $access_level = $this->get('session')->get('access_level');
+        $user_id = $this->get('session')->get('user_id');
+        
+        //guest
+        if ($access_level == 0){
+            $stmt = $conn->prepare('SELECT * FROM user INNER JOIN guest USING (user_id)');
+        }
+        //student
+        if ($access_level == 1){
+            $stmt = $conn->prepare('SELECT * FROM user INNER JOIN student USING (user_id)');
+        }
+        //staff
+        if ($access_level > 1){
+            $stmt = $conn->prepare('SELECT * FROM user INNER JOIN staff USING (user_id)');
+        }
+
+        $stmt->execute();
+        $profile_details = $stmt->fetchAll();
+
         if ($this->get('login_authenticator')->authenticateGuestLogin()) {
-            return $this->render('SpacebitUserBundle:Default:myProfile.html.twig');
+
+            return $this->render('SpacebitUserBundle:Default:myProfile.html.twig', array(
+                'profile_details'=>$profile_details,
+            ));
         }
         return $this->render('SpacebitUserBundle:Default:login.html.twig');
+
+
     }
 
     public function validateUserAction()
@@ -217,16 +242,5 @@ class DefaultController extends Controller
 
     }
 
-    public function loadMyProfileAction(){
-
-
-    }
-
-    public function getSessionAccessLevelAction(){
-
-        $variable = $this->get('session')->get('access_level');
-        return $variable;
-
-    }
 
 }
