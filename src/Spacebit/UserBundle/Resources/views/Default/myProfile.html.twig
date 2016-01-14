@@ -6,12 +6,76 @@
 {% block title %}My Profile{% endblock %}
 
 {% block javascripts %}
+    <script>
+        function editProfile(id){
+            var elem = document.getElementById("submitButton");
+            if (elem.value=="Edit Profile"){
+                elem.value = "Done Editing";
+
+                //user fields visible
+                //document.getElementById('userID').disabled = false;
+                document.getElementById('firstName').disabled = false;
+                document.getElementById('middleName').disabled = false;
+                document.getElementById('lastName').disabled = false;
+                document.getElementById('email').disabled = false;
+                document.getElementById('telephoneNumber').disabled = false;
+
+                if (id == 0){
+                    //guest fields visible
+                    document.getElementById('title').disabled = false;
+                    document.getElementById('organizationEmail').disabled = false;
+                    document.getElementById('organizationTelephone').disabled = false;
+                    document.getElementById('nic').disabled = false;
+                    document.getElementById('organizationAddress').disabled = false;
+                }
+                if (id ==1){
+                    //student fields visible
+                    document.getElementById('batch').disabled = false;
+                    document.getElementById('department').disabled = false;
+                }
+                if (id >1){
+                    //staff fields visible
+                    document.getElementById('designation').disabled = false;
+                    document.getElementById('department').disabled = false;
+                }
+            }
+            else {
+                elem.value = "Edit Profile";
+                //user fields visible
+
+                document.getElementById('firstName').disabled = true;
+                document.getElementById('middleName').disabled = true;
+                document.getElementById('lastName').disabled = true;
+                document.getElementById('email').disabled = true;
+                document.getElementById('telephoneNumber').disabled = true;
+
+                if (id == 0){
+                    //guest fields visible
+                    document.getElementById('title').disabled = true;
+                    document.getElementById('organizationEmail').disabled = true;
+                    document.getElementById('organizationTelephone').disabled = true;
+                    document.getElementById('nic').disabled = true;
+                    document.getElementById('organizationAddress').disabled = true;
+                }
+                if (id ==1){
+                    //student fields visible
+                    document.getElementById('batch').disabled = true;
+                    document.getElementById('department').disabled = true;
+                }
+                if (id >1){
+                    //staff fields visible
+                    document.getElementById('designation').disabled = true;
+                    document.getElementById('department').disabled = true;
+                }
+            }
+        }
+    </script>
 
 {% endblock %}
 
 {% block body %}
     <div class="col-lg-7" style="padding: 0px 125px 0px 65px">
-        <button type="submit" class="btn btn-md btn-primary" onclick="addNewUser(); return false;" >Edit Profle</button>
+
         <button type="submit" class="btn btn-md btn-primary" onclick="addNewUser(); return false;">Change Password</button>
         <h2 style="margin-left: 130px;margin-right: 110px; display: inline-block;">My Profile</h2>
 
@@ -105,7 +169,7 @@
 
 
 
-                <button type="submit" class="btn btn-md btn-primary" onclick="addNewUser(); return false;">Done Editing</button><br>
+                <input type="button" class="btn btn-md btn-primary" id="submitButton" onclick="editProfile({{ app.session.get('access_level')}})" value="Edit Profile">
             </div>
         </form>
     </div>
