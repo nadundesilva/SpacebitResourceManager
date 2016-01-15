@@ -59,17 +59,23 @@ function loadEquipmentByCategory() {
                 var res = obj.responseText;
                 var deptvenues = JSON.parse(res).deptVenues;
 
-                alert(deptvenues);
+                //alert(deptvenues);
 
-                var tableContent = '<h2 style="text-align: center;">' + '</h2><table class="table table-hover">';
-                tableContent += '<tr><th>Equipment Catogary</th><th></th></tr>';
-                for (var i = 0; i < deptvenues.length; i++) {
-                    tableContent += '<tr>';
-                    tableContent += '<td>' + deptvenues[i].venue_type + '</td>';
-                    tableContent += '<td><button type="button" id="equipmentSelect" class="btn btn-info btn-xs" onclick="loadModalByCategory(\'' + deptvenues[i].venue_type+ '\')" onclick = "passDepartment(\''+ department+ '\')" ><span class="glyphicon glyphicon-pencil"></span> View</button></td>';
-                    tableContent += '</tr>';
-                }
-                tableContent += '</table>';
+                var tableContent = '';
+
+
+                    tableContent += '<div class="row" style="width: 100%; text-align: center; padding: 50px;">';
+                    for (var i = 0; i < deptvenues.length; i++)
+                    {imageName = deptvenues[i].venue_type;
+
+                        tableContent += '<div class="col-lg-6 portfolio-item" style="margin: 0 auto;">' +
+                            '<div class="portfolio-wrapper">' +
+                            '<img class="img-portfolio" src="../../bundles/spacebitresources/images/venue/'+ imageName+ '.jpg" alt=deptvenues[i].venue_type onclick="loadModalByCategory(\'' + deptvenues[i].venue_type+ '\')" height="200" width="200" >' + ' <h3 class="text-label">' + deptvenues[i].venue_type + '</h3>' +
+                            '</div>' +
+                            '</div>';
+                    }
+                    tableContent += '</div>';
+
 
                 document.getElementById('venuePictures').innerHTML = tableContent;
             }
@@ -141,10 +147,10 @@ function showRequestModal(venueCategory) {
 function addRequest() {
     var obj;
 
-    var requestedVenue = document.getElementById('requstedVenueID').innerHTML;
-    alert(requestedVenue);
+    var resource_id = document.getElementById('requstedVenueID').innerHTML;
+    //alert(resource_id);
     var VType = document.getElementById('venueCategory').innerHTML;
-    alert(VType);
+    //alert(VType);
 
     if (window.XMLHttpRequest) {
         obj = new XMLHttpRequest();
@@ -178,7 +184,7 @@ function addRequest() {
         }
 
 
-        obj.open("POST", "./equipment/addRequest", true);
+        obj.open("POST", "./venues/addRequest", true);
 
 
         obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -192,9 +198,9 @@ function addRequest() {
         //alert(departmentName);
 
 
-        var parameter = "resource_id="+ requestedVenue+ "&dateTo=" + dateTo + "&dateFrom=" + dateTo+ '&timeTo=' + timeTo +  '&timeFrom=' + timeFrom + '&equipType=' + equipType + '&department='+departmentName;
+        var parameter = "resource_id="+ resource_id+ "&dateTo=" + dateTo + "&dateFrom=" + dateTo+ '&timeTo=' + timeTo +  '&timeFrom=' + timeFrom + '&equipType=' + equipType + '&department='+departmentName;
 
-        alert(parameter);
+       // alert(parameter);
         obj.send(parameter);
     }
 
