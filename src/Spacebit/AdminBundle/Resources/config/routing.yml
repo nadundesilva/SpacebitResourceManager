@@ -1,9 +1,3 @@
-spacebit_admin_home:
-    path:     /
-    defaults: { _controller: SpacebitAdminBundle:Default:home }
-
-
-
 spacebit_admin_user:
     path:     /users
     defaults: { _controller: SpacebitAdminBundle:User:users }

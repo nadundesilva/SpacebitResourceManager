@@ -54,13 +54,18 @@ function loadEquipmentByCategory() {
             } else if (obj.readyState === 4) {
                 var res = obj.responseText;
                 var deptEquipments = JSON.parse(res).deptEquipment;
+               // var imageNumber;
 
                 //alert(deptEquipments);
 
                 var tableContent = '<h2 style="text-align: center;">' + '</h2><table class="table table-hover">';
-                tableContent += '<tr><th>Equipment Catogary</th><th></th></tr>';
+                tableContent += '<tr><th></th><th>Equipment Catogary</th><th></th></tr>';
                 for (var i = 0; i < deptEquipments.length; i++) {
                     tableContent += '<tr>';
+                    imageNumber = i%3;
+
+                    tableContent += '<td>' + '<img src="../../bundles/spacebitresources/images/equipment/equipmentImg' + imageNumber + '.png" alt="E" height="45" width="45">' + '</td>';
+
                     tableContent += '<td>' + deptEquipments[i].equipment_type + '</td>';
                     tableContent += '<td><button type="button" id="equipmentSelect" class="btn btn-info btn-xs" onclick="loadModalByCategory(\'' + deptEquipments[i].equipment_type+ '\')" onclick = "passDepartment(\''+ department+ '\')" ><span class="glyphicon glyphicon-pencil"></span> View</button></td>';
                     tableContent += '</tr>';

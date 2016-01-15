@@ -1,4 +1,5 @@
 function loadVehiclesByCategory(category) {
+    showLoadingOverlay();
     var obj;
 
     if (window.XMLHttpRequest) {
@@ -33,6 +34,7 @@ function loadVehiclesByCategory(category) {
                 modalContent += '</table>';
 
                 document.getElementById('vehicles-modal-content').innerHTML = modalContent;
+                hideLoadingOverlay();
                 $('#vehicles-modal').modal();
             }
         }
@@ -44,6 +46,7 @@ function loadVehiclesByCategory(category) {
 }
 
 function showAddRequestModal() {
+    showLoadingOverlay();
     document.forms['request-form']['request-date'].value = '';
     document.forms['request-form']['request-time'].value = '';
     document.forms['request-form']['request-vehicle-type'].value = '';
@@ -55,9 +58,11 @@ function showAddRequestModal() {
     document.forms['request-form']['submit-button'].innerHTML = '<span class="glyphicon glyphicon-plus"></span> Request';
     document.forms['request-form']['submit-button'].value = "Add";
     $('#request-modal').modal();
+    hideLoadingOverlay();
 }
 
 function showEditPastRequestModal(requestID, date, time, noOfPassengers, requestedTown, requestedType) {
+    showLoadingOverlay();
     document.forms['request-form']['request-id'].value = requestID;
     document.forms['request-form']['request-date'].value = date;
     document.forms['request-form']['request-time'].value = time;
@@ -71,10 +76,11 @@ function showEditPastRequestModal(requestID, date, time, noOfPassengers, request
     document.forms['request-form']['submit-button'].value = "Edit";
     search();
     $('#past-requests-modal').modal('hide');
-    setTimeout("$('#request-modal').modal();", 1000);
+    setTimeout("hideLoadingOverlay(); $('#request-modal').modal();", 1000);
 }
 
 function addEditRequest() {
+    showLoadingOverlay();
     var date = document.forms["request-form"]["request-date"].value;
     var time = document.forms["request-form"]["request-time"].value;
     var vehicleType = document.forms["request-form"]["request-vehicle-type"].value;
@@ -109,7 +115,7 @@ function addEditRequest() {
                 document.getElementById('vehicles-modal-content').innerHTML = modalContent;
 
                 $('#request-modal').modal('hide');
-                setTimeout("$('#vehicles-modal').modal();", 1000);
+                setTimeout("hideLoadingOverlay(); $('#vehicles-modal').modal();", 1000);
             }
         }
 
@@ -193,6 +199,7 @@ function search() {
 }
 
 function showPastRequestsModal() {
+    showLoadingOverlay();
     var obj;
 
     if (window.XMLHttpRequest) {
@@ -220,7 +227,6 @@ function showPastRequestsModal() {
                     pastRequestsTableContent += '<td>' + result[i].requested_town + '</td>';
                     pastRequestsTableContent += '<td>' + result[i].requested_type + '</td>';
                     pastRequestsTableContent += '<td>' + result[i].vehicle_plate_no + '</td>';
-                    var status;
                     if (result[i].status == 0) {
                         pastRequestsTableContent += '<td style = "color: #ff4d54;">Declined</td>';
                     } else if (result[i].status == 1) {
@@ -232,6 +238,7 @@ function showPastRequestsModal() {
                 }
 
                 document.getElementById('past-request-table-content').innerHTML = pastRequestsTableContent;
+                hideLoadingOverlay();
                 $('#past-requests-modal').modal();
             }
         }

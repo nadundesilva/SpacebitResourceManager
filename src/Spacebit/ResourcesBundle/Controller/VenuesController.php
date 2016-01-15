@@ -94,7 +94,7 @@ class VenuesController extends Controller
 
         $conn = $this->get('database_connection');
 
-        $stmt = $conn->prepare('INSERT INTO resource_request(user_id, resource_id, date_from, date_to, time_from, time_to, status, type, department_name) VALUES(:user_id, :resource_id, :date_from, :date_to, :time_from, :time_to, :status, :type, :department);');
+        $stmt = $conn->prepare('INSERT INTO resource_request(user_id,resource_id,date_from,date_to,time_from,time_to,status,type, department_name) VALUES(:user_id, :resource_id, :date_from, :date_to, :time_from, :time_to, :status, :type, :department);');
 
         $stmt->bindValue(':user_id', $this->get('session')->get('user_id'));
         $stmt->bindValue(':resource_id', $resource_id);
