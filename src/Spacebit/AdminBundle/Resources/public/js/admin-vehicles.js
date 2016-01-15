@@ -194,11 +194,15 @@ function showEditVehicleRequestModal(requestID, routeGroupID, requester, request
                     document.getElementById('existing-route-selection').style.display = "block";
                     document.getElementById('existing-route-selection-division').style.display = "block";
                     document.getElementById('new-route-division').style.display = "none";
+                    document.getElementById('route-group-id').required = true;
+                    document.getElementById('new-route-division').required = false;
                 } else {
                     document.forms['request-status-form']['route-assign-method'].value = 'new';
                     document.getElementById('existing-route-selection').style.display = "none";
                     document.getElementById('existing-route-selection-division').style.display = "none";
                     document.getElementById('new-route-division').style.display = "block";
+                    document.getElementById('route-group-id').required = false;
+                    document.getElementById('new-route-division').required = true;
                 }
                 if (vehicles.length > 0) {
                     var options = '';
@@ -215,6 +219,7 @@ function showEditVehicleRequestModal(requestID, routeGroupID, requester, request
                     document.getElementById('new-route-division').style.display = "none";
                     document.getElementById('no-vehicles-message').style.display = "block";
                     document.forms['request-status-form']['vehicle-request-submit-button'].disabled = true;
+                    document.getElementById('new-route-division').required = false;
                 }
 
                 viewLocation(requestedDestination);
@@ -235,10 +240,14 @@ function routeSelectionMethodOnClick() {
     if(elem.value == "new") {
         document.getElementById('existing-route-selection-division').style.display = "none";
         document.getElementById('new-route-division').style.display = "block";
+        document.getElementById('route-group-id').required = false;
+        document.getElementById('new-route-division').required = true;
     }
     if(elem.value == "existing") {
         document.getElementById('existing-route-selection-division').style.display = "block";
         document.getElementById('new-route-division').style.display = "none";
+        document.getElementById('route-group-id').required = true;
+        document.getElementById('new-route-division').required = false;
     }
 }
 
@@ -310,7 +319,7 @@ function changeVehicleRequest() {
 
                 var modalContent = '<div style="margin: 10px;"><p>';
                 if (res == 'success') {
-                    modalContent += 'Vehicle request with request ID ' + requestID + ' was ' + status + ' successfully</p><button class="btn btn-sm btn-success" onclick=\'location.reload();\'><span class="glyphicon glyphicon-ok"></span>';
+                    modalContent += 'Vehicle request with request ID ' + requestID + ' was ' + (status == 1 ? "Accepted" : "Declined") + ' successfully</p><button class="btn btn-sm btn-success" onclick=\'location.reload();\'><span class="glyphicon glyphicon-ok"></span>';
                 } else {
                     modalContent += 'An error occurred in ' + (status == 1 ? "Accepting" : "Declining") + ' the vehicle request with request ID ' + requestID + '. Sorry for the inconvenience.</p><div style="text-align: center;"><button class="btn btn-sm btn-danger" onclick=\'location.reload();\'><span class="glyphicon glyphicon-warning-sign"></span>';
                 }
