@@ -11,12 +11,18 @@ class VehiclesController extends Controller
     public function vehiclesAction()
     {
         $conn = $this->get('database_connection');
+
         $stmt = $conn->prepare('SELECT DISTINCT type AS name FROM vehicle;');
         $stmt->execute();
         $vehicle_categories = $stmt->fetchAll();
 
+        $stmt = $conn->prepare('SELECT * FROM vehicle_request WHERE date > CURDATE();');
+        $stmt->execute();
+        $vehicle_requests = $stmt->fetchAll();
+
         return $this->render('SpacebitResourcesBundle:Default:vehicles.html.twig', array(
             'vehicles_categories'=>$vehicle_categories,
+            'vehicle_requests'=>$vehicle_requests,
         ));
     }
 

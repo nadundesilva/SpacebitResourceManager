@@ -19,6 +19,7 @@ function loadVehiclesByCategory(category) {
                 var rows = JSON.parse(res).result;
 
                 var modalContent = '<h2 style="text-align: center;">' + category.charAt(0).toUpperCase() + category.slice(1) + '</h2><table class="table table-hover">';
+                modalContent += '<button class="btn btn-sm btn-primary" style="margin: 10px;" onclick="showAddRequestModal(\'' + category + '\');"><span class="glyphicon glyphicon-plus"></span> Request ' + (category == 'Other' ? 'Vehicles' : category) + '</button>';
                 modalContent += '<tr><th>License Plate No</th><th>Model</th><th>Capacity</th><th>Driver</th>' + (category == 'Other' ? '<th>Type</th>' : '') + '</tr>';
                 for (var i = 0; i < rows.length; i++) {
                     modalContent += '<tr>';
@@ -45,11 +46,11 @@ function loadVehiclesByCategory(category) {
     }
 }
 
-function showAddRequestModal() {
+function showAddRequestModal(category) {
     showLoadingOverlay();
     document.forms['request-form']['request-date'].value = '';
     document.forms['request-form']['request-time'].value = '';
-    document.forms['request-form']['request-vehicle-type'].value = '';
+    document.forms['request-form']['request-vehicle-type'].value = (category == 'Other' ? '' : category);
     document.forms['request-form']['request-passenger-count'].value = '';
     document.forms['request-form']['request-destination'].value = '';
     document.getElementById('request-modal-title').innerHTML = 'Request a Vehicle';
@@ -57,8 +58,8 @@ function showAddRequestModal() {
     document.getElementById('request-id-container').style.display = 'none';
     document.forms['request-form']['submit-button'].innerHTML = '<span class="glyphicon glyphicon-plus"></span> Request';
     document.forms['request-form']['submit-button'].value = "Add";
-    $('#request-modal').modal();
-    hideLoadingOverlay();
+    $('#vehicles-modal').modal('hide');
+    setTimeout("hideLoadingOverlay(); $('#request-modal').modal();", 1000);
 }
 
 function showEditPastRequestModal(requestID, date, time, noOfPassengers, requestedTown, requestedType) {

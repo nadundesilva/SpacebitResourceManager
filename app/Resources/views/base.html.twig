@@ -19,13 +19,13 @@
 ] %}
 
 {# Merging with admin pages if the user have required level of access #}
-{% if app.session.get('access_level') is defined and app.session.get('access_level') >= 0 %}
+{% if app.session.get('access_level') is defined and app.session.get('access_level') >= 3 %}
     {% set sub_menu_array = [
         {name:'Manage Equipment', link:'admin/equipment'},
         {name:'Manage Venues', link:'admin/venues'},
         {name:'Manage Vehicles', link:'admin/vehicles'}
     ] %}
-    {% if app.session.get('access_level') is defined and app.session.get('access_level') >= 0 %}
+    {% if app.session.get('access_level') is defined and app.session.get('access_level') >= 4 %}
         {% set sub_menu_array = sub_menu_array | merge([
             {name:'Manage Users', link:'admin/users'}
         ]) %}

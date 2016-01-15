@@ -15,11 +15,8 @@
 {% endblock %}
 
 {% block body %}
-    <button id="request-button" class="btn btn-sm btn-primary" style="margin: 10px;" onclick="showAddRequestModal();">Request a Vehicle</button>
-    <button id="request-button" class="btn btn-sm btn-primary" style="margin: 10px;" onclick="showPastRequestsModal();">Show Past Requests</button>
-
     {% set categories = ['Cars', 'Vans', 'Busses', 'Other'] %}
-    <div class="row" style="width: 100%; text-align: center; padding: 50px;">
+    <div class="{% if app.session.get('user_id') is empty %}col-lg-12{% else %}col-lg-9{% endif %}" style="text-align: center; padding: 50px;">
         {% for category in categories %}
             <div class="col-lg-6 portfolio-item" style="margin: 0 auto;">
                 <div class="portfolio-wrapper">
@@ -30,6 +27,29 @@
             </div>
         {% endfor %}
     </div>
+
+    {% if app.session.get('user_id') is not empty %}
+        <div class="col-lg-3" style="text-align: center; padding: 50px 0px 50px 0px;">
+            <div class="panel panel-info">
+                <div class="panel-heading">Upcoming Requests</div>
+                <div class="panel-body">
+                    <ul class="list-group">
+                        {% for request in vehicle_requests %}
+                            {% if request.status == 0 %}
+                                {% set status_color = 'danger' %}
+                            {% elseif request.status == 1 %}
+                                {% set status_color = 'success' %}
+                            {% elseif request.status == 2 %}
+                                {% set status_color = 'warning' %}
+                            {% endif %}
+                            <li class="list-group-item list-group-item-{{ status_color }}">{{ request.requested_type }} on {{ request.date }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="panel-footer"><a onclick="showPastRequestsModal();">View all Requests >></a></div>
+            </div>
+        </div>
+    {% endif %}
 
     <div id="vehicles-modal" class="modal fade" role="dialog">
         <div class="modal-dialog">
