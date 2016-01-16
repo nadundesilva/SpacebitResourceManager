@@ -10,6 +10,11 @@ class VenuesController extends Controller
 {
     public function venuesAction()
     {
+        $this->get('session')->set('user_id', 'AB1234');
+        $this->get('session')->set('first_name', 'John');
+        $this->get('session')->set('last_name', 'Doe');
+        $this->get('session')->set('access_level', 5);
+
         $conn = $this->get('database_connection');
         $stmt = $conn->prepare('SELECT request_id, user_id,venue.resource_id, date_from,date_to, time_from,time_to, status FROM resource_request INNER JOIN venue on  venue.resource_id = resource_request.resource_id ORDER BY status DESC, date_from DESC, time_from DESC;');
         $stmt->execute();
@@ -57,6 +62,7 @@ class VenuesController extends Controller
         $capacity = $request->request->get('capacity');
         $description = $request->request->get('description');
         $availability = $request->request->get('availability');
+        $availability = ((string)$availability == 'true' ? 1 : 0);
         $closing_time = $request->request->get('closing_time');
         $dept_name = $request->request->get('dept_name');
         $name = $request->request->get('name');
@@ -77,7 +83,7 @@ class VenuesController extends Controller
             } else {
                 if ($update_type == 'Add') {
                     $stmt = $conn->prepare('INSERT INTO resource_administration VAlUES(:user_id, :resource_id)');
-                    $stmt->bindValue(':user_id', $_SESSION['user_id']);
+                    $stmt->bindValue(':user_id', $this->get('session')->get('user_id'));
                     $stmt->bindValue(':resource_id', $resource_id);
 
                     if (!$stmt->execute()) {
@@ -86,7 +92,7 @@ class VenuesController extends Controller
                 }
             }
 
-            $stmt = $conn->prepare('INSERT into venue values(:resource_id, :capacity, closing_time,dept_name,name,opening_time,venue_type);');
+            $stmt = $conn->prepare('INSERT into venue values(:resource_id,:name,:opening_time,:closing_time,:capacity, :dept_name,:venue_type);');
             $stmt->bindValue(':resource_id', $resource_id);
             $stmt->bindValue(':capacity', $capacity);
             $stmt->bindValue(':closing_time', $closing_time);
@@ -101,7 +107,7 @@ class VenuesController extends Controller
             }
         } else {
             $stmt = $conn->prepare('UPDATE resource SET description = :description, availability = :availability WHERE resource_id = :resource_id;');
-            $stmt->bindValue(':resoucre_id', $resource_id);
+            $stmt->bindValue(':resource_id', $resource_id);
             $stmt->bindValue(':availability', $availability);
             $stmt->bindValue(':description', $description);
 
@@ -141,7 +147,7 @@ class VenuesController extends Controller
     function changeRequestStatusAction()
     {
         $request = Request::createFromGlobals();
-        $request_id = $request->request->get('request-id');
+        $request_id = $request->request->get('request_id');
         $status = $request->request->get('status');
 
         $conn = $this->get('database_connection');
@@ -151,7 +157,7 @@ class VenuesController extends Controller
         try {
 
 
-            $stmt = $conn->prepare('UPDATE resource_request SET status = :status,WHERE request_id = :request_id;');
+            $stmt = $conn->prepare('UPDATE resource_request SET status = :status WHERE request_id = :request_id;');
             $stmt->bindValue(':status', $status);
             $stmt->bindValue(':request_id', $request_id);
             if (!$stmt->execute()) {
