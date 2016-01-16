@@ -5,6 +5,7 @@ function showManageVenueModal() {
 
     var obj;
 
+    showLoadingOverlay();
     if (window.XMLHttpRequest) {
         obj = new XMLHttpRequest();
     } else if (window.ActiveXObject) {
@@ -34,6 +35,8 @@ function showManageVenueModal() {
                 }
                 modalContent += '</table>'
                 document.getElementById('manage-venues-modal-content').innerHTML = modalContent;
+                hideLoadingOverlay();
+
                 $('#manage-venues-modal').modal();
             }
         }
@@ -45,6 +48,8 @@ function showManageVenueModal() {
 }
 
 function showAddVenueModal() {
+    hideLoadingOverlay();
+
     document.forms['venue-add-form']['resource_id'].value = '';
     document.forms['venue-add-form']['description'].value = '';
     document.forms['venue-add-form']['capacity'].value = '';
@@ -61,12 +66,15 @@ function showAddVenueModal() {
     document.getElementById('addEditVenueTitle').innerHTML = 'Add Venue';
     document.forms['venue-add-form']['submit-button'].innerHTML = '<span class="glyphicon glyphicon-plus"></span> Add';
     $('#manage-venues-modal').modal('hide');
-    $('#add-edit-venue-modal').modal();
+
+    setTimeout("hideLoadingOverlay(); $('#add-edit-venue-modal').modal();", 1000);
+
+
 }
 
 function showEditVenueModal(resource_id) {
     var obj;
-
+    showLoadingOverlay();
     if (window.XMLHttpRequest) {
         obj = new XMLHttpRequest();
     } else if (window.ActiveXObject) {
@@ -101,7 +109,7 @@ function showEditVenueModal(resource_id) {
 
                 document.forms['venue-add-form']['submit-button'].innerHTML = '<span class="glyphicon glyphicon-ok"></span> OK';
                 $('#manage-venues-modal').modal('hide');
-                setTimeout("$('#add-edit-venue-modal').modal();", 1000);
+                setTimeout("hideLoadingOverlay(); $('#add-edit-venue-modal').modal();", 1000);
             }
         }
 
@@ -112,16 +120,18 @@ function showEditVenueModal(resource_id) {
 }
 function changeRequest(requestID) {
     //can't find the bug
+    showLoadingOverlay();
     modalContent = '<button value="1" id="ApproveButton" class="btn btn-xs btn-success" onclick="EditRequest(' + requestID + ', 1)"><span class="glyphicon glyphicon-ok"></span> Approve</button> ';
     modalContent += '<button value="0" id="DeclineButton" class="btn btn-xs btn-danger" onclick="EditRequest(' + requestID + ',0)"><span class="glyphicon glyphicon-remove"></span> Decline</button> ';
     modalContent += '<button value="2" id="ApproveButton" class="btn btn-xs btn-primary" onclick="EditRequest(' + requestID + ',2)"><span class="glyphicon glyphicon-time"></span> Pending</button> ';
 
 
     document.getElementById('edit-request-div').innerHTML = modalContent;
+    hideLoadingOverlay();
     $('#edit-venues-modal').modal();
 }
 function EditRequest(request_id,status) {
-
+    showLoadingOverlay();
     var obj;
 
     if (window.XMLHttpRequest) {
@@ -148,7 +158,10 @@ function EditRequest(request_id,status) {
                 document.getElementById('message-modal-content').innerHTML = modalContent;
 
                 $('#edit-venues-modal').modal('hide');
-                $('#message-modal').modal();
+
+                setTimeout("hideLoadingOverlay();$('#message-modal').modal();", 1000);
+
+
                 location.reload();           }
         }
 
@@ -160,6 +173,9 @@ function EditRequest(request_id,status) {
 
 
     function addEditVenue() {
+
+        showLoadingOverlay();
+
 
     var resource_id = document.forms['venue-add-form']['resource_id'].value;
     var description= document.forms['venue-add-form']['description'].value;
@@ -199,7 +215,9 @@ function EditRequest(request_id,status) {
                 document.getElementById('message-modal-content').innerHTML = modalContent;
 
                 $('#add-edit-venue-modal').modal('hide');
-                $('#message-modal').modal();
+                setTimeout("hideLoadingOverlay();  $('#message-modal').modal();", 1000);
+
+
             }
         }
 

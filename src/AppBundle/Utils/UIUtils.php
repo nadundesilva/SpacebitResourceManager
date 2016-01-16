@@ -15,12 +15,17 @@ class UIUtils
     public function __construct(Session $session, Connection $conn)
     {
         //Fetching equipment requests count
-        $stmt = $conn->prepare('SELECT COUNT(DISTINCT request_id) AS count FROM resource_request INNER JOIN equipment on  equipment.resource_id = resource_request.resource_id WHERE resource_request.status = 2 AND date_from >= CURDATE();');
+        $stmt = $conn->prepare("SELECT dept_name FROM staff  where user_id =:user_id;");
+        $stmt->bindValue(':user_id', $session->get('user_id'));
+        $stmt->execute();
+        $staff_member = $stmt->fetch()['dept_name'];
+        $stmt = $conn->prepare('SELECT COUNT(DISTINCT request_id) AS count FROM resource_request WHERE (resource_request.resource_id is NULL OR resource_request.resource_id IN (SELECT resource_id FROM equipment)) AND resource_request.department_name = :dept_name AND resource_request.status = 2 AND date_from >= CURDATE();');
+        $stmt->bindValue(':dept_name', $staff_member);
         $stmt->execute();
         $this->equipment_requests_count = $stmt->fetch()['count'];
 
         //Fetching venues requests count
-        $stmt = $conn->prepare('SELECT COUNT(DISTINCT request_id) AS count FROM resource_request INNER JOIN venue on  venue.resource_id = resource_request.resource_id WHERE resource_request.status = 2 AND date_from >= CURDATE();');
+        $stmt = $conn->prepare('SELECT COUNT(DISTINCT request_id) AS count FROM resource_request INNER JOIN venue ON venue.resource_id = resource_request.resource_id WHERE status = 2 AND date_from >= CURDATE();');
         $stmt->execute();
         $this->venue_requests_count = $stmt->fetch()['count'];
 
