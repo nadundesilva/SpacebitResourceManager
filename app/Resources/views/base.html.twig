@@ -66,6 +66,7 @@
         <link rel="stylesheet" href="{{ asset('bundles/app/css/animate.min.css') }}">
 
         <link rel="stylesheet" href="{{ asset('bundles/app/css/main-theme.css') }}">
+        <script src="{{ asset('bundles/app/js/main.js') }}"></script>
 
         {% block javascripts %}{% endblock %}
         {% block stylesheets %}{% endblock %}
@@ -147,7 +148,7 @@
 
             <div id="page-wrapper">
                 <div class="container-fluid">
-                    <div id="body animated fadeInLeft">
+                    <div id="main" class="animated fadeInLeft">
                         {% block body %}{% endblock %}
                     </div>
                 </div>
