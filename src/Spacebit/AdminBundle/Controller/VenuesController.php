@@ -10,10 +10,12 @@ class VenuesController extends Controller
 {
     public function venuesAction()
     {
-        $this->get('session')->set('user_id', 'AB1234');
-        $this->get('session')->set('first_name', 'John');
-        $this->get('session')->set('last_name', 'Doe');
-        $this->get('session')->set('access_level', 5);
+
+
+        if (!$this->get('login_authenticator')->authenticateLowLevelAdminLogin()) {
+            return new RedirectResponse($this->generateUrl('spacebit_user_login'));
+        }
+
 
         $conn = $this->get('database_connection');
         $stmt = $conn->prepare('SELECT request_id, user_id,venue.resource_id, date_from,date_to, time_from,time_to, status FROM resource_request INNER JOIN venue on  venue.resource_id = resource_request.resource_id ORDER BY status DESC, date_from DESC, time_from DESC;');
@@ -27,6 +29,10 @@ class VenuesController extends Controller
 
     public function getAllAction()
     {
+
+        if (!$this->get('login_authenticator')->authenticateLowLevelAdminLogin()) {
+            return new RedirectResponse($this->generateUrl('spacebit_user_login'));
+        }
         $conn = $this->get('database_connection');
         $stmt = $conn->prepare('SELECT resource_id, availability, description, capacity, closing_time, dept_name, name, opening_time, venue_type FROM venue INNER JOIN resource USING(resource_id);');
         $stmt->execute();
@@ -40,6 +46,10 @@ class VenuesController extends Controller
 
     public function getByResourceIDAction()
     {
+
+        if (!$this->get('login_authenticator')->authenticateLowLevelAdminLogin()) {
+            return new RedirectResponse($this->generateUrl('spacebit_user_login'));
+        }
         $request = Request::createFromGlobals();
         $resource_id = $request->request->get('resource_id');
 
@@ -57,6 +67,11 @@ class VenuesController extends Controller
 
     public function addEditAction()
     {
+
+
+        if (!$this->get('login_authenticator')->authenticateMiddleLevelAdminLogin()) {
+            return new RedirectResponse($this->generateUrl('spacebit_user_login'));
+        }
         $request = Request::createFromGlobals();
         $resource_id= $request->request->get('resource_id');
         $capacity = $request->request->get('capacity');
@@ -146,6 +161,11 @@ class VenuesController extends Controller
 
     function changeRequestStatusAction()
     {
+
+
+        if (!$this->get('login_authenticator')->authenticateLowLevelAdminLogin()) {
+            return new RedirectResponse($this->generateUrl('spacebit_user_login'));
+        }
         $request = Request::createFromGlobals();
         $request_id = $request->request->get('request_id');
         $status = $request->request->get('status');

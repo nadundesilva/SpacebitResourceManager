@@ -3,7 +3,7 @@
  */
 function showManageEquipmentsModal() {
     var obj;
-
+    showLoadingOverlay();
     if (window.XMLHttpRequest) {
         obj = new XMLHttpRequest();
     } else if (window.ActiveXObject) {
@@ -32,6 +32,7 @@ function showManageEquipmentsModal() {
                 }
                 modalContent += '</table>'
                 document.getElementById('manage-equipments-modal-content').innerHTML = modalContent;
+                hideLoadingOverlay();
                 $('#manage-equipments-modal').modal();
             }
         }
@@ -43,6 +44,8 @@ function showManageEquipmentsModal() {
 }
 
 function showAddEquipmentModal() {
+    showLoadingOverlay();
+
     document.forms['equipment-add-form']['resource_id'].value = '';
     document.forms['equipment-add-form']['description'].value = '';
     document.forms['equipment-add-form']['equipment_type'].value = '';
@@ -57,12 +60,13 @@ function showAddEquipmentModal() {
     document.getElementById('addEditEquipmentTitle').innerHTML = 'Add Equipment';
     document.forms['equipment-add-form']['submit-button'].innerHTML = '<span class="glyphicon glyphicon-plus"></span> Add';
     $('#manage-equipments-modal').modal('hide');
-    $('#add-edit-equipment-modal').modal();
+    setTimeout("hideLoadingOverlay(); $('#add-edit-equipment-modal').modal();", 1000);
+
 }
 
 function showEditEquipmentModal(resource_id) {
     var obj;
-
+    showLoadingOverlay();
     if (window.XMLHttpRequest) {
         obj = new XMLHttpRequest();
     } else if (window.ActiveXObject) {
@@ -92,7 +96,8 @@ function showEditEquipmentModal(resource_id) {
                 document.getElementById('addEditEquipmentTitle').innerHTML = 'Edit Equipment';
                 document.forms['equipment-add-form']['submit-button'].innerHTML = '<span class="glyphicon glyphicon-ok"></span> OK';
                 $('#manage-equipments-modal').modal('hide');
-                $('#add-edit-equipment-modal').modal();
+                setTimeout("hideLoadingOverlay(); $('#add-edit-equipment-modal').modal();", 1000);
+
             }
         }
 
@@ -104,6 +109,7 @@ function showEditEquipmentModal(resource_id) {
 
 function changeRequest(requestId,department_name,type) {
     var obj;
+    showLoadingOverlay();
 
     if (window.XMLHttpRequest) {
         obj = new XMLHttpRequest();
@@ -127,6 +133,7 @@ function changeRequest(requestId,department_name,type) {
 
                 document.getElementById('select_equipment').innerHTML = modalContent;
                 document.getElementById('accept_equipment_request_id').innerHTML = requestId+'';
+                hideLoadingOverlay();
                 $('#accept-equipment-modal').modal();
 
             }
@@ -141,6 +148,7 @@ function changeRequest(requestId,department_name,type) {
 }
 
 function EditRequest(status){
+    showLoadingOverlay();
     $('#accept-equipment-modal').modal('hide');
     var request_id = document.getElementById('accept_equipment_request_id').value;
     var resource_id = document.getElementById('select_equipment').value;
@@ -161,7 +169,7 @@ function EditRequest(status){
                 // progress
             } else if (obj.readyState === 4) {
                 var res = obj.responseText;
-                alert(res);
+
 
                 var modalContent = '<div style="margin: 10px;"><p>';
                 if (res == 'success') {
@@ -173,7 +181,7 @@ function EditRequest(status){
                document.getElementById('message-modal-content').innerHTML = modalContent;
 
                 $('#edit-equipments-modal').modal('hide');
-                $('#message-modal').modal();
+                setTimeout("hideLoadingOverlay(); $('#message-modal').modal();", 1000);
                 location.reload();
             }
         }
@@ -186,6 +194,7 @@ function EditRequest(status){
 
 function addEditEquipment() {
 
+    showLoadingOverlay();
     var resource_id = document.forms['equipment-add-form']['resource_id'].value;
     var description= document.forms['equipment-add-form']['description'].value;
     var equipment_type = document.forms['equipment-add-form']['equipment_type'].value;
@@ -220,7 +229,8 @@ alert('resource_id = '+resource_id + 'description = '+description +'equipment_ty
                 document.getElementById('message-modal-content').innerHTML = modalContent;
 
                 $('#add-edit-equipment-modal').modal('hide');
-                $('#message-modal').modal();
+                setTimeout("hideLoadingOverlay(); $('#message-modal').modal();", 1000);
+
             }
         }
 
