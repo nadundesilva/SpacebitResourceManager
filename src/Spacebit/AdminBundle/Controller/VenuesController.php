@@ -37,7 +37,7 @@ class VenuesController extends Controller
             return new RedirectResponse($this->generateUrl('spacebit_user_login'));
         }
         
-s
+
         $conn = $this->get('database_connection');
         $stmt = $conn->prepare('SELECT request_id, user_id,venue.resource_id, date_from,date_to, time_from,time_to, status FROM resource_request INNER JOIN venue on venue.resource_id = resource_request.resource_id ORDER BY status DESC, date_from DESC, time_from DESC;');
         $stmt->execute();
