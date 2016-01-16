@@ -1,6 +1,6 @@
 
 function validateUser() {
-
+    showLoadingOverlay();
     var obj;
 
     var name =document.getElementById("userID").value;
@@ -26,15 +26,16 @@ function validateUser() {
                 if (res == "fail"){
                     window.alert("***Please enter correct username and password***");
                     document.getElementById("password").value = "";
+                    hideLoadingOverlay();
                 }
                 if (res == "incorrect"){
                     window.alert("***Please enter correct username and password***");
                     document.getElementById("password").value = "";
+                    hideLoadingOverlay();
                 }
                 if (res == "success"){
                     window.location.href = "../";
                 }
-
             }
         }
 

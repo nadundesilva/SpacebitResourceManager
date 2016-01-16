@@ -174,3 +174,12 @@ function editUser(id) {
     }
 
 }
+
+function changePassswordDialog(){
+    $('#message-modal').modal();
+
+}
+
+function changePassword(){
+
+}
