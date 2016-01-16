@@ -38,9 +38,16 @@ spacebit_admin_equipments_add_edit:
     methods:  ['POST']
 
 spacebit_admin_equipment_accept_request:
-    path:     /equipment/changeRequest
+    path:     /equipment/changeRequestStatus
     defaults: { _controller: SpacebitAdminBundle:Equipment:changeRequestStatus }
     methods:  ['POST']
+
+spacebit_admin_equipments_get_by_resource_type:
+    path:     /equipment/getByResourceType
+    defaults: { _controller: SpacebitAdminBundle:Equipment:getByResourceType }
+    methods:  ['POST']
+
+
 
 
 
@@ -48,14 +55,12 @@ spacebit_admin_venues:
     path:     /venues
     defaults: { _controller: SpacebitAdminBundle:Venues:venues }
 
-
-
 spacebit_admin_venues_get_all:
     path:     /venues/getAll
     defaults: { _controller: SpacebitAdminBundle:Venues:getAll }
 
 spacebit_admin_venues_get_by_resource_id:
-    path:     /venues/getByResourceID
+    path:     /venue/getByResourceID
     defaults: { _controller: SpacebitAdminBundle:Venues:getByResourceID }
     methods:  ['POST']
 
@@ -64,10 +69,12 @@ spacebit_admin_venues_add_edit:
     defaults: { _controller: SpacebitAdminBundle:Venues:addEdit }
     methods:  ['POST']
 
-spacebit_admin_venue_accept_request:
-    path:     /venues/changeRequest
+spacebit_admin_venues_change_request:
+    path:     /venues/changeRequestStatus
     defaults: { _controller: SpacebitAdminBundle:Venues:changeRequestStatus }
     methods:  ['POST']
+
+
 
 
 

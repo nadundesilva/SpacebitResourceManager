@@ -11,35 +11,37 @@
 
 {% block body %}
     <div style="margin: 10px;">
-        <button class="btn btn-sm btn-primary" onclick="showManageEquipmentModal();"><span class="glyphicon glyphicon-edit"></span> Manage Equipment</button>
+        <button class="btn btn-sm btn-primary" onclick="showManageEquipmentsModal();"><span class="glyphicon glyphicon-edit"></span> Manage Equipment</button>
     </div>
 
     <h2 style="text-align: center; padding-bottom: 10px">Equipment Requests</h2>
     <table class="table table-hover" style="padding: 20px">
-        <tr><th>Request Id</th><th>Requester</th><th>Resource ID</th><th>Date From</th><th>Date To</th><th>Time From</th><th>Time To</th><th>Status</th><th></th></tr>
+        <tr><th>Request Id</th><th>Requester</th><th>Resource ID</th><th>Type</th><th>Date From</th><th>Date To</th><th>Time From</th><th>Time To</th><th>Status</th><th></th></tr>
         {% set request_status = ['Declined', 'Accepted', 'Pending'] %}
         {% for equipment_request in equipment_requests %}
             <tr>
-                <th>{{ equipment_request.request_id }}</th>
-                <th>{{ equipment_request.user_id }}<br><button class="btn btn-xs btn-info" onclick="showUserModal('{{ equipment_request.user_id }}')"><span class="glyphicon glyphicon-modal-window"></span> View User</button></th>
-                <th>{{ equipment_request.resource_id }}</th>
-                <th>{{ equipment_request.date_from }}</th>
-                <th>{{ equipment_request.date_to }}</th>
-                <th>{{ equipment_request.time_from }}</th>
-                <th>{{ equipment_request.time_to }}</th>
+                <td>{{ equipment_request.request_id }}</td>
+                <td>{{ equipment_request.user_id }}<br><button class="btn btn-xs btn-info" onclick="showUserModal('{{ equipment_request.user_id }}')"><span class="glyphicon glyphicon-modal-window"></span> View User</button></td>
+                <td>{{ equipment_request.resource_id }}</td>
+                <td>{{ equipment_request.type }}</td>
+                <td>{{ equipment_request.date_from }}</td>
+                <td>{{ equipment_request.date_to }}</td>
+                <td>{{ equipment_request.time_from }}</td>
+                <td>{{ equipment_request.time_to }}</td>
+
                 {% if equipment_request.status == 0 %}
-                    <th style="color: #ff4d54;">
+                    <td style="color: #ff4d54;">
                 {% elseif equipment_request.status == 1  %}
-                    <th style="color: #55ff5e;">
+                    <td style="color: #55ff5e;">
                 {% else %}
-                    <th style="color: #624cff;">
+                    <td style="color: #624cff;">
                 {% endif %}
                         {{ request_status[equipment_request.status] }}
-                    </th>
+                    </td>
                 {% if "now"|date('Y-m-d') > equipment_request.date_from|date('Y-m-d') %}
-                    <th><button class="btn btn-xs btn-default" disabled>Past Request</button></th>
+                    <td><button class="btn btn-xs btn-default" disabled>Past Request</button></td>
                 {% else %}
-                    <th><button class="btn btn-xs btn-primary" onclick="changeRequest('{{ equipment_request.request_id }}');"><span class="glyphicon glyphicon-pencil"></span> Change</button></th>
+                    <td><button class="btn btn-xs btn-primary" onclick="changeRequest('{{ equipment_request.request_id }}', '{{ equipment_request.department_name }}', '{{ equipment_request.type }}');"><span class="glyphicon glyphicon-pencil"></span>Change</button></td>
                 {% endif %}
             </tr>
         {% endfor %}
@@ -49,6 +51,35 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div style="margin: 20px;" id="message-modal-content"></div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="accept-equipment-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div  class="modal-content">
+                <h1 style="text-align: center;">Select Equipment</h1>
+                <div style="margin: 20px;">
+                    <div class="form-group">
+                        <label for="select_equipment">Request ID:</label>
+                        <textarea id = "accept_equipment_request_id" readonly class="form-control"></textarea>
+                        <label for="select_equipment">Select the equipment you want to assign :</label>
+                        <select id="select_equipment" class="form-control"></select>
+
+                    </div>
+                    <div id="accept-equipment-modal-content2">
+
+                        <button type="submit" value="1" id="ApproveButton" class="btn btn-xs btn-success" onclick="EditRequest(1);"><span class="glyphicon glyphicon-pencil"></span>Accept</button>
+
+                        <button type="submit" value="0" id="DeclineButton" class="btn btn-xs btn-danger" onclick="EditRequest(0);"><span class="glyphicon glyphicon-pencil"></span> Decline</button>
+                        <button type="submit" value="2" id="ApproveButton" class="btn btn-xs btn-primary" onclick="EditRequest(2);"><span class="glyphicon glyphicon-pencil"></span> Pending</button>
+
+
+
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>
@@ -87,9 +118,56 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div style="margin: 20px;">
-                    <button class="btn btn-xs btn-primary" onclick="showManageEquipmentModal(); $('#add-edit-equipment-modal').modal('hide');"><span class="glyphicon glyphicon-arrow-left"></span> Back</button>
+                    <button class="btn btn-xs btn-primary" onclick="showManageEquipmentsModal(); $('#add-edit-equipment-modal').modal('hide');"><span class="glyphicon glyphicon-arrow-left"></span> Back</button>
                     <h3 id="addEditEquipmentTitle" style="text-align: center;">Add Equipment</h3>
                     <form id="equipment-add-form" role="form" method="POST" name="equipment-add-form" onsubmit="addEditEquipment(); return false;">
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                <label for="resource_id">Resource ID :</label>
+                                <input type="text" id=resource_id" class="form-control" name="resource_id" placeholder="Enter Resource ID" required />
+                            </div>
+                            <div class="form-group col-lg-12">
+                                <label><input type="checkbox" id="availability" name = "availability">Equipment is Available</label>
+                            </div>
+                            <div class="form-group col-lg-12">
+                                <label for="description">Description :</label>
+                                <input type="text" id="description" class="form-control" name = "description" placeholder="Enter Description of the Equipment" required />
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label for="value">Appraised Value :</label>
+                                <input type="numeric" class="form-control" id="value" name = "value" placeholder="Enter the Value of the equipment" />
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label for="equipment_type">Equipment Type :</label>
+                                <input type="text" id="equipment_type" class="form-control" name = "equipment_type"  placeholder="Enter the Equipment Type" required />
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label for="department_name">Department Name :</label>
+                                <input type="text" id="department_name" class="form-control" name = "department_name"  placeholder="Enter the Department Name" required />
+                            </div>
+
+
+                        </div>
+
+
+
+
+                        <button id="submit-button" type="submit" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-plus"></span> Add</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div id="change-equipment-request-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div style="margin: 20px;">
+
+                    <h3  style="text-align: center;">Change Equipment</h3>
+                    <form id="equipment-request-add-form" role="form" method="POST" name="equipment-add-form" onsubmit="addEditEquipment(); return false;">
                         <div class="row">
                             <div class="form-group col-lg-12">
                                 <label for="resource_id">Resource ID :</label>
@@ -121,6 +199,10 @@
             </div>
         </div>
     </div>
+
+
+
+
 
     {% include 'templates/admin/view-user.html.twig' %}
 {% endblock %}
