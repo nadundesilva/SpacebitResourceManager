@@ -204,7 +204,7 @@ function addEditEquipment() {
     var department_name = document.forms['equipment-add-form']['department_name'].value;
     var updateType = document.forms['equipment-add-form']['submit-button'].value;
     var obj;
-alert('resource_id = '+resource_id + 'description = '+description +'equipment_type = '+equipment_type+'value = '+value +'availability = '+availability +'department_name = '+department_name +'update Type = '+updateType);
+
     if (window.XMLHttpRequest) {
         obj = new XMLHttpRequest();
     } else if (window.ActiveXObject) {
