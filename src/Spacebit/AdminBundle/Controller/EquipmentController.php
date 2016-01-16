@@ -10,17 +10,6 @@ class EquipmentController extends Controller
 {
     public function equipmentAction()
     {
-<<<<<<< HEAD
-
-        $this->get('session')->set('user_id', 'CS1423');
-=======
-    
-        $this->get('session')->set('user_id', 'AB1234');
-        $this->get('session')->set('first_name', 'John');
-        $this->get('session')->set('last_name', 'Doe');
-        $this->get('session')->set('access_level', 5);
-
->>>>>>> origin/master
         $conn = $this->get('database_connection');
 
         $stmt = $conn->prepare("SELECT dept_name FROM staff  where user_id =:user_id;");
