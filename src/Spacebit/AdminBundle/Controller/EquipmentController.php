@@ -10,6 +10,9 @@ class EquipmentController extends Controller
 {
     public function equipmentAction()
     {
+        if (!$this->get('login_authenticator')->authenticateLowLevelAdminLogin()) {
+            return new RedirectResponse($this->generateUrl('spacebit_user_login'));
+        }
         $conn = $this->get('database_connection');
 
         $stmt = $conn->prepare("SELECT dept_name FROM staff  where user_id =:user_id;");
