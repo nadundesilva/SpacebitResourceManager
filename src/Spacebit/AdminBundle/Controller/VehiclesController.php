@@ -13,7 +13,7 @@ class VehiclesController extends Controller
     public function vehiclesAction()
     {
         $conn = $this->get('database_connection');
-        $stmt = $conn->prepare('SELECT request_id, route_group_id, vehicle_request.user_id, date, time, number_of_passengers, requested_type, requested_town, status FROM (vehicle_request INNER JOIN vehicle ON vehicle.type = vehicle_request.requested_type) INNER JOIN vehicle_administration ON vehicle.plate_no = vehicle_administration.plate_no WHERE vehicle_administration.user_id = :user_id ORDER BY status DESC, date DESC, time DESC;');
+        $stmt = $conn->prepare('SELECT DISTINCT request_id, route_group_id, vehicle_request.user_id, date, time, number_of_passengers, requested_type, requested_town, status FROM (vehicle_request INNER JOIN vehicle ON vehicle.type = vehicle_request.requested_type) INNER JOIN vehicle_administration ON vehicle.plate_no = vehicle_administration.plate_no WHERE vehicle_administration.user_id = :user_id ORDER BY status DESC, date DESC, time DESC;');
         $stmt->bindValue(':user_id', $this->get('session')->get('user_id'));
         $stmt->execute();
         $vehicle_requests = $stmt->fetchAll();

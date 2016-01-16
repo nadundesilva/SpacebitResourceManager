@@ -16,7 +16,8 @@ class VehiclesController extends Controller
         $stmt->execute();
         $vehicle_categories = $stmt->fetchAll();
 
-        $stmt = $conn->prepare('SELECT * FROM vehicle_request WHERE date > CURDATE();');
+        $stmt = $conn->prepare('SELECT * FROM vehicle_request WHERE date > CURDATE() AND date < DATE_ADD(CURDATE(),INTERVAL 4 MONTH) AND user_id = :user_id;');
+        $stmt->bindValue(':user_id', $this->get('session')->get('user_id'));
         $stmt->execute();
         $vehicle_requests = $stmt->fetchAll();
 
