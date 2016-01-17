@@ -11,35 +11,16 @@ class VenuesController extends Controller
     public function venuesAction()
     {
 
+
+        $conn = $this->get('database_connection');
         if (!$this->get('login_authenticator')->authenticateLowLevelAdminLogin()) {
             return new RedirectResponse($this->generateUrl('spacebit_user_login'));
         }
-        $conn = $this->get('database_connection');
-  $stmt = $conn->prepare("SELECT dept_name FROM staff  where user_id =:user_id;");
-        $stmt->bindValue(':user_id', $this->get('session')->get('user_id'));
+
+        $stmt = $conn->prepare('CREATE OR REPLACE VIEW view1  as select venue.resource_id from venue INNER JOIN resource_administration on venue.resource_id = resource_administration.resource_id and resource_administration.user_id = \' '+ $this->get('session')->get('user_id')+'\';');
         $stmt->execute();
-        $staff_member = $stmt->fetch();
-/*
-        $stmt = $conn->prepare('SELECT request_id,type, user_id,resource_request.resource_id,date_from,date_to, time_from,time_to, status,type,department_name FROM resource_request  where (resource_request.resource_id is NULL  or resource_request.resource_id  in (select resource_id from equipment))  and resource_request.department_name = :dept_name ORDER BY status DESC, date_from DESC, time_from DESC;');
-        $stmt->bindValue(':dept_name', $staff_member['dept_name']);
- *
- *
- *
- * */
+        $stmt = $conn->prepare('SELECT request_id, user_id,view1.resource_id, date_from,date_to, time_from,time_to, status FROM  resource_request INNER JOIN view1  using(resource_id) ORDER BY status DESC, date_from DESC, time_from DESC ;');
 
-
-
-
-
-        $stmt = $conn->prepare('SELECT request_id, user_id,venue.resource_id, date_from,date_to, time_from,time_to, status FROM resource_request INNER JOIN venue on  venue.resource_id = resource_request.resource_id ORDER BY status DESC, date_from DESC, time_from DESC;');
-
-        if (!$this->get('login_authenticator')->authenticateLowLevelAdminLogin()) {
-            return new RedirectResponse($this->generateUrl('spacebit_user_login'));
-        }
-        
-
-        $conn = $this->get('database_connection');
-        $stmt = $conn->prepare('SELECT request_id, user_id,venue.resource_id, date_from,date_to, time_from,time_to, status FROM resource_request INNER JOIN venue on venue.resource_id = resource_request.resource_id ORDER BY status DESC, date_from DESC, time_from DESC;');
         $stmt->execute();
         $venues_requests = $stmt->fetchAll();
 
@@ -153,7 +134,7 @@ class VenuesController extends Controller
             } else {
                 if ($update_type == 'Add') {
                     $stmt = $conn->prepare('UPDATE resource_administration  SET user_id = :user_id WHERE resource_id = :resource_id;');
-                    $stmt->bindValue(':user_id', $_SESSION['user_id']);
+                    $stmt->bindValue(':user_id', $this->get('session')->get('user_id'));
                     $stmt->bindValue(':resource_id', $resource_id);
 
                     if (!$stmt->execute()) {

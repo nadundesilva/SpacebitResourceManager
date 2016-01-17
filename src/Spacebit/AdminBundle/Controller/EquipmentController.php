@@ -143,7 +143,7 @@ class EquipmentController extends Controller
             } else {
                 if ($update_type == 'Add') {
                     $stmt = $conn->prepare('UPDATE resource_administration  SET user_id = :user_id WHERE resource_id = :resource_id;');
-                    $stmt->bindValue(':user_id', $_SESSION['user_id']);
+                    $stmt->bindValue(':user_id',  $this->get('session')->get("user_id"));
                     $stmt->bindValue(':resource_id', $resource_id);
 
                     if (!$stmt->execute()) {
