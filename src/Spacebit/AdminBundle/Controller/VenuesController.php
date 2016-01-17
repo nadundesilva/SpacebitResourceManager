@@ -11,14 +11,14 @@ class VenuesController extends Controller
     public function venuesAction()
     {
 
-
-        $conn = $this->get('database_connection');
         if (!$this->get('login_authenticator')->authenticateLowLevelAdminLogin()) {
             return new RedirectResponse($this->generateUrl('spacebit_user_login'));
         }
+        $conn = $this->get('database_connection');
 
-        $stmt = $conn->prepare('CREATE OR REPLACE VIEW view1  as select venue.resource_id from venue INNER JOIN resource_administration on venue.resource_id = resource_administration.resource_id and resource_administration.user_id = \' '+ $this->get('session')->get('user_id')+'\';');
+        $stmt = $conn->prepare('CREATE OR REPLACE VIEW view1  as select venue.resource_id from venue INNER JOIN resource_administration on venue.resource_id = resource_administration.resource_id and resource_administration.user_id = "AB1234";');
         $stmt->execute();
+
         $stmt = $conn->prepare('SELECT request_id, user_id,view1.resource_id, date_from,date_to, time_from,time_to, status FROM  resource_request INNER JOIN view1  using(resource_id) ORDER BY status DESC, date_from DESC, time_from DESC ;');
 
         $stmt->execute();

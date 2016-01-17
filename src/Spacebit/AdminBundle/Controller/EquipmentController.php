@@ -129,8 +129,9 @@ class EquipmentController extends Controller
             if(!$stmt->execute()) {
                 $response = $stmt->errorCode();
             }
+            $response = new Response($response);
             $response->headers->set('Content-Type', 'application/json');
-            return new Response($response);
+            return ($response);
         } else {
             $stmt = $conn->prepare('UPDATE resource SET description = :description, availability = :availability WHERE resource_id = :resource_id;');
             $stmt->bindValue(':resource_id', $resource_id);
@@ -164,8 +165,9 @@ class EquipmentController extends Controller
             }
 
         }
+        $response = new Response($response);
         $response->headers->set('Content-Type', 'application/json');
-        return new Response($response);
+        return $response;
     }
 
 
