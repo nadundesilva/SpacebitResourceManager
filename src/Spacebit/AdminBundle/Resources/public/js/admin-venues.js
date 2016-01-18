@@ -151,7 +151,10 @@ function EditRequest(request_id,status) {
                 var modalContent = '<div style="margin: 10px;"><p>';
                 if (res == 'success') {
                     modalContent += 'Request with request id ' + request_id + ' was changed successfully</p><button class="btn btn-sm btn-success" onclick=\'$("#message-modal").modal("hide"); \'><span class="glyphicon glyphicon-ok"></span>';
-                } else {
+                }else if(res=='Booked') {
+                    modalContent += 'Already Booked in the given time.</p><div style="text-align: center;"><button class="btn btn-sm btn-danger" onclick=\'$("#message-modal").modal("hide"); \'><span class="glyphicon glyphicon-warning-sign"></span>';
+                }
+                else {
                     modalContent += 'An error occurred  Sorry for the inconvenience.</p><div style="text-align: center;"><button class="btn btn-sm btn-danger" onclick=\'$("#message-modal").modal("hide"); \'><span class="glyphicon glyphicon-warning-sign"></span>';
                 }
                 modalContent += ' Ok</button><div></div>';

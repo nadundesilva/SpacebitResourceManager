@@ -183,12 +183,54 @@ class EquipmentController extends Controller
 
         $response = 'success';
         try {
+            //check the date and time of the current request
+            //check whether that equipment is already reserved in that time period
+            //return the response
+            if((string)$status=='1'){
+            $stmt = $conn->prepare('SELECT request_id,date_from,date_to,time_from,time_to FROM resource_request  WHERE resource_id = :resource_id and status=1;');
+            $stmt->bindValue(':resource_id', $resource_id);
+            $stmt->execute();
 
+            $stmt1 = $conn->prepare('SELECT date_from,date_to,time_from,time_to FROM resource_request  WHERE request_id = :request_id;');
+            $stmt1->bindValue(':request_id', $request_id);
+           $stmt1->execute();
 
+            $result = $stmt1->fetch();
+            $date_from = $result['date_from'];
+
+            $date_to = $result['date_to'];
+            $time_from = $result['time_from'];
+            $time_to = $result['time_to'];
+
+            while ($array = $stmt->fetch()) {
+                //case 1 : date_from
+                if(($date_to <$array['date_from'] ||$date_from >$array['date_to'])){
+                    continue;
+                }
+                else if(($date_from <$array['date_from'] && $date_to == $array['date_from'])){
+                    if($array['time_from']>=$time_to){
+                        continue;
+                    }
+                }else if(($date_to > $array['date_to'] && $date_from >$array['date_from'])){
+                    if($array['time_to']<=$time_from){
+                        continue;
+                    }
+                }else{
+                    $response = 'Booked';
+                    $response = new Response($response);
+                    return $response;
+                }
+            }
+            }
             $stmt = $conn->prepare('UPDATE resource_request SET status = :status , resource_id = :resource_id WHERE request_id = :request_id;');
+            if((string)$status=='2'){
+                $stmt->bindValue(':resource_id', null);
+            }else{
+                $stmt->bindValue(':resource_id', $resource_id);
+            }
             $stmt->bindValue(':status', $status);
             $stmt->bindValue(':request_id', $request_id);
-            $stmt->bindValue(':resource_id', $resource_id);
+
 
             if (!$stmt->execute()) {
                 throw new \Symfony\Component\Config\Definition\Exception\Exception();

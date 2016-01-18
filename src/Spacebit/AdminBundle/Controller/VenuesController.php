@@ -178,7 +178,42 @@ class VenuesController extends Controller
         $response = 'success';
         try {
 
+            if((string)$status =='1') {
 
+
+                $stmt1 = $conn->prepare('SELECT resource_id,date_from,date_to,time_from,time_to FROM resource_request  WHERE request_id = :request_id;');
+                $stmt1->bindValue(':request_id', $request_id);
+                $stmt1->execute();
+
+                $result = $stmt1->fetch();
+                $date_from = $result['date_from'];
+                $resource_id = $result['resource_id'];
+                $date_to = $result['date_to'];
+                $time_from = $result['time_from'];
+                $time_to = $result['time_to'];
+                $stmt = $conn->prepare('SELECT date_from,date_to,time_from,time_to FROM resource_request  WHERE resource_id = :resource_id and status = 1 ;');
+                $stmt->bindValue(':resource_id', $resource_id);
+                $stmt->execute();
+
+                while ($array = $stmt->fetch()) {
+                    //case 1 : date_from
+                    if (($date_to < $array['date_from'] || $date_from > $array['date_to'])) {
+                        continue;
+                    } else if (($date_from < $array['date_from'] && $date_to == $array['date_from'])) {
+                        if ($array['time_from'] >= $time_to) {
+                            continue;
+                        }
+                    } else if (($date_to > $array['date_to'] && $date_from > $array['date_from'])) {
+                        if ($array['time_to'] <= $time_from) {
+                            continue;
+                        }
+                    } else {
+                        $response = 'Booked';
+                        $response = new Response($response);
+                        return $response;
+                    }
+                }
+            }
             $stmt = $conn->prepare('UPDATE resource_request SET status = :status WHERE request_id = :request_id;');
             $stmt->bindValue(':status', $status);
             $stmt->bindValue(':request_id', $request_id);
