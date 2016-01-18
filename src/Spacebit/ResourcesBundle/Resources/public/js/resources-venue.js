@@ -3,6 +3,7 @@
  */
 
 function loadDepartments() {
+    showLoadingOverlay();
     var faculty = document.getElementById('faculty').value; //get the value selected via id.value & assign to variable
 
     var obj;
@@ -30,6 +31,7 @@ function loadDepartments() {
                 document.getElementById('department').innerHTML = content;
 
                 document.getElementById('department').disabled = false;
+                hideLoadingOverlay();
             }
         }
 
@@ -40,6 +42,7 @@ function loadDepartments() {
 }
 
 function loadEquipmentByCategory() {
+    showLoadingOverlay();
     var department = document.getElementById('department').value;
     var obj;
 
@@ -78,6 +81,7 @@ function loadEquipmentByCategory() {
 
 
                 document.getElementById('venuePictures').innerHTML = tableContent;
+                hideLoadingOverlay();
             }
         }
     }
@@ -89,6 +93,7 @@ function loadEquipmentByCategory() {
 
 
 function loadModalByCategory(venueCategory) {
+    showLoadingOverlay();
     var department = document.getElementById('department').value;
     var obj;
     if (window.XMLHttpRequest) {
@@ -120,13 +125,14 @@ function loadModalByCategory(venueCategory) {
                     modalContent += '<td>' + rows[i].capacity+ '</td>';
                     modalContent += '<td>' + rows[i].opening_time + '</td>';
                     modalContent += '<td>' + rows[i].closing_time + '</td>';
-                    modalContent += '<td>' +'<button type="button" class="btn btn-info btn-xs" onclick="showRequestModal(\'' +venueCategory+ '\')"><span class="glyphicon glyphicon-pencil"></span> Request</button>'; + '</td>';
+                    modalContent += '<td>' +'<button type="button" class="btn btn-info btn-xs" onclick="showRequestModal( \'' + rows[i].resource_id + '\' )"><span class="glyphicon glyphicon-pencil"></span> Request</button>'; + '</td>';
                     modalContent += '</tr>';
                 }
                 modalContent += '</table>';
 
                 document.getElementById('venueModalContent').innerHTML = modalContent;
-                $('#equipmentArea').modal('hide');
+
+                hideLoadingOverlay();
                 setTimeout("$('#modalArea').modal();", 1000);
 
             }
@@ -140,18 +146,20 @@ function loadModalByCategory(venueCategory) {
     }
 }
 
-function showRequestModal(venueCategory) {
-    $('#request-modal').modal();
+function showRequestModal(resourceid) {
+    showLoadingOverlay();
+    document.forms['request-form']['submit-button'].value = "Add";
+    document.forms['request-form']['submit-button'].innerHTML = '<span class="glyphicon glyphicon-plus"></span> Request';
+    document.forms['request-form']['resource-request-id'].value = resourceid;
+    $('#modalArea').modal('hide');
+    hideLoadingOverlay();
+    setTimeout("$('#request-modal').modal();", 1000);
+
 }
 
 function addRequest() {
+    showLoadingOverlay();
     var obj;
-
-    var resource_id = document.getElementById('requstedVenueID').innerHTML;
-    //alert(resource_id);
-    var VType = document.getElementById('venueCategory').innerHTML;
-    //alert(VType);
-
     if (window.XMLHttpRequest) {
         obj = new XMLHttpRequest();
     } else if (window.ActiveXObject) {
@@ -170,37 +178,39 @@ function addRequest() {
 
                 var modalContent = '<div style="margin: 10px;"><p>';
                 if (res == 'success') {
-                    modalContent += 'You request was added successfully. An admin will review your request and accept it if possible</p><button class="btn btn-sm btn-success"';
+                    modalContent += 'You request was ' + (requestType == 'Add' ? 'added' : 'edited') + ' successfully. An admin will review your request and accept it if possible</p><button class="btn btn-sm btn-success"';
                 } else {
-                    modalContent += 'An error occured in adding your request. Sorry for the inconvenience.</p><div style="text-align: center;"><button class="btn btn-sm btn-danger"';
+                    modalContent += 'An error occured in ' + (requestType == 'Add' ? 'adding' : 'editing') + ' your request. Sorry for the inconvenience.</p><div style="text-align: center;"><button class="btn btn-sm btn-danger"';
                 }
-                modalContent += ' onclick=\'$("#equipmentArea").modal("hide");\'>Ok</button><div></div>';
-
+                modalContent += ' onclick=\'$("#request-modal").modal("hide");\'>Ok</button><div></div>';
+                hideLoadingOverlay();
                 document.getElementById('venueModalContent').innerHTML = modalContent;
-                $('#equipmentArea').modal('hide');
-                setTimeout("$('#modalArea').modal();", 1000);
-
+                alert(modalContent);
             }
         }
-
-
         obj.open("POST", "./venues/addRequest", true);
-
-
         obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        var resource_id =document.forms["request-form"]["resource-request-id"].value;
         var dateTo = document.forms["request-form"]["request-date-To"].value;
         var dateFrom = document.forms["request-form"]["request-date-From"].value;
         var timeTo = document.forms["request-form"]["request-time-To"].value;
         var timeFrom = document.forms["request-form"]["request-time-From"].value;
-        var equipType = VType;
-        var departmentName = document.getElementById('department').value;
+        var requestType = document.forms["request-form"]["submit-button"].value;
+        alert(resource_id);
 
-        //alert(departmentName);
-
-
-        var parameter = "resource_id="+ resource_id+ "&dateTo=" + dateTo + "&dateFrom=" + dateTo+ '&timeTo=' + timeTo +  '&timeFrom=' + timeFrom + '&equipType=' + equipType + '&department='+departmentName;
-
-       // alert(parameter);
+        var parameter = "dateTo=" + dateTo + "&dateFrom=" + dateTo + '&timeTo=' + timeTo + '&timeFrom=' + timeFrom + '&requestType='+ requestType+ "&resource_id="+ resource_id;
+        if (requestType == 'Add'){
+            var departmentName = document.getElementById('department').value;
+            var VType = document.getElementById('venueCategory').innerHTML;
+            parameter += '&venueType=' + VType + '&department=' + departmentName;
+            alert(VType);
+        } else if (requestType == 'Edit') {
+            var requestId =  document.forms["request-form"]["request-id"].value;
+            parameter += '&request-id=' + requestId;
+            alert(requestId);
+            alert(requestType);
+        }
+        alert(parameter);
         obj.send(parameter);
     }
 
@@ -208,6 +218,75 @@ function addRequest() {
 
 function onAddRequestFormKeyPress(e) {
     if (e.keyCode == 13) {
-
     }
+}
+
+function showPastRequestsModal() {
+    showLoadingOverlay();
+    var obj;
+
+    if (window.XMLHttpRequest) {
+        obj = new XMLHttpRequest();
+    } else if (window.ActiveXObject) {
+        obj = new ActiveXObject("Microsoft.XMLHTTP");
+    } else {
+        alert("Browser Doesn't Support AJAX!");
+    }
+
+    if (obj !== null) {
+        obj.onreadystatechange = function () {
+            if (obj.readyState < 4) {
+                // progress
+            } else if (obj.readyState === 4) {
+                var res = obj.responseText;
+                var result = JSON.parse(res).allRequests;
+
+
+                var pastRequestsTableContent = '<tr><th>Equipment</th><th>Resource ID</th><th>Request ID</th><th>Department</th><th>Date From</th><th>Date To</th><th>Time From</th><th>Time To</th><th>Status</th><th></th></tr>';
+                for (var i = 0; i < result.length; i++) {
+                    pastRequestsTableContent += '<tr ><td id = "pastEquipType">' + result[i].name+ '</td>'
+                    pastRequestsTableContent += '<td>' + result[i].resource_id+ '</td>';
+                    pastRequestsTableContent += '<td>' + result[i].request_id + '</td>';
+                    pastRequestsTableContent += '<td>' + result[i].department_name + '</td>';
+                    pastRequestsTableContent += '<td>' + result[i].date_from + '</td>';
+                    pastRequestsTableContent += '<td>' + result[i].date_to + '</td>';
+                    pastRequestsTableContent += '<td>' + result[i].time_from + '</td>';
+                    pastRequestsTableContent += '<td>' + result[i].time_to + '</td>';
+
+                    pastRequestsTableContent += '<td>' + result[i].status + '</td>';
+                    if (result[i].status == 0) {
+                        pastRequestsTableContent += '<td style = "color: #ff4d54;">Declined</td>';
+                    } else if (result[i].status == 1) {
+                        pastRequestsTableContent += '<td style = "color: #1dff46;">Accepted</td>';
+                    } else {
+                        pastRequestsTableContent += '<td style = "color: #624cff;">Pending</td>';
+                        pastRequestsTableContent += '<td><button class="btn btn-xs btn-primary" onclick="showEditPastRequestModal(\'' + result[i].request_id + '\', \'' + result[i].date_from + '\',\'' + result[i].date_to + '\',\'' + result[i].time_from + '\', \'' + result[i].time_to + '\',\'' + result[i].resource_id+'\');"><span class="glyphicon glyphicon-pencil"></span> Edit</button></td>';
+                    }
+                }
+                document.getElementById('past-request-table-content').innerHTML = pastRequestsTableContent;
+                hideLoadingOverlay();
+                $('#past-requests-modal').modal();
+            }
+        }
+        obj.open("GET", "./venues/getPastRequests", true);
+        obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        obj.send();
+    }
+}
+
+function showEditPastRequestModal(requestID, date_from, date_to, time_from, time_to, resourceid) {
+    showLoadingOverlay();
+
+    document.forms['request-form']['request-id'].value = requestID;
+    document.forms["request-form"]["request-date-To"].value = date_to;
+    document.forms["request-form"]["request-date-From"].value = date_from
+    document.forms['request-form']['request-time-To'].value = time_to;
+    document.forms['request-form']['request-time-From'].value = time_from;
+    document.forms['request-form']['resource-request-id'].value = resourceid;
+
+    document.forms['request-form']['submit-button'].value = "Edit";
+    document.forms['request-form']['submit-button'].innerHTML = '<span class="glyphicon glyphicon-ok"></span> Ok';
+    $('#past-requests-modal').modal('hide');
+    hideLoadingOverlay();
+    $('#request-modal').modal();
 }

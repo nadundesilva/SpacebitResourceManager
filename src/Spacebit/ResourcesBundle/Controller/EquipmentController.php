@@ -21,9 +21,15 @@ class EquipmentController extends Controller
         $stmt->execute();
         $facNames = $stmt->fetchAll();
 
+        $stmt = $conn->prepare('SELECT * FROM resource_request WHERE resource_request.type in (SELECT DISTINCT equipment.equipment_type from equipment) and resource_request.date_from > CURDATE() and user_id = :user_id');
+        $stmt->bindValue(':user_id', $this->get('session')->get('user_id'));
+        $stmt->execute();
+        $future_requests = $stmt->fetchAll();
+
         return $this->render('SpacebitResourcesBundle:Default:equipment.html.twig', array(
             'equipment'=>$equipment,
             'facNames'=>$facNames,
+            'future_requests' => $future_requests,
         ));
 
     }
@@ -68,7 +74,7 @@ class EquipmentController extends Controller
         $deptName = $request->request->get('department');
 
         $conn = $this->get('database_connection');
-        $stmt = $conn->prepare('SELECT * FROM equipment WHERE equipment_type = :equipCategory AND department_name = :department_name');
+        $stmt = $conn->prepare('SELECT * FROM equipment inner JOIN resource USING (resource_id) WHERE equipment_type = :equipCategory AND department_name = :department_name');
         $stmt->bindValue(':equipCategory', $equipCategory);
         $stmt->bindValue(':department_name', $deptName);
         $stmt->execute();
@@ -78,7 +84,6 @@ class EquipmentController extends Controller
         $response->headers->set('Content-Type', 'application/json');
 
         return $response;
-
     }
 
     public function addRequestAction()
@@ -88,12 +93,22 @@ class EquipmentController extends Controller
         $dateTo = $request->request->get('dateTo');
         $timeFrom = $request->request->get('timeFrom');
         $timeTo = $request->request->get('timeTo');
-        $type = $request->request->get('equipType');
-        $department = $request->request->get('department');
+        $requestType = $request->request->get('requestType');
 
         $conn = $this->get('database_connection');
 
-        $stmt = $conn->prepare('INSERT INTO resource_request(user_id, date_from, date_to, time_from, time_to, status, type, department_name) VALUES(:user_id, :date_from, :date_to, :time_from, :time_to, :status, :type, :department);');
+        if ($requestType == 'Add') {
+            $type = $request->request->get('equipType');
+            $department = $request->request->get('department');
+            $stmt = $conn->prepare('INSERT INTO resource_request(user_id, date_from, date_to, time_from, time_to, status, type, department_name) VALUES(:user_id, :date_from, :date_to, :time_from, :time_to, :status, :type, :department);');
+            $stmt->bindValue(':type' ,$type );
+            $stmt->bindValue(':department', $department);
+
+        }else {
+            $request_id = $request->request->get('request-id');
+            $stmt = $conn->prepare('UPDATE resource_request SET date_to = :date_to, date_from = :date_from, time_from = :time_from, time_to = :time_to, status = :status WHERE user_id = :user_id and request_id = :request_id;');
+            $stmt->bindValue(':request_id', $request_id);
+        }
 
         $stmt->bindValue(':user_id', $this->get('session')->get('user_id'));
         $stmt->bindValue(':date_from', $dateFrom);
@@ -101,8 +116,6 @@ class EquipmentController extends Controller
         $stmt->bindValue(':time_from', $timeFrom);
         $stmt->bindValue(':time_to', $timeTo);
         $stmt->bindValue(':status', 2);
-        $stmt->bindValue(':type' ,$type );
-        $stmt->bindValue(':department', $department);
 
 
         $response = 'success';
@@ -111,6 +124,20 @@ class EquipmentController extends Controller
         }
 
         return new Response($response);
+    }
+
+    public function getPastRequestsAction()
+    {
+        $conn = $this->get('database_connection');
+        $stmt = $conn->prepare('SELECT * FROM resource_request WHERE resource_request.type in (SELECT DISTINCT equipment.equipment_type from equipment) AND user_id = :user_id;');
+        $stmt->bindValue(':user_id', $this->get('session')->get('user_id'));
+        $stmt->execute();
+        $allRequests = $stmt->fetchAll();
+
+        $response = new Response(json_encode(array('allRequests' => $allRequests)));
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
     }
 
 }

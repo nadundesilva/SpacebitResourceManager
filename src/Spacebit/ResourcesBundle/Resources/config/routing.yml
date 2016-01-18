@@ -22,6 +22,11 @@ spacebit_resources_equipment_add_request:
     defaults: { _controller: SpacebitResourcesBundle:Equipment:addRequest }
     methods:  ['POST']
 
+spacebit_resources_equipments_get_past_requests:
+    path:     /equipment/getPastRequests
+    defaults: { _controller: SpacebitResourcesBundle:Equipment:getPastRequests }
+
+
 
 
 spacebit_resources_venues:
@@ -47,6 +52,12 @@ spacebit_resources_venues_add_request:
     path:     /venues/addRequest
     defaults: { _controller: SpacebitResourcesBundle:Venues:addRequest }
     methods:  ['POST']
+
+spacebit_resources_venues_get_past_requests:
+    path:     /venues/getPastRequests
+    defaults: { _controller: SpacebitResourcesBundle:Venues:getPastRequests }
+
+
 
 
 
