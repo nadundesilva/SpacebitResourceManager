@@ -17,6 +17,11 @@ spacebit_admin_user_access_level_change:
     defaults: { _controller: SpacebitAdminBundle:User:changeAccessLevel }
     methods:  ['POST']
 
+spacebit_admin_user_get_admin_rights:
+    path:     /users/getAdminRights
+    defaults: { _controller: SpacebitAdminBundle:User:getAdminRights }
+    methods:  ['POST']
+
 
 
 spacebit_admin_equipment:
