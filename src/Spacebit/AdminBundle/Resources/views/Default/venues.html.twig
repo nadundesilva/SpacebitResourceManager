@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% set link_to_home = '../' %}
-{% set active = {link:'Admin', sub_link:'Manage Venue'} %}
+{% set active = {link:'Admin', sub_link:'Manage Venues'} %}
 
 {% block title %}Manage Venue{% endblock %}
 
@@ -20,26 +20,26 @@
         {% set request_status = ['Declined', 'Accepted', 'Pending'] %}
         {% for venue_request in venues_requests %}
             <tr>
-                <th>{{ venue_request.request_id }}</th>
-                <th>{{ venue_request.user_id }}<br><button class="btn btn-xs btn-info" onclick="showUserModal('{{ venue_request.user_id }}')"><span class="glyphicon glyphicon-modal-window"></span> View User</button></th>
-                <th>{{ venue_request.resource_id }}</th>
-                <th>{{ venue_request.date_from }}</th>
-                <th>{{ venue_request.date_to }}</th>
-                <th>{{ venue_request.time_from }}</th>
-                <th>{{ venue_request.time_to }}</th>
+                <td>{{ venue_request.request_id }}</td>
+                <td>{{ venue_request.user_id }}<br><button class="btn btn-xs btn-info" onclick="showUserModal('{{ venue_request.user_id }}')"><span class="glyphicon glyphicon-modal-window"></span> View User</button></td>
+                <td>{{ venue_request.resource_id }}</td>
+                <td>{{ venue_request.date_from }}</td>
+                <td>{{ venue_request.date_to }}</td>
+                <td>{{ venue_request.time_from }}</td>
+                <td>{{ venue_request.time_to }}</td>
                 {% if venue_request.status == 0 %}
-                <th style="color: #ff4d54;">
+                <td style="color: #ff4d54;">
             {% elseif venue_request.status == 1  %}
-            <th style="color: #55ff5e;">
+            <td style="color: #55ff5e;">
             {% else %}
-                <th style="color: #624cff;">
+                <td style="color: #624cff;">
                     {% endif %}
                     {{ request_status[venue_request.status] }}
-                </th>
+                </td>
                 {% if "now"|date('Y-m-d') > venue_request.date_from|date('Y-m-d') %}
-                    <th><button class="btn btn-xs btn-default" disabled>Past Request</button></th>
+                    <td><button class="btn btn-xs btn-default" disabled>Past Request</button></td>
                 {% else %}
-                    <th><button class="btn btn-xs btn-primary" onclick="changeRequest('{{ venue_request.request_id }}');"><span class="glyphicon glyphicon-pencil"></span> Change</button></th>
+                    <td><button class="btn btn-xs btn-primary" onclick="changeRequest('{{ venue_request.request_id }}');"><span class="glyphicon glyphicon-pencil"></span> Change</button></td>
                 {% endif %}
             </tr>
         {% endfor %}
@@ -73,7 +73,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div style="margin: 20px;">
-                    <h3 style="text-align: center;">Edit Venue Request</h3>
+                    <h3 align="left" style="text-align: center;">Edit Venue Request</h3>
                         <div id="edit-request-div"></div>
                 </div>
             </div>
@@ -90,48 +90,49 @@
                         <div class="row">
                             <div class="form-group col-lg-12">
                                 <label for="resource_id">Resource ID :</label>
-                                <input type="text" id=resource_id" class="form-control" name="resource_id" placeholder="Enter Resource ID" required />
+                                <input type="text"  id=resource_id" class="form-control" name="resource_id" placeholder="Enter Resource ID" required />
                             </div>
                             <div class="form-group col-lg-12">
                                 <label><input type="checkbox" id="availability" name = "availability">Venue is Available</label>
                             </div>
                             <div class="form-group col-lg-12">
                                 <label for="description">Description :</label>
-                                <input type="text" id="description" class="form-control" name = "description" placeholder="Enter Description of the Venue" required />
+                                <input type="text" id="description" class="form-control" name = "description" placeholder="Enter Description of the Venue" required/>
+
                             </div>
                             <div class="form-group col-lg-6">
                                 <label for="value">Capacity :</label>
-                                <input type="numeric" class="form-control" id="capacity" name = "capacity" placeholder="Enter the Capacity of the venue" />
+                                <input type="numeric" class="form-control" id="capacity" name = "capacity" placeholder="Enter the Capacity of the venue" required/>
                             </div>
 
 
                             <div class="form-group col-lg-6">
                                 <label for="value">Opening Time :</label>
-                                <input type="time" class="form-control" id="opening_time" name = "opening_time" placeholder="Enter the Opening Time of the venue" />
+                                <input type="time" class="form-control" id="opening_time" name = "opening_time" placeholder="Enter the Opening Time of the venue" required/>
                             </div>
 
                             <div class="form-group col-lg-6">
                                 <label for="value">Closing Time :</label>
 
-                                <input type="time" class="form-control" id="closing_time" name = "closing_time" placeholder="Enter the Closing Time of the venue" />
+                                <input type="time" class="form-control" id="closing_time" name = "closing_time" placeholder="Enter the Closing Time of the venue" required/>
                             </div>
 
 
                             <div class="form-group col-lg-6">
                                 <label for="value">Department Name :</label>
-                                <input type="text" class="form-control" id="dept_name" name = "dept_name" placeholder="Enter the Department Name of the venue" />
+                                <input type="text" class="form-control" id="dept_name" name = "dept_name" placeholder="Enter the Department Name of the venue" required />
                             </div>
 
                             <div class="form-group col-lg-6">
                                 <label for="value">Name :</label>
-                                <input type="text" class="form-control" id="name" name = "name" placeholder="Enter the  Name of the venue" />
+                                <input type="text" class="form-control" id="name" name = "name" placeholder="Enter the  Name of the venue" required/>
                             </div>
 
 
 
                             <div class="form-group col-lg-6">
                                 <label for="value">Venue Type :</label>
-                                <input type="text" class="form-control" id="venue_type" name = "venue_type" placeholder="Enter the Venue Type of the equipment" />
+                                <input type="text" class="form-control" id="venue_type" name = "venue_type" placeholder="Enter the Venue Type of the equipment" required/>
                             </div>
 
                         </div>

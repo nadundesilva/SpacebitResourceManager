@@ -7,6 +7,9 @@ services:
     login_authenticator:
         class: AppBundle\Utils\LoginAuthenticator
         arguments: ['@session', '@database_connection']
+    ui_utils:
+        class: AppBundle\Utils\UIUtils
+        arguments: ['@session', '@database_connection']
 #    service_name:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]

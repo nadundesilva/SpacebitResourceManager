@@ -5,6 +5,7 @@ function showManageVenueModal() {
 
     var obj;
 
+    showLoadingOverlay();
     if (window.XMLHttpRequest) {
         obj = new XMLHttpRequest();
     } else if (window.ActiveXObject) {
@@ -34,6 +35,8 @@ function showManageVenueModal() {
                 }
                 modalContent += '</table>'
                 document.getElementById('manage-venues-modal-content').innerHTML = modalContent;
+                hideLoadingOverlay();
+
                 $('#manage-venues-modal').modal();
             }
         }
@@ -45,6 +48,8 @@ function showManageVenueModal() {
 }
 
 function showAddVenueModal() {
+    hideLoadingOverlay();
+
     document.forms['venue-add-form']['resource_id'].value = '';
     document.forms['venue-add-form']['description'].value = '';
     document.forms['venue-add-form']['capacity'].value = '';
@@ -61,12 +66,15 @@ function showAddVenueModal() {
     document.getElementById('addEditVenueTitle').innerHTML = 'Add Venue';
     document.forms['venue-add-form']['submit-button'].innerHTML = '<span class="glyphicon glyphicon-plus"></span> Add';
     $('#manage-venues-modal').modal('hide');
-    $('#add-edit-venue-modal').modal();
+
+    setTimeout("hideLoadingOverlay(); $('#add-edit-venue-modal').modal();", 1000);
+
+
 }
 
 function showEditVenueModal(resource_id) {
     var obj;
-
+    showLoadingOverlay();
     if (window.XMLHttpRequest) {
         obj = new XMLHttpRequest();
     } else if (window.ActiveXObject) {
@@ -82,15 +90,16 @@ function showEditVenueModal(resource_id) {
                 var res = obj.responseText;
                 var venue = JSON.parse(res).result;
 
+
                 document.forms['venue-add-form']['resource_id'].value = venue.resource_id;
                 document.forms['venue-add-form']['description'].value = venue.description;
                 document.forms['venue-add-form']['capacity'].value = venue.capacity;
                 document.forms['venue-add-form']['closing_time'].value = venue.closing_time;
                 document.forms['venue-add-form']['dept_name'].value = venue.dept_name;
-                document.forms['venue-add-form']['name'].value = vanue.name;
+                document.forms['venue-add-form']['name'].value = venue.name;
                 document.forms['venue-add-form']['opening_time'].value = venue.opening_time;
                 document.forms['venue-add-form']['venue_type'].value = venue.venue_type;
-                document.forms['venue-add-form']['availability'].checked =venue.availability;
+                document.forms['venue-add-form']['availability'].checked =(venue.availability.toString()=='1')?true:false;
                 document.forms['venue-add-form']['submit-button'].value = 'Edit';
 
 
@@ -100,7 +109,7 @@ function showEditVenueModal(resource_id) {
 
                 document.forms['venue-add-form']['submit-button'].innerHTML = '<span class="glyphicon glyphicon-ok"></span> OK';
                 $('#manage-venues-modal').modal('hide');
-                $('#add-edit-venue-modal').modal();
+                setTimeout("hideLoadingOverlay(); $('#add-edit-venue-modal').modal();", 1000);
             }
         }
 
@@ -109,20 +118,20 @@ function showEditVenueModal(resource_id) {
         obj.send('resource_id=' + resource_id);
     }
 }
-function changeRequest(requestId) {
+function changeRequest(requestID) {
     //can't find the bug
-    modalContent = '<button value="0" id="DeclineButton" class="btn btn-xs btn-info" onclick="EditRequest(requestID,0)"><span class="glyphicon glyphicon-pencil"></span> Decline</button> ';
-    modalContent += '<button value="1" id="ApproveButton" class="btn btn-xs btn-info" onclick="EditRequest(requestID,1)"><span class="glyphicon glyphicon-pencil"></span> Approve</button> ';
-    modalContent += '<button value="2" id="ApproveButton" class="btn btn-xs btn-info" onclick="EditRequest(requestID,2)"><span class="glyphicon glyphicon-pencil"></span> Pendin</button> ';
+    showLoadingOverlay();
+    modalContent = '<button value="1" id="ApproveButton" class="btn btn-xs btn-success" onclick="EditRequest(' + requestID + ', 1)"><span class="glyphicon glyphicon-ok"></span> Approve</button> ';
+    modalContent += '<button value="0" id="DeclineButton" class="btn btn-xs btn-danger" onclick="EditRequest(' + requestID + ',0)"><span class="glyphicon glyphicon-remove"></span> Decline</button> ';
+    modalContent += '<button value="2" id="ApproveButton" class="btn btn-xs btn-primary" onclick="EditRequest(' + requestID + ',2)"><span class="glyphicon glyphicon-time"></span> Pending</button> ';
 
 
     document.getElementById('edit-request-div').innerHTML = modalContent;
+    hideLoadingOverlay();
     $('#edit-venues-modal').modal();
 }
 function EditRequest(request_id,status) {
-    alert("fuck");
-    alert("Fuck");
-
+    showLoadingOverlay();
     var obj;
 
     if (window.XMLHttpRequest) {
@@ -148,12 +157,15 @@ function EditRequest(request_id,status) {
                 modalContent += ' Ok</button><div></div>';
                 document.getElementById('message-modal-content').innerHTML = modalContent;
 
-                $('#edit-equipments-modal').modal('hide');
-                $('#message-modal').modal();
-            }
+                $('#edit-venues-modal').modal('hide');
+
+                setTimeout("hideLoadingOverlay();$('#message-modal').modal();", 1000);
+
+
+                location.reload();           }
         }
 
-        obj.open("POST", "./vehicle/ changeRequestStatus", true);
+        obj.open("POST", "./venues/changeRequestStatus", true);
         obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         obj.send("request_id=" + request_id + '&status=' + status);
     }
@@ -162,15 +174,18 @@ function EditRequest(request_id,status) {
 
     function addEditVenue() {
 
+        showLoadingOverlay();
+
+
     var resource_id = document.forms['venue-add-form']['resource_id'].value;
     var description= document.forms['venue-add-form']['description'].value;
-    var availability = document.forms['venue-add-form']['availability'].value;
-    var availability = document.forms['venue-add-form']['capacity'].value;
-    var availability = document.forms['venue-add-form']['closing_time'].value;
-    var availability = document.forms['venue-add-form']['dept_name'].value;
-    var availability = document.forms['venue-add-form']['name'].value;
-    var availability = document.forms['venue-add-form']['opening_time'].value;
-    var availability = document.forms['venue-add-form']['venue_type'].value;
+    var availability = document.forms['venue-add-form']['availability'].checked;
+    var capacity = document.forms['venue-add-form']['capacity'].value;
+    var closing_time= document.forms['venue-add-form']['closing_time'].value;
+    var dept_name = document.forms['venue-add-form']['dept_name'].value;
+    var name = document.forms['venue-add-form']['name'].value;
+    var opening_time = document.forms['venue-add-form']['opening_time'].value;
+    var venue_type = document.forms['venue-add-form']['venue_type'].value;
 
     var updateType = document.forms['venue-add-form']['submit-button'].value;
     var obj;
@@ -189,21 +204,24 @@ function EditRequest(request_id,status) {
             } else if (obj.readyState === 4) {
                 var res = obj.responseText;
 
+
                 var modalContent = '<div style="margin: 10px;"><p>';
                 if (res == 'success') {
-                    modalContent += 'Venue with resource id ' + resource_id + ' was ' + (updateType == "Add" ? "added" : "edited") + ' successfully</p><button class="btn btn-sm btn-success" onclick=\'$("#message-modal").modal("hide"); showManageVenuesModal();\'><span class="glyphicon glyphicon-ok"></span>';
+                    modalContent += 'Venue with resource id ' + resource_id + ' was ' + (updateType == "Add" ? "added" : "edited") + ' successfully</p><button class="btn btn-sm btn-success" onclick=\'$("#message-modal").modal("hide"); showManageVenueModal();\'><span class="glyphicon glyphicon-ok"></span>';
                 } else {
-                    modalContent += 'An error occurred in ' + (updateType == "Add" ? "adding" : "editing") + ' the venue with Resource ID ' + resource_id + '. Sorry for the inconvenience.</p><div style="text-align: center;"><button class="btn btn-sm btn-danger" onclick=\'$("#message-modal").modal("hide"); showManageVenuesModal();\'><span class="glyphicon glyphicon-warning-sign"></span>';
+                    modalContent += 'An error occurred in ' + (updateType == "Add" ? "adding" : "editing") + ' the venue with Resource ID ' + resource_id + '. Sorry for the inconvenience.</p><div style="text-align: center;"><button class="btn btn-sm btn-danger" onclick=\'$("#message-modal").modal("hide"); showManageVenueModal();\'><span class="glyphicon glyphicon-warning-sign"></span>';
                 }
                 modalContent += ' Ok</button><div></div>';
                 document.getElementById('message-modal-content').innerHTML = modalContent;
 
                 $('#add-edit-venue-modal').modal('hide');
-                $('#message-modal').modal();
+                setTimeout("hideLoadingOverlay();  $('#message-modal').modal();", 1000);
+
+
             }
         }
 
-        obj.open("POST", "./venue/addEdit", true);
+        obj.open("POST", "./venues/addEdit", true);
         obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         obj.send("resource_id=" + resource_id+   '&availability=' + availability + '&description=' + description + '&capacity=' + capacity +  '&closing_time=' + closing_time + '&dept_name=' + dept_name + '&name=' + name +'&opening_time=' + opening_time +'&venue_type=' + venue_type + '&update-type=' + updateType);
     }

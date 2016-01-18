@@ -1,7 +1,10 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('bundles/app/css/loading.css') }}">
 
 <style type="text/css">
-    :focus {outline:none;}
+    :focus {
+        outline:none;
+    }
+
     #loading-container {
         text-align: center;
         background-color: black;
@@ -21,11 +24,19 @@
         -webkit-justify-content: center;
         justify-content: center;
     }
+
     #clock {
+        text-align: center;
         z-index: 9999;
         position: fixed;
         left: 50%;
         top: 50%;
+    }
+
+    #loading-text {
+        left: 50%;
+        font-family: 'quicksandlight', Helvetica, Arial;
+        color: white;
     }
 </style>
 
@@ -46,10 +57,11 @@
 </script>
 
 <div id="loading-container" style="display: none;"></div>
-<div class="spinner clock" id="clock" style="display: none;">
+<div id="clock" class="spinner clock" style="display: none;">
     <div class="shadow"></div>
     <div class="dial">
         <div class="hour hand"></div>
         <div class="minute hand"></div>
     </div>
+    <span id="loading-text">Loading</span>
 </div>

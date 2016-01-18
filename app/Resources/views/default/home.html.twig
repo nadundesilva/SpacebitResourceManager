@@ -7,21 +7,15 @@
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('bundles/app/css/carousel.css') }}">
-    <link rel="stylesheet prefetch" href="http://www.johnblazek.net/codepen-resources/3d-carousel/css/stylesheet.css">
-    <style>
-        #body {
-            animation-name: none;
-        }
-    </style>
 {% endblock %}
 
 {% block javascripts %}
-    <script src="{{ asset('bundles/app/js/carousel.js') }}"></script>
-    <script src="http://www.johnblazek.net/codepen-resources/3d-carousel/js/libs.min.js"></script>
+    <script src="{{ asset('bundles/app/js/carousel/carousel.js') }}"></script>
+    <script src="{{ asset('bundles/app/js/carousel/libs.js') }}"></script>
 {% endblock %}
 
 {% block body %}
-    <header style="top: 50px;">
+    <header style="top: 50px;" class="animated rollIn">
         <h1>Spacebit Resource Manager</h1>
         <h3>Designed for the University of Moratuwa</h3>
     </header>

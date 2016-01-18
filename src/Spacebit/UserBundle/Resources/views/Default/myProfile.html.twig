@@ -15,7 +15,7 @@
 {% block body %}
     <div class="col-lg-7" style="padding: 0px 125px 0px 65px">
 
-        <button type="submit" class="btn btn-md btn-primary" onclick="addNewUser(); return false;">Change Password</button>
+
         <h2 style="margin-left: 130px;margin-right: 110px; display: inline-block;">My Profile</h2>
 
 
@@ -109,8 +109,35 @@
 
 
                 <input type="button" class="btn btn-md btn-primary" id="submitButton" onclick="editProfile({{ app.session.get('access_level')}})" value="Edit Profile">
+                <input type="button" style="float: right" class="btn btn-md btn-primary" id="passwordSubmitButton" onclick="changePassswordDialog()" value="Change Password">
             </div>
+
+
         </form>
+    </div>
+
+    <div id="message-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div style="margin: 20px;" id="message-modal-content">
+                    <div class="form-group">
+                        <label for="passwordOld">Enter Current Password</label>
+                        <input type="password" class="form-control" id="passwordOld" name="passwordOld" placeholder="Current Password" required />
+                    </div>\
+                    <div class="form-group">
+                        <label for="passwordOne">Enter New Password</label>
+                        <input type="password" class="form-control" id="passwordOne" name="passwordOne" placeholder="New Password" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="passwordTwo">Re-enter New Password</label>
+                        <input type="password" class="form-control" id="passwordTwo" name="passwordTwo" placeholder="Re enter New Password" required />
+                    </div>
+                    <input type="button" class="btn btn-md btn-primary" id="submitButton" onclick="changePassword()" value="Change Password">
+
+                    <button onclick="$('#message-modal').modal('hide');">Close</button>
+                </div>
+            </div>
+        </div>
     </div>
 
 {% endblock %}

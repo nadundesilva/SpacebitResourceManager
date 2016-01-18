@@ -1,9 +1,9 @@
 /**
  * Created by Pasindu Tennage on 2015-12-21.
  */
-function showManageEquipmentModal() {
+function showManageEquipmentsModal() {
     var obj;
-
+    showLoadingOverlay();
     if (window.XMLHttpRequest) {
         obj = new XMLHttpRequest();
     } else if (window.ActiveXObject) {
@@ -32,6 +32,7 @@ function showManageEquipmentModal() {
                 }
                 modalContent += '</table>'
                 document.getElementById('manage-equipments-modal-content').innerHTML = modalContent;
+                hideLoadingOverlay();
                 $('#manage-equipments-modal').modal();
             }
         }
@@ -43,9 +44,13 @@ function showManageEquipmentModal() {
 }
 
 function showAddEquipmentModal() {
+    showLoadingOverlay();
+
     document.forms['equipment-add-form']['resource_id'].value = '';
     document.forms['equipment-add-form']['description'].value = '';
     document.forms['equipment-add-form']['equipment_type'].value = '';
+    document.forms['equipment-add-form']['department_name'].value = '';
+
     document.forms['equipment-add-form']['submit-button'].value = 'Add';
 
     document.forms['equipment-add-form']['value'].value = '';
@@ -55,12 +60,13 @@ function showAddEquipmentModal() {
     document.getElementById('addEditEquipmentTitle').innerHTML = 'Add Equipment';
     document.forms['equipment-add-form']['submit-button'].innerHTML = '<span class="glyphicon glyphicon-plus"></span> Add';
     $('#manage-equipments-modal').modal('hide');
-    $('#add-edit-equipment-modal').modal();
+    setTimeout("hideLoadingOverlay(); $('#add-edit-equipment-modal').modal();", 1000);
+
 }
 
 function showEditEquipmentModal(resource_id) {
     var obj;
-
+    showLoadingOverlay();
     if (window.XMLHttpRequest) {
         obj = new XMLHttpRequest();
     } else if (window.ActiveXObject) {
@@ -77,16 +83,21 @@ function showEditEquipmentModal(resource_id) {
                 var equipment = JSON.parse(res).result;
 
                 document.forms['equipment-add-form']['resource_id'].value = equipment.resource_id;
+                document.forms['equipment-add-form']['resource_id'].readonly="readonly";
+
 
                 document.forms['equipment-add-form']['equipment_type'].value = equipment.equipment_type;
                 document.forms['equipment-add-form']['value'].value = equipment.value;
-                document.forms['equipment-add-form']['availability'].checked = equipment.availability;
+                document.forms['equipment-add-form']['availability'].checked = (equipment.availability.toString()=='1')? true:false;
                 document.forms['equipment-add-form']['description'].value = equipment.description;
+                document.forms['equipment-add-form']['department_name'].value = equipment.department_name;
+                document.forms['equipment-add-form']['submit-button'].value="Edit";
 
                 document.getElementById('addEditEquipmentTitle').innerHTML = 'Edit Equipment';
                 document.forms['equipment-add-form']['submit-button'].innerHTML = '<span class="glyphicon glyphicon-ok"></span> OK';
                 $('#manage-equipments-modal').modal('hide');
-                $('#add-edit-equipment-modal').modal();
+                setTimeout("hideLoadingOverlay(); $('#add-edit-equipment-modal').modal();", 1000);
+
             }
         }
 
@@ -96,19 +107,52 @@ function showEditEquipmentModal(resource_id) {
     }
 }
 
-function changeRequest(requestId) {
-    //can't find the bug
-    modalContent = '<button value="0" id="DeclineButton" class="btn btn-xs btn-info" onclick="EditRequest(requestID,0)"><span class="glyphicon glyphicon-pencil"></span> Decline</button> ';
-    modalContent += '<button value="1" id="ApproveButton" class="btn btn-xs btn-info" onclick="EditRequest(requestID,1)"><span class="glyphicon glyphicon-pencil"></span> Approve</button> ';
-    modalContent += '<button value="2" id="ApproveButton" class="btn btn-xs btn-info" onclick="EditRequest(requestID,2)"><span class="glyphicon glyphicon-pencil"></span> Pendin</button> ';
+function changeRequest(requestId,department_name,type) {
+    var obj;
+    showLoadingOverlay();
 
+    if (window.XMLHttpRequest) {
+        obj = new XMLHttpRequest();
+    } else if (window.ActiveXObject) {
+        obj = new ActiveXObject("Microsoft.XMLHTTP");
+    } else {
+        alert("Browser Doesn't Support AJAX!");
+    }
+    if (obj !== null) {
+        obj.onreadystatechange = function () {
+            if (obj.readyState < 4) {
+                // progress
+            } else if (obj.readyState === 4) {
+                var res = obj.responseText;
+                var rows = JSON.parse(res).result;
 
-    document.getElementById('edit-request-div').innerHTML = modalContent;
-    $('#edit-equipments-modal').modal();
+                var modalContent = '';
+                for (var i = 0; i < rows.length; i++) {
+                    modalContent += '<option value="'+rows[i].resource_id+'">'+rows[i].resource_id+'</option>';
+                }
+
+                document.getElementById('select_equipment').innerHTML = modalContent;
+                document.getElementById('accept_equipment_request_id').innerHTML = requestId+'';
+                hideLoadingOverlay();
+                $('#accept-equipment-modal').modal();
+
+            }
+        }
+
+        obj.open("POST", "./equipment/getByResourceType", true);
+        obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+        obj.send('department_name=' + department_name + '&type=' + type );
+    }
+
 }
-function EditRequest(request_id,status){
-    alert("fuck");
-    alert("Fuck");
+
+function EditRequest(status){
+    showLoadingOverlay();
+    $('#accept-equipment-modal').modal('hide');
+    var request_id = document.getElementById('accept_equipment_request_id').value;
+    var resource_id = document.getElementById('select_equipment').value;
+
 
     var obj;
 
@@ -126,6 +170,7 @@ function EditRequest(request_id,status){
             } else if (obj.readyState === 4) {
                 var res = obj.responseText;
 
+
                 var modalContent = '<div style="margin: 10px;"><p>';
                 if (res == 'success') {
                     modalContent += 'Request with request id ' + request_id + ' was changed successfully</p><button class="btn btn-sm btn-success" onclick=\'$("#message-modal").modal("hide"); \'><span class="glyphicon glyphicon-ok"></span>';
@@ -133,32 +178,30 @@ function EditRequest(request_id,status){
                     modalContent += 'An error occurred  Sorry for the inconvenience.</p><div style="text-align: center;"><button class="btn btn-sm btn-danger" onclick=\'$("#message-modal").modal("hide"); \'><span class="glyphicon glyphicon-warning-sign"></span>';
                 }
                 modalContent += ' Ok</button><div></div>';
-                document.getElementById('message-modal-content').innerHTML = modalContent;
+               document.getElementById('message-modal-content').innerHTML = modalContent;
 
                 $('#edit-equipments-modal').modal('hide');
-                $('#message-modal').modal();
+                setTimeout("hideLoadingOverlay(); $('#message-modal').modal();", 1000);
+                location.reload();
             }
         }
 
-        obj.open("POST", "./equipment/ changeRequestStatus", true);
-        obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        obj.send("request_id=" + request_id+ '&status=' + status );
+        obj.open("POST", "./equipment/changeRequestStatus", true);
+       obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        obj.send("request_id=" + request_id+ '&status=' + status+ '&resource_id=' + resource_id );
     }
-
-
-
-
-
-
 }
 
 function addEditEquipment() {
-    alert("Fuck");
+
+    showLoadingOverlay();
     var resource_id = document.forms['equipment-add-form']['resource_id'].value;
     var description= document.forms['equipment-add-form']['description'].value;
     var equipment_type = document.forms['equipment-add-form']['equipment_type'].value;
     var value = document.forms['equipment-add-form']['value'].value;
-    var availability = document.forms['equipment-add-form']['availability'].value;
+    var availability = document.forms['equipment-add-form']['availability'].checked;
+
+    var department_name = document.forms['equipment-add-form']['department_name'].value;
     var updateType = document.forms['equipment-add-form']['submit-button'].value;
     var obj;
 
@@ -173,9 +216,9 @@ function addEditEquipment() {
         obj.onreadystatechange = function () {
             if (obj.readyState < 4) {
                 // progress
-            } else if (obj.readyState === 4) {
+            } else if (obj.readyState == 4) {
                 var res = obj.responseText;
-
+                
                 var modalContent = '<div style="margin: 10px;"><p>';
                 if (res == 'success') {
                     modalContent += 'Equipment with resource id ' + resource_id + ' was ' + (updateType == "Add" ? "added" : "edited") + ' successfully</p><button class="btn btn-sm btn-success" onclick=\'$("#message-modal").modal("hide"); showManageEquipmentsModal();\'><span class="glyphicon glyphicon-ok"></span>';
@@ -186,12 +229,13 @@ function addEditEquipment() {
                 document.getElementById('message-modal-content').innerHTML = modalContent;
 
                 $('#add-edit-equipment-modal').modal('hide');
-                $('#message-modal').modal();
+                setTimeout("hideLoadingOverlay(); $('#message-modal').modal();", 1000);
+
             }
         }
 
         obj.open("POST", "./equipment/addEdit", true);
         obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        obj.send("resource_id=" + resource_id+ '&equipment_type=' + type +  '&availability=' + availability + '&value=' + value + '&description=' + description + '&update-type=' + updateType);
+        obj.send("resource_id=" + resource_id+ '&equipment_type=' + equipment_type + '&department_name=' + department_name +  '&availability=' + availability + '&value=' + value + '&description=' + description + '&update-type=' + updateType);
     }
 }

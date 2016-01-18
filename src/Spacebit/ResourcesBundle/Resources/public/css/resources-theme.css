@@ -1,16 +1,7 @@
-@keyframes img-portfolio-in {
-    0%   {transform: scale(0.5, 0.5); opacity: 0.0;}
-    66%   {transform: scale(0.5, 0.5); opacity: 0.0;}
-    100% {transform: scale(1, 1); opacity: 1.0;}
-}
-
 .img-portfolio {
     width: 270px;
     height: 250px;
     border-radius: 50%;
-    animation-name: img-portfolio-in;
-    animation-duration: 2s;
-    animation-timing-function: ease-out;
 }
 
 .img-portfolio:hover {
