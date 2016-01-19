@@ -25,7 +25,7 @@ class UIUtils
         $this->equipment_requests_count = $stmt->fetch()['count'];
 
         //Fetching venues requests count
-        $stmt = $conn->prepare('SELECT COUNT(DISTINCT request_id) AS count FROM resource_request INNER JOIN venue ON venue.resource_id = resource_request.resource_id WHERE status = 2 AND date_from >= CURDATE();');
+        $stmt = $conn->prepare('SELECT COUNT(DISTINCT request_id) AS count FROM resource_request INNER JOIN view1 using(resource_id) WHERE status = 2 AND date_from >= CURDATE();');
         $stmt->execute();
         $this->venue_requests_count = $stmt->fetch()['count'];
 
