@@ -18,3 +18,13 @@
 #past-requests-modal .modal-dialog {
     width:75%;
 }
+
+@media screen and (min-width: 768px) {
+    #my-past-requests-modal.modal-dialog  #modalArea.modal-dialog #equipmentModal.modal-dialog{
+        width:1200px;
+    }
+}
+
+#my-past-requests-modal .modal-dialog #modalArea.modal-dialog{
+    width:85%;
+}

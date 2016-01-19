@@ -170,7 +170,7 @@ function addRequest() {
                 // progress
             } else if (obj.readyState === 4) {
                 var res = obj.responseText;
-                alert(res);
+                //alert(res);
 
                 var modalContent = '<div style="margin: 10px;"><p>';
                 if (res == 'success') {
@@ -179,10 +179,10 @@ function addRequest() {
                     modalContent += 'An error occured in ' + (requestType == 'Add' ? 'adding' : 'editing') + ' your request. Sorry for the inconvenience.</p><div style="text-align: center;"><button class="btn btn-sm btn-danger"';
                 }
                 modalContent += ' onclick=\'$("#request-modal").modal("hide");\'>Ok</button><div></div>';
-                alert(modalContent);
+                //alert(modalContent);
                 hideLoadingOverlay();
                 document.getElementById('equipmentModalContent').innerHTML = modalContent;
-                alert(modalContent);
+                //alert(modalContent);
             }
         }
         obj.open("POST", "./equipment/addRequest", true);
@@ -195,7 +195,7 @@ function addRequest() {
         var requestType = document.forms["request-form"]["submit-button"].value;
 
 
-        alert(requestType);
+        //alert(requestType);
 
 
         var parameter = "dateTo=" + dateTo + "&dateFrom=" + dateTo + '&timeTo=' + timeTo + '&timeFrom=' + timeFrom + '&requestType='+ requestType;
@@ -207,11 +207,11 @@ function addRequest() {
         } else if (requestType == 'Edit') {
             var requestId =  document.forms["request-form"]["request-id"].value;
             parameter += '&request-id=' + requestId;
-            alert(requestId);
+           // alert(requestId);
 
         }
 
-        alert(parameter);
+        //alert(parameter);
         obj.send(parameter);
     }
 
@@ -244,24 +244,24 @@ function showPastRequestsModal() {
                 var res = obj.responseText;
                 var result = JSON.parse(res).allRequests;
 
-                var pastRequestsTableContent = '<tr><th>Equipment</th><th>ID</th><th>Department</th><th>Date From</th><th>Date To</th><th>Time From</th><th>Time To</th><th>Assigned Equipment ID</th><th>Status</th><th></th></tr>';
+                var pastRequestsTableContent = '<tr><th>Equipment</th><th hidden="true">ID</th><th>Department</th><th>Date From</th><th>Date To</th><th>Time From</th><th>Time To</th><th>Assigned Equipment ID</th><th>Status</th><th></th></tr>';
                 for (var i = 0; i < result.length; i++) {
                     pastRequestsTableContent += '<tr ><td id = "pastEquipType">' + result[i].type+ '</td>'
-                    pastRequestsTableContent += '<td>' + result[i].request_id + '</td>';
+                    pastRequestsTableContent += '<td hidden="true">' + result[i].request_id + '</td>';
                     pastRequestsTableContent += '<td>' + result[i].department_name + '</td>';
                     pastRequestsTableContent += '<td>' + result[i].date_from + '</td>';
                     pastRequestsTableContent += '<td>' + result[i].date_to + '</td>';
                     pastRequestsTableContent += '<td>' + result[i].time_from + '</td>';
                     pastRequestsTableContent += '<td>' + result[i].time_to + '</td>';
                     pastRequestsTableContent += '<td>' + result[i].resource_id+ '</td>';
-                    pastRequestsTableContent += '<td>' + result[i].status + '</td>';
+                    pastRequestsTableContent += '<td hidden="true">' + result[i].status + '</td>';
                     if (result[i].status == 0) {
                         pastRequestsTableContent += '<td style = "color: #ff4d54;">Declined</td>';
                     } else if (result[i].status == 1) {
                         pastRequestsTableContent += '<td style = "color: #1dff46;">Accepted</td>';
                     } else {
                         pastRequestsTableContent += '<td style = "color: #624cff;">Pending</td>';
-                        if (result[i].date_from >4 ) {
+                        if (Date.parse(result[i].date_from) > Date.now() ) {
                             pastRequestsTableContent += '<td><button class="btn btn-xs btn-primary" onclick="showEditPastRequestModal(\'' + result[i].request_id + '\', \'' + result[i].date_from + '\',\'' + result[i].date_to + '\',\'' + result[i].time_from + '\', \'' + result[i].time_to + '\');"><span class="glyphicon glyphicon-pencil"></span> Edit</button></td>';
                         }
                     }
@@ -269,7 +269,7 @@ function showPastRequestsModal() {
 
                 document.getElementById('past-request-table-content').innerHTML = pastRequestsTableContent;
                 hideLoadingOverlay();
-                $('#past-requests-modal').modal();
+                $('#my-past-requests-modal').modal();
             }
         }
 
@@ -290,7 +290,7 @@ function showEditPastRequestModal(requestID, date_from, date_to, time_from, time
 
     document.forms['request-form']['submit-button'].value = "Edit";
     document.forms['request-form']['submit-button'].innerHTML = '<span class="glyphicon glyphicon-ok"></span> Ok';
-    $('#past-requests-modal').modal('hide');
+    $('#my-past-requests-modal').modal('hide');
     hideLoadingOverlay();
     $('#request-modal').modal();
 }
