@@ -124,6 +124,7 @@ function editUser(id) {
         alert("Browser Doesn't Support AJAX!");
     }
 
+
     if (obj !== null) {
 
         obj.onreadystatechange = function () {
