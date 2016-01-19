@@ -70,6 +70,8 @@ function editProfile(id){
 }
 
 function editUser(id) {
+
+    showLoadingOverlay();
     var obj;
 
     var userID = document.getElementById("userID").value;
@@ -122,6 +124,7 @@ function editUser(id) {
         alert("Browser Doesn't Support AJAX!");
     }
 
+
     if (obj !== null) {
 
         obj.onreadystatechange = function () {
@@ -135,6 +138,7 @@ function editUser(id) {
                     //window.alert("HEy KEtt");
                     //window.location.href = "../";
                 }
+                hideLoadingOverlay();
 
             }
         }

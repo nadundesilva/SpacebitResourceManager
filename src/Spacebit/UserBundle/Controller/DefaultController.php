@@ -43,16 +43,17 @@ class DefaultController extends Controller
         
         //guest
         if ($access_level == 0){
-            $stmt = $conn->prepare('SELECT * FROM user INNER JOIN guest USING (user_id)');
+            $stmt = $conn->prepare('SELECT * FROM user INNER JOIN guest USING (user_id) WHERE user_id = :name;');
         }
         //student
         if ($access_level == 1){
-            $stmt = $conn->prepare('SELECT * FROM user INNER JOIN student USING (user_id)');
+            $stmt = $conn->prepare('SELECT * FROM user INNER JOIN student USING (user_id) WHERE user_id = :name;');
         }
         //staff
         if ($access_level > 1){
-            $stmt = $conn->prepare('SELECT * FROM user INNER JOIN staff USING (user_id)');
+            $stmt = $conn->prepare('SELECT * FROM user INNER JOIN staff USING (user_id) WHERE user_id = :name;');
         }
+        $stmt->bindValue(':name', $user_id);
 
         $stmt->execute();
         $profile_details = $stmt->fetchAll();
