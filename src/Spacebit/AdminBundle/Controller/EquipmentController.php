@@ -14,17 +14,23 @@ class EquipmentController extends Controller
             return new RedirectResponse($this->generateUrl('spacebit_user_login'));
         }
         $conn = $this->get('database_connection');
+        $conn->beginTransaction();
+        $equipment_requests ='';
+        try {
+            $stmt = $conn->prepare("SELECT dept_name FROM staff  where user_id =:user_id;");
+            $stmt->bindValue(':user_id', $this->get('session')->get('user_id'));
+            $stmt->execute();
+            $staff_member = $stmt->fetch();
 
-        $stmt = $conn->prepare("SELECT dept_name FROM staff  where user_id =:user_id;");
-        $stmt->bindValue(':user_id', $this->get('session')->get('user_id'));
-        $stmt->execute();
-        $staff_member = $stmt->fetch();
+            $stmt = $conn->prepare('SELECT request_id,type, user_id,resource_request.resource_id,date_from,date_to, time_from,time_to, status,type,department_name FROM resource_request  where (resource_request.resource_id is NULL  or resource_request.resource_id  in (select resource_id from equipment))  and resource_request.department_name = :dept_name ORDER BY status DESC, date_from DESC, time_from DESC;');
+            $stmt->bindValue(':dept_name', $staff_member['dept_name']);
+            $stmt->execute();
+            $equipment_requests = $stmt->fetchAll();
+            $conn->commit();
+        }catch (Exception $e){
+            $conn->rollBack();
 
-        $stmt = $conn->prepare('SELECT request_id,type, user_id,resource_request.resource_id,date_from,date_to, time_from,time_to, status,type,department_name FROM resource_request  where (resource_request.resource_id is NULL  or resource_request.resource_id  in (select resource_id from equipment))  and resource_request.department_name = :dept_name ORDER BY status DESC, date_from DESC, time_from DESC;');
-        $stmt->bindValue(':dept_name', $staff_member['dept_name']);
-        $stmt->execute();
-        $equipment_requests = $stmt->fetchAll();
-
+        }
         return $this->render('SpacebitAdminBundle:Default:equipment.html.twig', array(
             'equipment_requests'=>$equipment_requests,
         ));
@@ -96,6 +102,10 @@ class EquipmentController extends Controller
 
 
         $conn = $this->get('database_connection');
+        $conn->beginTransaction();
+        $response = 'success';
+        try {
+
 
         if($update_type == 'Add') {
             $stmt = $conn->prepare('INSERT into resource values(:resource_id, :availability, :description);');
@@ -144,7 +154,7 @@ class EquipmentController extends Controller
             } else {
                 if ($update_type == 'Add') {
                     $stmt = $conn->prepare('UPDATE resource_administration  SET user_id = :user_id WHERE resource_id = :resource_id;');
-                    $stmt->bindValue(':user_id',  $this->get('session')->get("user_id"));
+                    $stmt->bindValue(':user_id', $this->get('session')->get("user_id"));
                     $stmt->bindValue(':resource_id', $resource_id);
 
                     if (!$stmt->execute()) {
@@ -163,8 +173,12 @@ class EquipmentController extends Controller
             if (!$stmt->execute()) {
                 $response = $stmt->errorCode();
             }
-
         }
+            $conn->commit();
+        } catch (Exception $e) {
+                $conn->rollBack();
+                $response = $e->getCode();
+            }
         $response = new Response($response);
         $response->headers->set('Content-Type', 'application/json');
         return $response;

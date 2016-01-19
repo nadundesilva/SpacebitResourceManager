@@ -15,7 +15,10 @@ class VenuesController extends Controller
             return new RedirectResponse($this->generateUrl('spacebit_user_login'));
         }
         $conn = $this->get('database_connection');
-
+        $venues_requests = '';
+        $conn->beginTransaction();
+        $equipment_requests ='';
+        try {
         $stmt = $conn->prepare('CREATE OR REPLACE VIEW view1  as select venue.resource_id from venue INNER JOIN resource_administration on venue.resource_id = resource_administration.resource_id and resource_administration.user_id = "AB1234";');
         $stmt->execute();
 
@@ -23,7 +26,11 @@ class VenuesController extends Controller
 
         $stmt->execute();
         $venues_requests = $stmt->fetchAll();
+            $conn->commit();
+        }catch (Exception $e){
+            $conn->rollBack();
 
+        }
         return $this->render('SpacebitAdminBundle:Default:venues.html.twig', array(
             'venues_requests'=>$venues_requests,
         ));
@@ -87,76 +94,84 @@ class VenuesController extends Controller
         $venue_type = $request->request->get('venue_type');
         $update_type = $request->request->get('update-type');
         $conn = $this->get('database_connection');
+        $conn->beginTransaction();
+        $response = 'success';
+        try {
 
-        if($update_type == 'Add') {
-            $stmt = $conn->prepare('INSERT into resource values(:resource_id, :availability, :description);');
-            $stmt->bindValue(':resource_id', $resource_id);
-            $stmt->bindValue(':availability', $availability);
-            $stmt->bindValue(':description', $description);
+            if ($update_type == 'Add') {
+                $stmt = $conn->prepare('INSERT into resource values(:resource_id, :availability, :description);');
+                $stmt->bindValue(':resource_id', $resource_id);
+                $stmt->bindValue(':availability', $availability);
+                $stmt->bindValue(':description', $description);
 
-            $response = 'success';
-            if(!$stmt->execute()) {
-                $response = $stmt->errorCode();
-            } else {
-                if ($update_type == 'Add') {
-                    $stmt = $conn->prepare('INSERT INTO resource_administration VAlUES(:user_id, :resource_id)');
-                    $stmt->bindValue(':user_id', $this->get('session')->get('user_id'));
-                    $stmt->bindValue(':resource_id', $resource_id);
+                $response = 'success';
+                if (!$stmt->execute()) {
+                    $response = $stmt->errorCode();
+                } else {
+                    if ($update_type == 'Add') {
+                        $stmt = $conn->prepare('INSERT INTO resource_administration VAlUES(:user_id, :resource_id)');
+                        $stmt->bindValue(':user_id', $this->get('session')->get('user_id'));
+                        $stmt->bindValue(':resource_id', $resource_id);
 
-                    if (!$stmt->execute()) {
-                        $response = $stmt->errorCode();
+                        if (!$stmt->execute()) {
+                            $response = $stmt->errorCode();
+                        }
                     }
                 }
-            }
 
-            $stmt = $conn->prepare('INSERT into venue values(:resource_id,:name,:opening_time,:closing_time,:capacity, :dept_name,:venue_type);');
-            $stmt->bindValue(':resource_id', $resource_id);
-            $stmt->bindValue(':capacity', $capacity);
-            $stmt->bindValue(':closing_time', $closing_time);
-            $stmt->bindValue(':dept_name', $dept_name);
-            $stmt->bindValue(':name', $name);
-            $stmt->bindValue(':opening_time', $opening_time);
-            $stmt->bindValue(':venue_type', $venue_type);
+                $stmt = $conn->prepare('INSERT into venue values(:resource_id,:name,:opening_time,:closing_time,:capacity, :dept_name,:venue_type);');
+                $stmt->bindValue(':resource_id', $resource_id);
+                $stmt->bindValue(':capacity', $capacity);
+                $stmt->bindValue(':closing_time', $closing_time);
+                $stmt->bindValue(':dept_name', $dept_name);
+                $stmt->bindValue(':name', $name);
+                $stmt->bindValue(':opening_time', $opening_time);
+                $stmt->bindValue(':venue_type', $venue_type);
 
-            $response = 'success';
-            if(!$stmt->execute()) {
-                $response = $stmt->errorCode();
-            }
-        } else {
-            $stmt = $conn->prepare('UPDATE resource SET description = :description, availability = :availability WHERE resource_id = :resource_id;');
-            $stmt->bindValue(':resource_id', $resource_id);
-            $stmt->bindValue(':availability', $availability);
-            $stmt->bindValue(':description', $description);
-
-            $response = 'success';
-            if (!$stmt->execute()) {
-                $response = $stmt->errorCode();
+                $response = 'success';
+                if (!$stmt->execute()) {
+                    $response = $stmt->errorCode();
+                }
             } else {
-                if ($update_type == 'Add') {
-                    $stmt = $conn->prepare('UPDATE resource_administration  SET user_id = :user_id WHERE resource_id = :resource_id;');
-                    $stmt->bindValue(':user_id', $this->get('session')->get('user_id'));
-                    $stmt->bindValue(':resource_id', $resource_id);
+                $stmt = $conn->prepare('UPDATE resource SET description = :description, availability = :availability WHERE resource_id = :resource_id;');
+                $stmt->bindValue(':resource_id', $resource_id);
+                $stmt->bindValue(':availability', $availability);
+                $stmt->bindValue(':description', $description);
 
-                    if (!$stmt->execute()) {
-                        $response = $stmt->errorCode();
+                $response = 'success';
+                if (!$stmt->execute()) {
+                    $response = $stmt->errorCode();
+                } else {
+                    if ($update_type == 'Add') {
+                        $stmt = $conn->prepare('UPDATE resource_administration  SET user_id = :user_id WHERE resource_id = :resource_id;');
+                        $stmt->bindValue(':user_id', $this->get('session')->get('user_id'));
+                        $stmt->bindValue(':resource_id', $resource_id);
+
+                        if (!$stmt->execute()) {
+                            $response = $stmt->errorCode();
+                        }
                     }
                 }
-            }
-            $stmt = $conn->prepare('UPDATE venue SET capacity = :capacity, closing_time = :closing_time , dept_name = :dept_name , name = :name , opening_time = :opening_time , venue_type = :venue_type WHERE resource_id = :resource_id;');
-            $stmt->bindValue(':resource_id', $resource_id);
-            $stmt->bindValue(':capacity', $capacity);
-            $stmt->bindValue(':closing_time', $closing_time);
-            $stmt->bindValue(':dept_name', $dept_name);
-            $stmt->bindValue(':name', $name);
-            $stmt->bindValue(':opening_time', $opening_time);
-            $stmt->bindValue(':venue_type', $venue_type);
+                $stmt = $conn->prepare('UPDATE venue SET capacity = :capacity, closing_time = :closing_time , dept_name = :dept_name , name = :name , opening_time = :opening_time , venue_type = :venue_type WHERE resource_id = :resource_id;');
+                $stmt->bindValue(':resource_id', $resource_id);
+                $stmt->bindValue(':capacity', $capacity);
+                $stmt->bindValue(':closing_time', $closing_time);
+                $stmt->bindValue(':dept_name', $dept_name);
+                $stmt->bindValue(':name', $name);
+                $stmt->bindValue(':opening_time', $opening_time);
+                $stmt->bindValue(':venue_type', $venue_type);
 
-            $response = 'success';
-            if (!$stmt->execute()) {
-                $response = $stmt->errorCode();
-            }
+                $response = 'success';
+                if (!$stmt->execute()) {
+                    $response = $stmt->errorCode();
+                }
 
-        }
+            }
+        $conn->commit();
+        } catch (Exception $e) {
+$conn->rollBack();
+$response = $e->getCode();
+}
         return new Response($response);
     }
 
