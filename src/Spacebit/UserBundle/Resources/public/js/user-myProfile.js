@@ -70,6 +70,8 @@ function editProfile(id){
 }
 
 function editUser(id) {
+
+    showLoadingOverlay();
     var obj;
 
     var userID = document.getElementById("userID").value;
@@ -135,6 +137,7 @@ function editUser(id) {
                     //window.alert("HEy KEtt");
                     //window.location.href = "../";
                 }
+                hideLoadingOverlay();
 
             }
         }
