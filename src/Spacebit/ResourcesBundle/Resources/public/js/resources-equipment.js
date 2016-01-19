@@ -261,7 +261,9 @@ function showPastRequestsModal() {
                         pastRequestsTableContent += '<td style = "color: #1dff46;">Accepted</td>';
                     } else {
                         pastRequestsTableContent += '<td style = "color: #624cff;">Pending</td>';
-                        pastRequestsTableContent += '<td><button class="btn btn-xs btn-primary" onclick="showEditPastRequestModal(\'' + result[i].request_id + '\', \'' + result[i].date_from + '\',\'' + result[i].date_to + '\',\'' + result[i].time_from + '\', \'' + result[i].time_to + '\');"><span class="glyphicon glyphicon-pencil"></span> Edit</button></td>';
+                        if (result[i].date_from >4 ) {
+                            pastRequestsTableContent += '<td><button class="btn btn-xs btn-primary" onclick="showEditPastRequestModal(\'' + result[i].request_id + '\', \'' + result[i].date_from + '\',\'' + result[i].date_to + '\',\'' + result[i].time_from + '\', \'' + result[i].time_to + '\');"><span class="glyphicon glyphicon-pencil"></span> Edit</button></td>';
+                        }
                     }
                 }
 
