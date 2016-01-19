@@ -5,6 +5,10 @@
 
 {% block title %}Manage Venues{% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('bundles/spacebitadmin/css/admin-users.css') }}">
+{% endblock %}
+
 {% block javascripts %}
     <script src="{{ asset('bundles/spacebitadmin/js/admin-users.js') }}"></script>
 {% endblock %}
@@ -12,7 +16,7 @@
 {% block body %}
     <h2 style="text-align: center; padding-bottom: 10px">Users</h2>
     <table class="table table-hover" style="padding: 20px">
-        <tr><th>User ID</th><th>First Name</th><th>Middle Name</th><th>Last Name</th><th>Email</th><th>Telephone Number</th><th>Access Level</th><th>Status</th></tr>
+        <tr><th>User ID</th><th>First Name</th><th>Middle Name</th><th>Last Name</th><th>Email</th><th>Telephone Number</th><th>Access Level</th><th>Status</th><th></th></tr>
         {% set access_level_name = ['Guest', 'Student', 'Staff', 'Low Level Admin', 'Middle Level Admin', 'High Level Admin'] %}
         {% for user in users %}
             <tr>
@@ -23,13 +27,21 @@
                 <td>{{ user.email }}</td>
                 <td>{{ '+94' ~ user.telephone_no }}</td>
 
-                <td id="accessLevelCell{{ user.user_id }}">{{ access_level_name[user.access_level] }}{% if app.session.get('access_level') == 5 or ( app.session.get('access_level') > user.access_level and app.session.get('access_level') >= 3) %}<br><button class="btn btn-xs btn-primary" onclick="showChangeAccessLevelModal('{{ user.user_id }}', {{ user.access_level }});"><span class="glyphicon glyphicon-pencil"></span> Change</button>{% endif %}</td>
+                {% set buttonStatus = '' %}
+                {% if (app.session.get('access_level') != 5 and (app.session.get('access_level') <= user.access_level or app.session.get('access_level') < 3)) or app.session.get('user_id') == user.user_id %}
+                    {% set buttonStatus = ' disabled' %}
+                {% endif %}
+
+                <td id="accessLevelCell{{ user.user_id }}">{{ access_level_name[user.access_level] }}{% if app.session.get('access_level') == 5 or ( app.session.get('access_level') > user.access_level and app.session.get('access_level') >= 3) %}
+                    <br><button class="btn btn-xs btn-{% if buttonStatus == '' %}primary{% else %}default{% endif %}" onclick="showChangeAccessLevelModal('{{ user.user_id }}', {{ user.access_level }});"{{ buttonStatus }}><span class="glyphicon glyphicon-pencil"></span> Change</button>{% endif %}
+                </td>
 
                 <td>
                     <span id="activeStatusCell{{ user.user_id }}">{% if user.active %}<span style="color: #55ff5e;">Activated</span>{% else %}<span style="color: #ff4d54;">Deactivated</span>{% endif %}</span>
-                    {% if app.session.get('access_level') == 5 or (app.session.get('access_level') > user.access_level and app.session.get('access_level') >= 3) %}
-                        <br><button id="changeActiveStatusButton{{ user.user_id }}" class="btn btn-xs btn-{% if user.active %}danger" onclick="changeActiveStatus('{{ user.user_id }}', false);"><span class="glyphicon glyphicon-remove"></span> Deactivate{% else %}success" onclick="changeActiveStatus('{{ user.user_id }}', true);"><span class="glyphicon glyphicon-ok"></span> Activate{% endif %}</button>
-                    {% endif %}
+                    <br><button id="changeActiveStatusButton{{ user.user_id }}" class="btn btn-xs btn-{% if user.active %}{% if buttonStatus == '' %}danger{% else %}default{% endif %}" onclick="changeActiveStatus('{{ user.user_id }}', false);"{{ buttonStatus }}><span class="glyphicon glyphicon-remove"></span> Deactivate{% else %}{% if buttonStatus == '' %}success{% else %}default{% endif %}" onclick="changeActiveStatus('{{ user.user_id }}', true);"{{ buttonStatus }}><span class="glyphicon glyphicon-ok"></span> Activate{% endif %}</button>
+                </td>
+
+                <td><button class="btn btn-xs btn-primary" onclick="showAdministrativeRightsModal('{{ user.user_id }}');"><span class="glyphicon glyphicon-cog"></span> Admin Rights</button>
                 </td>
             </tr>
         {% endfor %}
@@ -70,4 +82,21 @@
             </div>
         </div>
     </div>
+
+    <div id="admin-rights-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div style="margin: 20px;">
+                    <h3 style="text-align: center;">Edit Administrative Rights</h3>
+                    <div class="form-group">
+                        <label for="admin-rights-user-id">User ID :</label>
+                        <input type="text" id="admin-rights-user-id" class="form-control" name="admin-rights-user-id" disabled />
+                    </div>
+                    <table id="administrative-rights-table" class="table table-hover" style="padding: 20px; display: none;"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include 'templates/loading.html.twig' %}
 {% endblock %}

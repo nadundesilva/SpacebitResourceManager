@@ -31,7 +31,12 @@
                 </div>
                 <div class="form-group">
                     <label for="middleName">Middle Name</label>
-                    <input type="text" class="form-control" name="middleName" id="middleName" placeholder="Middle Name" value={{ profile_details[0].middle_name}} disabled/>
+                    {% if profile_details[0].middle_name != "" %}
+                        <input type="text" class="form-control" name="middleName" id="middleName" placeholder="Middle Name" value={{ profile_details[0].middle_name}}  disabled />
+
+                    {% else%}
+                        <input type="text" class="form-control" name="middleName" id="middleName" value=""  disabled />
+                    {% endif %}
                 </div>
                 <div class="form-group">
                     <label for="lastName">Last Name</label>
@@ -139,5 +144,6 @@
             </div>
         </div>
     </div>
+    {% include 'templates/loading.html.twig' %}
 
 {% endblock %}
