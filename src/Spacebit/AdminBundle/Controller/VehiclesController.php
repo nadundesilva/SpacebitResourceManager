@@ -12,6 +12,10 @@ class VehiclesController extends Controller
 {
     public function vehiclesAction()
     {
+        if (!$this->get('login_authenticator')->authenticateLowLevelAdminLogin()) {
+            return new RedirectResponse($this->generateUrl('spacebit_user_login'));
+        }
+
         $conn = $this->get('database_connection');
         $stmt = $conn->prepare('SELECT DISTINCT request_id, route_group_id, vehicle_request.user_id, date, time, number_of_passengers, requested_type, requested_town, status FROM (vehicle_request INNER JOIN vehicle ON vehicle.type = vehicle_request.requested_type) INNER JOIN vehicle_administration ON vehicle.plate_no = vehicle_administration.plate_no WHERE vehicle_administration.user_id = :user_id ORDER BY status DESC, date DESC, time DESC;');
         $stmt->bindValue(':user_id', $this->get('session')->get('user_id'));
@@ -25,6 +29,10 @@ class VehiclesController extends Controller
 
     public function getAllAction()
     {
+        if (!$this->get('login_authenticator')->authenticateLowLevelAdminLogin()) {
+            return new RedirectResponse($this->generateUrl('spacebit_user_login'));
+        }
+
         $conn = $this->get('database_connection');
         $stmt = $conn->prepare('SELECT plate_no, type, model, capacity, driver_first_name, driver_last_name, value FROM vehicle ORDER BY type;');
         $stmt->execute();
@@ -38,6 +46,10 @@ class VehiclesController extends Controller
 
     public function getByPlateNoAction()
     {
+        if (!$this->get('login_authenticator')->authenticateLowLevelAdminLogin()) {
+            return new RedirectResponse($this->generateUrl('spacebit_user_login'));
+        }
+
         $request = Request::createFromGlobals();
         $plate_no = $request->request->get('plate-no');
 
@@ -55,6 +67,10 @@ class VehiclesController extends Controller
 
     public function addEditAction()
     {
+        if (!$this->get('login_authenticator')->authenticateLowLevelAdminLogin()) {
+            return new RedirectResponse($this->generateUrl('spacebit_user_login'));
+        }
+
         $request = Request::createFromGlobals();
         $plate_no= $request->request->get('plate-no');
         $type = $request->request->get('type');
@@ -110,6 +126,10 @@ class VehiclesController extends Controller
 
     function getAllGroupNamesAndVehiclesAction()
     {
+        if (!$this->get('login_authenticator')->authenticateLowLevelAdminLogin()) {
+            return new RedirectResponse($this->generateUrl('spacebit_user_login'));
+        }
+
         $request = Request::createFromGlobals();
         $requested_type = $request->request->get('requested-type');
         $date = $request->request->get('requested-date');
@@ -138,6 +158,10 @@ class VehiclesController extends Controller
 
     function getRouteByGroupIDAction()
     {
+        if (!$this->get('login_authenticator')->authenticateLowLevelAdminLogin()) {
+            return new RedirectResponse($this->generateUrl('spacebit_user_login'));
+        }
+
         $request = Request::createFromGlobals();
         $group_id = $request->request->get('group-id');
 
@@ -155,6 +179,10 @@ class VehiclesController extends Controller
 
     function changeRequestStatusAction()
     {
+        if (!$this->get('login_authenticator')->authenticateLowLevelAdminLogin()) {
+            return new RedirectResponse($this->generateUrl('spacebit_user_login'));
+        }
+
         $request = Request::createFromGlobals();
         $request_id = $request->request->get('request-id');
         $status = $request->request->get('status');

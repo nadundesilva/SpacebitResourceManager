@@ -45,7 +45,7 @@
     {name:'Admin(Middle)', color_name:'success'},
     {name:'Admin(High)', color_name:'warning'}
 ] %}
-{% if app.session.get('first_name') is not empty or app.session.get('last_name') is not empty %}
+{% if ui_utils.access_level is not empty %}
     {% set access_level = access_levels_array[ui_utils.access_level] %}
 {% endif %}
 
@@ -101,7 +101,7 @@
                 <!-- Top Menu Items -->
                 <ul class="nav navbar-right top-nav">
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i> {% if app.session.get('first_name') is empty and app.session.get('last_name') is empty %}Guest{% else %}{{ app.session.get('first_name') ~ ' ' ~ app.session.get('last_name') }} <span class="label label-{{ access_level.color_name }}">{{ access_level.name }}</span>{% endif %} <b class="caret"></b></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i> {% if app.session.get('first_name') is empty and app.session.get('last_name') is empty %}Guest{% else %}{{ app.session.get('first_name') ~ ' ' ~ app.session.get('last_name') }}{% if access_level is defined %} <span class="label label-{{ access_level.color_name }}">{{ access_level.name }}</span>{% endif %}{% endif %} <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                         {% if app.session.get('first_name') is empty and app.session.get('last_name') is empty %}
                             <li>
