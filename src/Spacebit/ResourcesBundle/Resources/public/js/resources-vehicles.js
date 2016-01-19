@@ -229,12 +229,16 @@ function showPastRequestsModal() {
                     pastRequestsTableContent += '<td>' + result[i].requested_type + '</td>';
                     pastRequestsTableContent += '<td>' + result[i].vehicle_plate_no + '</td>';
                     if (result[i].status == 0) {
-                        pastRequestsTableContent += '<td style = "color: #ff4d54;">Declined</td>';
+                        pastRequestsTableContent += '<td style = "color: #ff4d54;">Declined</td><td></td>';
                     } else if (result[i].status == 1) {
-                        pastRequestsTableContent += '<td style = "color: #1dff46;">Accepted</td>';
+                        pastRequestsTableContent += '<td style = "color: #1dff46;">Accepted</td><td></td>';
                     } else {
                         pastRequestsTableContent += '<td style = "color: #624cff;">Pending</td>';
-                        pastRequestsTableContent += '<td><button class="btn btn-xs btn-primary" onclick="showEditPastRequestModal(\'' + result[i].request_id + '\', \'' + result[i].date + '\', \'' + result[i].time + '\', \'' + result[i].number_of_passengers + '\', \'' + result[i].requested_town + '\', \'' + result[i].requested_type + '\');"><span class="glyphicon glyphicon-pencil"></span> Edit</button></td>';
+                        if (Date.parse(result[i].date) > Date.now()) {
+                            pastRequestsTableContent += '<td><button class="btn btn-xs btn-primary" onclick="showEditPastRequestModal(\'' + result[i].request_id + '\', \'' + result[i].date + '\', \'' + result[i].time + '\', \'' + result[i].number_of_passengers + '\', \'' + result[i].requested_town + '\', \'' + result[i].requested_type + '\');"><span class="glyphicon glyphicon-pencil"></span> Edit</button></td>';
+                        } else {
+                            pastRequestsTableContent += '<td></td>';
+                        }
                     }
                 }
 

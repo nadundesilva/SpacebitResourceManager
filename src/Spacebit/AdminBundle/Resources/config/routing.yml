@@ -19,6 +19,8 @@ spacebit_admin_user_access_level_change:
 
 
 
+
+
 spacebit_admin_equipment:
     path:     /equipment
     defaults: { _controller: SpacebitAdminBundle:Equipment:equipment }
@@ -73,7 +75,6 @@ spacebit_admin_venues_change_request:
     path:     /venues/changeRequestStatus
     defaults: { _controller: SpacebitAdminBundle:Venues:changeRequestStatus }
     methods:  ['POST']
-
 
 
 

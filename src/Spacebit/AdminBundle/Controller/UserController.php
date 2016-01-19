@@ -10,6 +10,10 @@ class UserController extends Controller
 {
     function usersAction()
     {
+        if (!$this->get('login_authenticator')->authenticateMiddleLevelAdminLogin()) {
+            return new RedirectResponse($this->generateUrl('spacebit_user_login'));
+        }
+
         $conn = $this->get('database_connection');
         $stmt = $conn->prepare('SELECT * FROM user ORDER BY active DESC;');
         $stmt->bindValue(':access_level', $this->get('session')->get('access_level'));
@@ -23,6 +27,10 @@ class UserController extends Controller
 
     function activateAction()
     {
+        if (!$this->get('login_authenticator')->authenticateMiddleLevelAdminLogin()) {
+            return new RedirectResponse($this->generateUrl('spacebit_user_login'));
+        }
+
         $request = Request::createFromGlobals();
         $user_id = $request->request->get('user-id');
         $active = ($request->request->get('status') == "true" ? 1 : 0);
@@ -47,6 +55,14 @@ class UserController extends Controller
         $user_id = $request->request->get('user-id');
         $access_level = $request->request->get('access-level');
 
+        $session = $this->get('session');
+        $logged_in_user_id = $session->get('user_id');
+        $logged_in_access_level = $session->get('access_level');
+
+        if (!$this->get('login_authenticator')->authenticateMiddleLevelAdminLogin() || ($access_level < $logged_in_access_level && $logged_in_access_level != 5) || $logged_in_user_id == $user_id) {
+            return new RedirectResponse($this->generateUrl('spacebit_user_login'));
+        }
+
         $conn = $this->get('database_connection');
 
         $stmt = $conn->prepare('UPDATE user SET access_level = :access_level WHERE user_id = :user_id;');
@@ -63,6 +79,10 @@ class UserController extends Controller
 
     function getDetailsAction()
     {
+        if (!$this->get('login_authenticator')->authenticateMiddleLevelAdminLogin()) {
+            return new RedirectResponse($this->generateUrl('spacebit_user_login'));
+        }
+
         $request = Request::createFromGlobals();
         $user_id = $request->request->get('user-id');
 
