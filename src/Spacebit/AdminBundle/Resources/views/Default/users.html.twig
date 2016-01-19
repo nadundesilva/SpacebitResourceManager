@@ -40,20 +40,9 @@
                     <span id="activeStatusCell{{ user.user_id }}">{% if user.active %}<span style="color: #55ff5e;">Activated</span>{% else %}<span style="color: #ff4d54;">Deactivated</span>{% endif %}</span>
                     <br><button id="changeActiveStatusButton{{ user.user_id }}" class="btn btn-xs btn-{% if user.active %}{% if buttonStatus == '' %}danger{% else %}default{% endif %}" onclick="changeActiveStatus('{{ user.user_id }}', false);"{{ buttonStatus }}><span class="glyphicon glyphicon-remove"></span> Deactivate{% else %}{% if buttonStatus == '' %}success{% else %}default{% endif %}" onclick="changeActiveStatus('{{ user.user_id }}', true);"{{ buttonStatus }}><span class="glyphicon glyphicon-ok"></span> Activate{% endif %}</button>
                 </td>
-
-                <td><button class="btn btn-xs btn-primary" onclick="showAdministrativeRightsModal('{{ user.user_id }}');"><span class="glyphicon glyphicon-cog"></span> Admin Rights</button>
-                </td>
             </tr>
         {% endfor %}
     </table>
-
-    <div id="message-modal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div style="margin: 20px;" id="message-modal-content"></div>
-            </div>
-        </div>
-    </div>
 
     <div id="access-level-modal" class="modal fade" role="dialog">
         <div class="modal-dialog">
@@ -68,12 +57,16 @@
                         <div class="form-group">
                             <label for="access-level">Select the access level you want to change to :</label>
                             <select id="access-level" name="access-level" class="form-control" required>
-                                <option value=0>Guest</option>
-                                <option value=1>Student</option>
-                                <option value=2>Staff</option>
-                                <option value=3>Low Level Admin</option>
-                                <option value=4>Middle Level Admin</option>
-                                <option value=5>High Level Admin</option>
+                                {% if app.session.get('access_level') >= 4 %}
+                                    <option value=0>Guest</option>
+                                    <option value=1>Student</option>
+                                    <option value=2>Staff</option>
+                                    <option value=3>Low Level Admin</option>
+                                {% endif %}
+                                {% if app.session.get('access_level') == 5 %}
+                                    <option value=4>Middle Level Admin</option>
+                                    <option value=5>High Level Admin</option>
+                                {% endif %}
                             </select>
                         </div>
                         <button type="submit" id="access-level-form-submit-button" class="btn btn-sm btn-success" name="access-level-form-submit-button"><span class="glyphicon glyphicon-ok"></span> OK</button>
@@ -83,17 +76,10 @@
         </div>
     </div>
 
-    <div id="admin-rights-modal" class="modal fade" role="dialog">
+    <div id="message-modal" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div style="margin: 20px;">
-                    <h3 style="text-align: center;">Edit Administrative Rights</h3>
-                    <div class="form-group">
-                        <label for="admin-rights-user-id">User ID :</label>
-                        <input type="text" id="admin-rights-user-id" class="form-control" name="admin-rights-user-id" disabled />
-                    </div>
-                    <table id="administrative-rights-table" class="table table-hover" style="padding: 20px; display: none;"></table>
-                </div>
+                <div style="margin: 20px;" id="message-modal-content"></div>
             </div>
         </div>
     </div>

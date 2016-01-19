@@ -19,7 +19,7 @@ class VenuesController extends Controller
         $stmt = $conn->prepare('CREATE OR REPLACE VIEW view1  as select venue.resource_id from venue INNER JOIN resource_administration on venue.resource_id = resource_administration.resource_id and resource_administration.user_id = "AB1234";');
         $stmt->execute();
 
-        $stmt = $conn->prepare('SELECT request_id, user_id,view1.resource_id, date_from,date_to, time_from,time_to, status FROM  resource_request INNER JOIN view1  using(resource_id) ORDER BY status DESC, date_from DESC, time_from DESC ;');
+        $stmt = $conn->prepare('SELECT request_id, user_id,view1.resource_id, date_from,date_to, time_from,time_to, status FROM  resource_request INNER JOIN view1 using(resource_id) ORDER BY status DESC, date_from DESC, time_from DESC ;');
 
         $stmt->execute();
         $venues_requests = $stmt->fetchAll();
