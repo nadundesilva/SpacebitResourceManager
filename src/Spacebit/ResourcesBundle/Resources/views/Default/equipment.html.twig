@@ -5,12 +5,17 @@
 
 {% block title %}Equipment{% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('bundles/spacebitresources/css/resources-theme.css') }}">
+{% endblock %}
+
 {% block javascripts %}
     <script src="{{ asset('bundles/spacebitresources/js/resources-equipment.js') }}"></script>
 {% endblock %}
 
 {% block body %}
-    <form role="form">
+
+    <form role="form" class="col-lg-12">
         <div class="container col-lg-6">
             <div class="form-group ">
                 <label for="sel1">Faculty :</label>
@@ -31,7 +36,32 @@
         </div>
     </form>
 
-    <div id="equipmentTableContent" class="offset6 col-lg-6"></div>
+    <div class="col-lg-12 row">
+        <div id="equipmentTableContent" class="{% if app.session.get('user_id') is empty %}col-lg-12{% else %}col-lg-9{% endif %}"></div>
+
+        {% if app.session.get('user_id') is not empty %}
+            <div class="container col-lg-3" style="text-align: center; padding: 30px 0px 50px 0px;">
+                <div class="panel panel-info">
+                    <div class="panel-heading">Upcoming Requests</div>
+                    <div class="panel-body">
+                        <ul class="list-group">
+                            {% for request in future_requests %}
+                                {% if request.status == 0 %}
+                                    {% set status_color = 'danger' %}
+                                {% elseif request.status == 1 %}
+                                    {% set status_color = 'success' %}
+                                {% elseif request.status == 2 %}
+                                    {% set status_color = 'warning' %}
+                                {% endif %}
+                                <li class="list-group-item list-group-item-{{ status_color }}">{{ request.type }} on {{ request.date_from }} to {{ request.date_to }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="panel-footer"><a onclick="showPastRequestsModal();">View all Requests >></a></div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
 
     <div id="modalArea" class="modal fade" role="dialog" align="left">
         <div class="modal-dialog" class="container col-lg-offset-6">
@@ -50,14 +80,14 @@
                     <h2 style="text-align: center;">Request</h2>
                     <form id="request-form" role="form" method="POST" name="request-form" onsubmit="addRequest(); return false;">
                         <div class="form-group" id="request-id-container" style = 'display: none'>
-                            <label for="request-id">Request ID :</label>
-                            <input id="request-id" type="number" name="request-id" class="form-control" onkeypress="onAddRequestFormKeyPress(event);" disabled />
+                            <label for="request-id" hidden="true">Request ID :</label>
+                            <input type = "hidden" id="request-id" type="number" name="request-id" class="form-control" onkeypress="onAddRequestFormKeyPress(event);" disabled />
                         </div>
 
 
                         <div class="form-group">
                             <label for="request-date-From">Date From:</label>
-                            <input id="request-date-From" type="date" min="{{ 'now' | date('Y-m-d') }}" name="request-date-From" class="form-control" onkeypress="onAddRequestFormKeyPress(event);" required />
+                            <input id="request-date-From" type="date" min="{{ 'now' | date('Y-m-d') }}" name="request-date-From" class="form-control" onchange="document.getElementById('request-date-To').setAttribute('min', this.value);" required />
                         </div>
 
                         <div class="form-group">
@@ -67,16 +97,17 @@
 
                         <div class="form-group">
                             <label for="request-time-From">Time From:</label>
-                            <input type="time" name="request-time-From" class="form-control" onkeypress="onAddRequestFormKeyPress(event);" required />
+                            <input type="time" name="request-time-From" class="form-control" onchange="document.getElementById('request-time-To').setAttribute('min', this.value);"
+                                   required />
                         </div>
                         <div class="form-group">
                             <label for="request-time-To">Time To:</label>
-                            <input type="time" name="request-time-To" class="form-control" onkeypress="onAddRequestFormKeyPress(event);" required />
+                            <input type="time" name="request-time-To"  id = "request-time-To" class="form-control" required />
                         </div>
 
                         <div class="form-group">
-                            <label for="request-time">Equipment Status: </label>
-                            <label for="request-passenger-count">Time slot: availability:</label>
+                            <label for="request-time" hidden="true">Equipment Status: </label>
+                            <label for="request-passenger-count" hidden="true">Time slot: availability:</label>
                         </div>
                         <button id="submit-button" name="submit-button" type="submit" class="btn btn-sm btn-success">Request</button>
                     </form>
@@ -85,30 +116,7 @@
         </div>
     </div>
 
-    {% if app.session.get('user_id') is not empty %}
-        <div class="container col-lg-offset-9 col-lg-3" style="text-align: center; padding: 50px 0px 50px 0px;">
-            <div class="panel panel-info">
-                <div class="panel-heading">Upcoming Requests</div>
-                <div class="panel-body">
-                    <ul class="list-group">
-                        {% for request in future_requests %}
-                            {% if request.status == 0 %}
-                                {% set status_color = 'danger' %}
-                            {% elseif request.status == 1 %}
-                                {% set status_color = 'success' %}
-                            {% elseif request.status == 2 %}
-                                {% set status_color = 'warning' %}
-                            {% endif %}
-                            <li class="list-group-item list-group-item-{{ status_color }}">{{ request.type }} on {{ request.date_from }} to {{ request.date_to }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                <div class="panel-footer"><a onclick="showPastRequestsModal();">View all Requests >></a></div>
-            </div>
-        </div>
-    {% endif %}
-
-    <div id="past-requests-modal" class="modal fade" role="dialog">
+    <div id="my-past-requests-modal" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div style="margin: 20px;">
