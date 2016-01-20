@@ -20,9 +20,8 @@ class VenuesController extends Controller
         $conn->beginTransaction();
         $equipment_requests ='';
         try {
-        $stmt = $conn->prepare('CREATE OR REPLACE VIEW view1  as select venue.resource_id from venue INNER JOIN resource_administration on venue.resource_id = resource_administration.resource_id and resource_administration.user_id = "AB1234";');
 
-        $stmt = $conn->prepare('CREATE OR REPLACE VIEW view1  as select venue.resource_id from venue INNER JOIN resource_administration on venue.resource_id = resource_administration.resource_id and resource_administration.user_id = :user_id;');
+        $stmt = $conn->prepare('CREATE OR REPLACE VIEW admin_resource_view  as select venue.resource_id from venue INNER JOIN resource_administration on venue.resource_id = resource_administration.resource_id and resource_administration.user_id = :user_id;');
         $stmt->bindValue(':user_id', $this->get('session')->get('user_id'));
         $stmt->execute();
 

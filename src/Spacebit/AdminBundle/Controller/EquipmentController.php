@@ -38,6 +38,9 @@ class EquipmentController extends Controller
 
     public function getAllAction()
     {
+        if (!$this->get('login_authenticator')->authenticateLowLevelAdminLogin()) {
+            return new RedirectResponse($this->generateUrl('spacebit_user_login'));
+        }
         $conn = $this->get('database_connection');
         $stmt = $conn->prepare('SELECT resource_id,  description, value, equipment_type FROM equipment INNER JOIN resource USING(resource_id);');
         $stmt->execute();
@@ -51,6 +54,10 @@ class EquipmentController extends Controller
 
     public function getByResourceIDAction()
     {
+
+        if (!$this->get('login_authenticator')->authenticateLowLevelAdminLogin()) {
+            return new RedirectResponse($this->generateUrl('spacebit_user_login'));
+        }
         $request = Request::createFromGlobals();
         $resource_id = $request->request->get('resource_id');
 
@@ -67,6 +74,10 @@ class EquipmentController extends Controller
     }
     public function getByResourceTypeAction()
     {
+
+        if (!$this->get('login_authenticator')->authenticateLowLevelAdminLogin()) {
+            return new RedirectResponse($this->generateUrl('spacebit_user_login'));
+        }
        $request = Request::createFromGlobals();
         $department_name = $request->request->get('department_name');
         $type = $request->request->get('type');
@@ -88,6 +99,10 @@ class EquipmentController extends Controller
 
     public function addEditAction()
     {
+
+        if (!$this->get('login_authenticator')->authenticateLowLevelAdminLogin()) {
+            return new RedirectResponse($this->generateUrl('spacebit_user_login'));
+        }
         $request = Request::createFromGlobals();
         $resource_id= $request->request->get('resource_id');
         $equipment_type = $request->request->get('equipment_type');
@@ -187,6 +202,9 @@ class EquipmentController extends Controller
 
     function changeRequestStatusAction()
     {
+        if (!$this->get('login_authenticator')->authenticateLowLevelAdminLogin()) {
+            return new RedirectResponse($this->generateUrl('spacebit_user_login'));
+        }
         $request = Request::createFromGlobals();
         $request_id = $request->request->get('request_id');
         $status = $request->request->get('status');

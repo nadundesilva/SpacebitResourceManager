@@ -231,6 +231,7 @@ function addEditEquipment() {
                     // progress
                 } else if (obj.readyState == 4) {
                     var res = obj.responseText;
+                    
 
                     var modalContent = '<div style="margin: 10px;"><p>';
                     if (res == 'success') {
