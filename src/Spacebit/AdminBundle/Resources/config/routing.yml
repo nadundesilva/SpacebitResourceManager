@@ -52,7 +52,6 @@ spacebit_admin_equipments_get_by_resource_type:
 
 
 
-
 spacebit_admin_venues:
     path:     /venues
     defaults: { _controller: SpacebitAdminBundle:Venues:venues }

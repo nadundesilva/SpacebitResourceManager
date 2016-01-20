@@ -120,7 +120,11 @@
 
                             <div class="form-group col-lg-6">
                                 <label for="value">Department Name :</label>
-                                <input type="text" class="form-control" id="dept_name" name = "dept_name" placeholder="Enter the Department Name of the venue" required />
+                                <select class="form-control" id="dept_name" name = "dept_name" >
+                                    {% for dept_name in dept_names %}
+                                        <option value="{{ dept_name.dept_name }}">{{ dept_name.dept_name }}</option>
+                                    {% endfor %}
+                                </select>
                             </div>
 
                             <div class="form-group col-lg-6">
@@ -132,7 +136,7 @@
 
                             <div class="form-group col-lg-6">
                                 <label for="value">Venue Type :</label>
-                                <input type="text" class="form-control" id="venue_type" name = "venue_type" placeholder="Enter the Venue Type of the equipment" required/>
+                                <input type="text" class="form-control" id="venue_type" name = "venue_type" placeholder="Enter the Venue Type of the " required/>
                             </div>
 
                         </div>

@@ -16,6 +16,8 @@ class EquipmentController extends Controller
         $conn = $this->get('database_connection');
         $conn->beginTransaction();
         $equipment_requests ='';
+        $dept_names = '';
+
         try {
             $stmt = $conn->prepare("SELECT dept_name FROM staff  where user_id =:user_id;");
             $stmt->bindValue(':user_id', $this->get('session')->get('user_id'));
@@ -26,6 +28,11 @@ class EquipmentController extends Controller
             $stmt->bindValue(':dept_name', $staff_member['dept_name']);
             $stmt->execute();
             $equipment_requests = $stmt->fetchAll();
+
+            $stmt1 = $conn->prepare('SELECT dept_name from department ;');
+            $stmt1->execute();
+            $dept_names = $stmt1->fetchAll();
+
             $conn->commit();
         }catch (Exception $e){
             $conn->rollBack();
@@ -33,8 +40,10 @@ class EquipmentController extends Controller
         }
         return $this->render('SpacebitAdminBundle:Default:equipment.html.twig', array(
             'equipment_requests'=>$equipment_requests,
+            'dept_names'=>$dept_names,
         ));
     }
+
 
     public function getAllAction()
     {
@@ -131,6 +140,10 @@ class EquipmentController extends Controller
             $response = 'success';
             if(!$stmt->execute()) {
                 $response = $stmt->errorCode();
+                $conn->rollBack();
+                $response = new Response($response);
+                $response->headers->set('Content-Type', 'application/json');
+                return $response;
             } else {
 
                     $stmt = $conn->prepare('INSERT INTO resource_administration VAlUES(:user_id, :resource_id)');
@@ -139,6 +152,11 @@ class EquipmentController extends Controller
 
                     if (!$stmt->execute()) {
                         $response = $stmt->errorCode();
+                        $conn->rollBack();
+                        $response = new Response($response);
+                        $response->headers->set('Content-Type', 'application/json');
+                        return $response;
+
                     }
 
             }
@@ -153,6 +171,10 @@ class EquipmentController extends Controller
             $response = 'success';
             if(!$stmt->execute()) {
                 $response = $stmt->errorCode();
+                $conn->rollBack();
+                $response = new Response($response);
+                $response->headers->set('Content-Type', 'application/json');
+                return $response;
             }
             $response = new Response($response);
             $response->headers->set('Content-Type', 'application/json');
@@ -166,6 +188,10 @@ class EquipmentController extends Controller
             $response = 'success';
             if (!$stmt->execute()) {
                 $response = $stmt->errorCode();
+                $conn->rollBack();
+                $response = new Response($response);
+                $response->headers->set('Content-Type', 'application/json');
+                return $response;
             } else {
                 if ($update_type == 'Add') {
                     $stmt = $conn->prepare('UPDATE resource_administration  SET user_id = :user_id WHERE resource_id = :resource_id;');
@@ -174,6 +200,10 @@ class EquipmentController extends Controller
 
                     if (!$stmt->execute()) {
                         $response = $stmt->errorCode();
+                        $conn->rollBack();
+                        $response = new Response($response);
+                        $response->headers->set('Content-Type', 'application/json');
+                        return $response;
                     }
                 }
             }
@@ -187,6 +217,10 @@ class EquipmentController extends Controller
             $response = 'success';
             if (!$stmt->execute()) {
                 $response = $stmt->errorCode();
+                $conn->rollBack();
+                $response = new Response($response);
+                $response->headers->set('Content-Type', 'application/json');
+                return $response;
             }
         }
             $conn->commit();
