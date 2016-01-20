@@ -29,12 +29,13 @@ function validateUser() {
                 var res = obj.responseText;
                 //window.alert(res);
                 if (res == "fail"){
-                    window.alert("***Please enter correct username and password***");
+                    $('#message-modal').modal();
+                    //window.alert("***Please enter correct username and password***");
                     document.getElementById("password").value = "";
                     hideLoadingOverlay();
                 }
                 if (res == "incorrect"){
-                    window.alert("***Please enter correct username and password***");
+                    $('#message-modal').modal();
                     document.getElementById("password").value = "";
                     hideLoadingOverlay();
                 }

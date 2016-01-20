@@ -17,7 +17,7 @@
 {% block body %}
     <div class="col-lg-4" style="margin: 125px;">
         <h2 class="login-division">Log In</h2>
-        <form  method="post" onsubmit="validateUser();return false;">
+        <form method="post" onsubmit="validateUser();return false;">
 
             <div class="form-group">
                 <label for="user-id" style="padding-right:3em">User ID</label>
@@ -29,8 +29,21 @@
             </div>
 
             <button class="btn btn-sm btn-success" type="submit">Log In</button>  or <a href="signup">Sign Up</a>
-            <a style="display: block; padding-top: 10px;" href="forgotPassword">Forgot Password?</a>
+            {#<a style="display: block; padding-top: 10px;" href="forgotPassword">Forgot Password?</a>#}
         </form>
+    </div>
+    <div id="message-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div style="margin: 20px;" id="message-modal-content">
+
+                    <h4>"***Please enter correct username and password***"</h4>
+
+
+                    <button class="btn btn-md btn-primary" onclick="$('#message-modal').modal('hide');">Close</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     {% include 'templates/loading.html.twig' %}

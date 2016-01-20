@@ -19,7 +19,8 @@
         <h2 style="margin-left: 130px;margin-right: 110px; display: inline-block;">My Profile</h2>
 
 
-        <form role="form">
+        {#<form method="post" onsubmit="editProfile({{ app.session.get('access_level')}});return false;">#}
+
             <div>
                 <div class="form-group">
                     <label for="userID">User ID</label>
@@ -44,7 +45,7 @@
                 </div>
                 <div class="form-group">
                     <label for="email">Email Address</label>
-                    <input type="text" class="form-control" id="email" name="email" placeholder="Email Address" value={{ profile_details[0].email}} required disabled/>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Email Address" value={{ profile_details[0].email}} required disabled/>
                 </div>
                 <div class="form-group">
                     <label for="telephoneNumber">Telephone Number</label>
@@ -56,23 +57,23 @@
                     <h4>Organization Details</h4>
                     <div class="form-group">
                         <label for="title">Organization Title</label>
-                        <input type="text" class="form-control" id="title" name="title" placeholder="Organization Title" value={{ profile_details[0].organizational_title}} required disabled/>
+                        <input type="text" class="form-control" id="title" name="title" placeholder="Organization Title" value={{ profile_details[0].organizational_title}}  disabled/>
                     </div>
                     <div class="form-group">
                         <label for="organizationEmail">Organization Email</label>
-                        <input type="email" class="form-control" id="organizationEmail" name="organizationEmail" placeholder="Organization Email"  value={{ profile_details[0].organizational_email}} required disabled/>
+                        <input type="email" class="form-control" id="organizationEmail" name="organizationEmail" placeholder="Organization Email"  value={{ profile_details[0].organizational_email}}  disabled/>
                     </div>
                     <div class="form-group">
                         <label for="organizationTelephone">Organization Telephone</label>
-                        <input type="text" class="form-control" id="organizationTelephone" name="organizationTelephone" placeholder="Organization Telephone"  value={{ profile_details[0].organizational_telephone}} required disabled/>
+                        <input type="text" class="form-control" id="organizationTelephone" name="organizationTelephone" placeholder="Organization Telephone"  value={{ profile_details[0].organizational_telephone}}  disabled/>
                     </div>
                     <div class="form-group">
                         <label for="nic">National ID Card Number (NIC)</label>
-                        <input type="text" class="form-control" id="nic" name="nic" placeholder="National ID Card Number"  value={{ profile_details[0].nic}} required disabled/>
+                        <input type="text" class="form-control" id="nic" name="nic" placeholder="National ID Card Number"  value={{ profile_details[0].nic}}  disabled/>
                     </div>
                     <div class="form-group">
                         <label for="organizationAddress">Organization Address</label>
-                        <input type="text" class="form-control" id="organizationAddress" name="organizationAddress" placeholder="Organization Address"  value={{ profile_details[0].address}} required disabled/>
+                        <input type="text" class="form-control" id="organizationAddress" name="organizationAddress" placeholder="Organization Address"  value={{ profile_details[0].address}}  disabled/>
                     </div>
 
                 {% endif %}
@@ -80,7 +81,7 @@
                 {% if app.session.get('access_level')==1 %}
                     <div class="form-group">
                         <label for="batch">Batch</label>
-                        <input type="number" class="form-control" id="batch" name="batch" placeholder="Batch" value={{ profile_details[0].batch}} required disabled/>
+                        <input type="number" class="form-control" id="batch" name="batch" placeholder="Batch" value={{ profile_details[0].batch}}  disabled/>
                     </div>
 
                     <div id="departmentDivision" class="form-group" >
@@ -97,7 +98,7 @@
                 {% if app.session.get('access_level')>1 %}
                     <div class="form-group">
                         <label for="designation">Designation</label>
-                        <input type="text" class="form-control" id="designation" name="designation" placeholder="Designation" {{ profile_details[0].designation}}  required disabled/>
+                        <input type="text" class="form-control" id="designation" name="designation" placeholder="Designation" value="{{ profile_details[0].designation}} "  disabled/>
                     </div>
                     <div id="departmentDivision" class="form-group" >
                         <label for="department">Select Department</label>
@@ -113,12 +114,12 @@
 
 
 
-                <input type="button" class="btn btn-md btn-primary" id="submitButton" onclick="editProfile({{ app.session.get('access_level')}})" value="Edit Profile">
+                <button class="btn btn-md btn-primary" id="submitButton" onclick="editProfile({{ app.session.get('access_level')}});">Edit Profile</button>
                 <input type="button" style="float: right" class="btn btn-md btn-primary" id="passwordSubmitButton" onclick="changePassswordDialog()" value="Change Password">
             </div>
 
 
-        </form>
+
     </div>
 
     <div id="message-modal" class="modal fade" role="dialog">

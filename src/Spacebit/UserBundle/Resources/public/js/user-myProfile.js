@@ -4,9 +4,13 @@
 
 
 function editProfile(id){
+
+
     var elem = document.getElementById("submitButton");
-    if (elem.value=="Edit Profile"){
-        elem.value = "Done Editing";
+
+    if (elem.innerText=="Edit Profile"){
+        elem.innerText = "Done Editing";
+        //window.alert(elem.innerText);
 
         //user fields visible
         //document.getElementById('userID').disabled = false;
@@ -23,22 +27,48 @@ function editProfile(id){
             document.getElementById('organizationTelephone').disabled = false;
             document.getElementById('nic').disabled = false;
             document.getElementById('organizationAddress').disabled = false;
+
+            document.getElementById("batch").required = false;
+            document.getElementById("department").required = false;
+            document.getElementById("designation").required = false;
+            document.getElementById("title").required = true;
+            document.getElementById("organizationEmail").required = true;
+            document.getElementById("organizationTelephone").required = true;
+            document.getElementById("nic").required = true;
+            document.getElementById("organizationAddress").required = true;
         }
         if (id ==1){
             //student fields visible
             document.getElementById('batch').disabled = false;
             document.getElementById('department').disabled = false;
+            document.getElementById("batch").required = true;
+            document.getElementById("department").required = true;
+            document.getElementById("designation").required = false;
+            document.getElementById("title").required = false;
+            document.getElementById("organizationEmail").required = false;
+            document.getElementById("organizationTelephone").required = false;
+            document.getElementById("nic").required = false;
+            document.getElementById("organizationAddress").required = false;
         }
         if (id >1){
             //staff fields visible
             document.getElementById('designation').disabled = false;
             document.getElementById('department').disabled = false;
+
+            document.getElementById("batch").required = false;
+            document.getElementById("department").required = true;
+            document.getElementById("designation").required = true;
+            document.getElementById("title").required = false;
+            document.getElementById("organizationEmail").required = false;
+            document.getElementById("organizationTelephone").required = false;
+            document.getElementById("nic").required = false;
+            document.getElementById("organizationAddress").required = false;
         }
 
         loadDepartments();
     }
     else {
-        elem.value = "Edit Profile";
+        elem.innerText = "Edit Profile";
         //user fields visible
 
         document.getElementById('firstName').disabled = true;
@@ -71,6 +101,7 @@ function editProfile(id){
 
 function editUser(id) {
 
+    //window.alert("Editing");
     showLoadingOverlay();
     var obj;
 
@@ -92,6 +123,7 @@ function editUser(id) {
     var nic;
     var organizationAddress;
 
+    //window.alert(firstName);
 
 
     if(accessLevel == 1) {

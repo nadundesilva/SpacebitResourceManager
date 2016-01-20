@@ -5,6 +5,14 @@ function showDiv(elem){
         document.getElementById('staffDivision').style.display = "none";
         document.getElementById('guestDivision').style.display = "none";
         document.getElementById('departmentDivision').style.display = "block";
+        document.getElementById("batch").required = true;
+        document.getElementById("department").required = true;
+        document.getElementById("designation").required = false;
+        document.getElementById("title").required = false;
+        document.getElementById("organizationEmail").required = false;
+        document.getElementById("organizationTelephone").required = false;
+        document.getElementById("nic").required = false;
+        document.getElementById("organizationAddress").required = false;
         loadDepartments();
     }
     if(elem.value == "staff") {
@@ -12,12 +20,32 @@ function showDiv(elem){
         document.getElementById('studentDivision').style.display = "none";
         document.getElementById('guestDivision').style.display = "none";
         document.getElementById('departmentDivision').style.display = "block";
+
+        document.getElementById("batch").required = false;
+        document.getElementById("department").required = true;
+        document.getElementById("designation").required = true;
+        document.getElementById("title").required = false;
+        document.getElementById("organizationEmail").required = false;
+        document.getElementById("organizationTelephone").required = false;
+        document.getElementById("nic").required = false;
+        document.getElementById("organizationAddress").required = false;
+
         loadDepartments();
     }
     if(elem.value == "guest") {
         document.getElementById('guestDivision').style.display = "block";
         document.getElementById('studentDivision').style.display = "none";
         document.getElementById('staffDivision').style.display = "none";
+        document.getElementById('departmentDivision').style.display = "none";
+
+        document.getElementById("batch").required = false;
+        document.getElementById("department").required = false;
+        document.getElementById("designation").required = false;
+        document.getElementById("title").required = true;
+        document.getElementById("organizationEmail").required = true;
+        document.getElementById("organizationTelephone").required = true;
+        document.getElementById("nic").required = true;
+        document.getElementById("organizationAddress").required = true;
     }
 }
 
