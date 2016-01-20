@@ -183,7 +183,7 @@ function showEditVehicleRequestModal(requestID, routeGroupID, requester, request
                 document.getElementById('requested-destination-view-location').setAttribute("onClick", "javascript: viewLocation('" + requestedDestination + "');");
 
                 if (routeGroups.length > 0) {
-                    var options = '';
+                    var options = '<option disabled selected>-- Select the Group ID --</option>';
                     for (var i = 0; i < routeGroups.length; i++) {
                         options += '<option>' + routeGroups[i].group_id + '</option>';
                     }
