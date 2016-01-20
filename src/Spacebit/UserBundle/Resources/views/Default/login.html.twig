@@ -17,17 +17,18 @@
 {% block body %}
     <div class="col-lg-4" style="margin: 125px;">
         <h2 class="login-division">Log In</h2>
-        <form role="form">
+        <form  method="post" onsubmit="validateUser();return false;">
+
             <div class="form-group">
                 <label for="user-id" style="padding-right:3em">User ID</label>
-                <input id="userID" name="userID" type="text" class="form-control" id="user-id" placeholder="Enter your user ID" required autofocus>
+                <input id="userID" name="name" type="text" class="form-control" id="user-id" placeholder="Enter your user ID" required autofocus />
             </div>
             <div class="form-group">
                 <label for="password" style="padding-right:2.4em">Password</label>
-                <input id="password" name="password" type="password" class="form-control" id="password" placeholder="Enter password" required>
+                <input id="password" name="password" type="password" class="form-control" id="password" placeholder="Enter password" required />
             </div>
 
-            <button class="btn btn-sm btn-success" onclick="validateUser(); return false;">Log In</button>  or <a href="signup">Sign Up</a>
+            <button class="btn btn-sm btn-success" type="submit">Log In</button>  or <a href="signup">Sign Up</a>
             <a style="display: block; padding-top: 10px;" href="forgotPassword">Forgot Password?</a>
         </form>
     </div>

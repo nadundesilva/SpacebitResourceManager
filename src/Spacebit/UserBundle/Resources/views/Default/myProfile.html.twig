@@ -128,7 +128,7 @@
                     <div class="form-group">
                         <label for="passwordOld">Enter Current Password</label>
                         <input type="password" class="form-control" id="passwordOld" name="passwordOld" placeholder="Current Password" required />
-                    </div>\
+                    </div>
                     <div class="form-group">
                         <label for="passwordOne">Enter New Password</label>
                         <input type="password" class="form-control" id="passwordOne" name="passwordOne" placeholder="New Password" required />
@@ -137,9 +137,9 @@
                         <label for="passwordTwo">Re-enter New Password</label>
                         <input type="password" class="form-control" id="passwordTwo" name="passwordTwo" placeholder="Re enter New Password" required />
                     </div>
-                    <input type="button" class="btn btn-md btn-primary" id="submitButton" onclick="changePassword()" value="Change Password">
+                    <input type="button" class="btn btn-md btn-primary" id="submitButton" onclick="changePassword({{ app.session.get('user_id')}})" value="Change Password">
 
-                    <button onclick="$('#message-modal').modal('hide');">Close</button>
+                    <button class="btn btn-md btn-primary" onclick="$('#message-modal').modal('hide');">Close</button>
                 </div>
             </div>
         </div>

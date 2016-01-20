@@ -52,3 +52,8 @@ spacebit_edit_user:
     path:     /editUser
     defaults: { _controller: SpacebitUserBundle:Default:editUser}
     methods:  ['POST']
+
+spacebit_change_password:
+    path:     /changePassword
+    defaults: { _controller: SpacebitUserBundle:Default:changePassword}
+    methods:  ['POST']

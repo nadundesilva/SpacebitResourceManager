@@ -5,6 +5,11 @@ function validateUser() {
 
     var name =document.getElementById("userID").value;
     var password = document.getElementById("password").value;
+    if(!name || !password){
+        $('#message').show();
+        return;
+    }
+    console.log(name);
 
     if (window.XMLHttpRequest) {
         obj = new XMLHttpRequest();
@@ -44,3 +49,8 @@ function validateUser() {
         obj.send("name=" + name + "& password=" + password);
     }
 }
+
+
+$(document).ready(function(){
+    $('#message').hide();
+});

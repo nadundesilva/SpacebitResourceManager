@@ -16,7 +16,7 @@
 {% block body %}
     <div class="col-lg-7" style="padding: 0px 125px 0px 65px">
         <h2 class="logIn division" style="text-align: center">Sign Up</h2>
-        <form role="form">
+        <form method="post" onsubmit="addNewUser();return false;">
             <div>
                 <div class="form-group">
                     <label for="userID">User ID</label>
@@ -100,8 +100,11 @@
                         <input type="text" class="form-control" id="organizationAddress" name="organizationAddress" placeholder="Organization Address" required />
                     </div>
                 </div>
-                <button type="submit" class="btn btn-md btn-primary" onclick="addNewUser(); return false;">Done</button><br>
+
             </div>
+            <button type="submit" class="btn btn-md btn-primary">Done</button><br>
         </form>
     </div>
+
+    {% include 'templates/loading.html.twig' %}
 {% endblock %}
