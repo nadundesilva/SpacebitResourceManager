@@ -22,6 +22,7 @@ function showDiv(elem){
 }
 
 function addNewUser() {
+    showLoadingOverlay();
     var obj;
 
     var userID = document.getElementById("userID").value;
@@ -86,6 +87,7 @@ function addNewUser() {
                     if (res == "success"){
                         window.location.href = "../";
                     }
+                    hideLoadingOverlay();
 
                 }
             }

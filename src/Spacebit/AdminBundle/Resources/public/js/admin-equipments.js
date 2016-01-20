@@ -206,38 +206,51 @@ function addEditEquipment() {
     var department_name = document.forms['equipment-add-form']['department_name'].value;
     var updateType = document.forms['equipment-add-form']['submit-button'].value;
     var obj;
+    if(String(resource_id).length<4 || String(equipment_type).length<2 || String(value).length<2 || String(department_name).length<2){
 
-    if (window.XMLHttpRequest) {
-        obj = new XMLHttpRequest();
-    } else if (window.ActiveXObject) {
-        obj = new ActiveXObject("Microsoft.XMLHTTP");
-    } else {
-        alert("Browser Doesn't Support AJAX!");
-    }
-    if (obj !== null) {
-        obj.onreadystatechange = function () {
-            if (obj.readyState < 4) {
-                // progress
-            } else if (obj.readyState == 4) {
-                var res = obj.responseText;
+        var modalContent = '<div style="margin: 10px;"><p>';
+        modalContent += 'Invalid input</p><button class="btn btn-sm btn-danger" onclick=\'$("#message-modal").modal("hide"); showManageEquipmentsModal();\'><span class="glyphicon glyphicon-ok"></span>';
 
-                var modalContent = '<div style="margin: 10px;"><p>';
-                if (res == 'success') {
-                    modalContent += 'Equipment with resource id ' + resource_id + ' was ' + (updateType == "Add" ? "added" : "edited") + ' successfully</p><button class="btn btn-sm btn-success" onclick=\'$("#message-modal").modal("hide"); showManageEquipmentsModal();\'><span class="glyphicon glyphicon-ok"></span>';
-                } else {
-                    modalContent += 'An error occurred in ' + (updateType == "Add" ? "adding" : "editing") + ' the equipment with Resource ID ' + resource_id + '. Sorry for the inconvenience.</p><div style="text-align: center;"><button class="btn btn-sm btn-danger" onclick=\'$("#message-modal").modal("hide"); showManageEquipmentsModal();\'><span class="glyphicon glyphicon-warning-sign"></span>';
-                }
-                modalContent += ' Ok</button><div></div>';
-                document.getElementById('message-modal-content').innerHTML = modalContent;
+        modalContent += ' Ok</button><div></div>';
+        document.getElementById('message-modal-content').innerHTML = modalContent;
 
-                $('#add-edit-equipment-modal').modal('hide');
-                setTimeout("hideLoadingOverlay(); $('#message-modal').modal();", 1000);
-
-            }
+        $('#add-edit-equipment-modal').modal('hide');
+        setTimeout("hideLoadingOverlay(); $('#message-modal').modal();", 1000);
+        return;
+    }else {
+        if (window.XMLHttpRequest) {
+            obj = new XMLHttpRequest();
+        } else if (window.ActiveXObject) {
+            obj = new ActiveXObject("Microsoft.XMLHTTP");
+        } else {
+            alert("Browser Doesn't Support AJAX!");
         }
+        if (obj !== null) {
+            obj.onreadystatechange = function () {
+                if (obj.readyState < 4) {
+                    // progress
+                } else if (obj.readyState == 4) {
+                    var res = obj.responseText;
+                    
 
-        obj.open("POST", "./equipment/addEdit", true);
-        obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        obj.send("resource_id=" + resource_id+ '&equipment_type=' + equipment_type + '&department_name=' + department_name +  '&availability=' + availability + '&value=' + value + '&description=' + description + '&update-type=' + updateType);
+                    var modalContent = '<div style="margin: 10px;"><p>';
+                    if (res == 'success') {
+                        modalContent += 'Equipment with resource id ' + resource_id + ' was ' + (updateType == "Add" ? "added" : "edited") + ' successfully</p><button class="btn btn-sm btn-success" onclick=\'$("#message-modal").modal("hide"); showManageEquipmentsModal();\'><span class="glyphicon glyphicon-ok"></span>';
+                    } else {
+                        modalContent += 'An error occurred in ' + (updateType == "Add" ? "adding" : "editing") + ' the equipment with Resource ID ' + resource_id + '. Sorry for the inconvenience.</p><div style="text-align: center;"><button class="btn btn-sm btn-danger" onclick=\'$("#message-modal").modal("hide"); showManageEquipmentsModal();\'><span class="glyphicon glyphicon-warning-sign"></span>';
+                    }
+                    modalContent += ' Ok</button><div></div>';
+                    document.getElementById('message-modal-content').innerHTML = modalContent;
+
+                    $('#add-edit-equipment-modal').modal('hide');
+                    setTimeout("hideLoadingOverlay(); $('#message-modal').modal();", 1000);
+
+                }
+            }
+
+            obj.open("POST", "./equipment/addEdit", true);
+            obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            obj.send("resource_id=" + resource_id + '&equipment_type=' + equipment_type + '&department_name=' + department_name + '&availability=' + availability + '&value=' + value + '&description=' + description + '&update-type=' + updateType);
+        }
     }
 }

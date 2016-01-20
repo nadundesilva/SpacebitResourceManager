@@ -193,6 +193,19 @@ function EditRequest(request_id,status) {
     var updateType = document.forms['venue-add-form']['submit-button'].value;
     var obj;
 
+        if(String(resource_id).length<4 || String(capacity).length<2 || String(closing_time).length<8 || String(dept_name).length<2 || String(name).length<2 || String(opening_time).length<8 || String(venue_type).length<2){
+
+            var modalContent = '<div style="margin: 10px;"><p>';
+            modalContent += 'Invalid input</p><button class="btn btn-sm btn-danger" onclick=\'$("#message-modal").modal("hide"); showManageEquipmentsModal();\'><span class="glyphicon glyphicon-ok"></span>';
+
+            modalContent += ' Ok</button><div></div>';
+            document.getElementById('message-modal-content').innerHTML = modalContent;
+
+            $('#add-edit-equipment-modal').modal('hide');
+            setTimeout("hideLoadingOverlay(); $('#message-modal').modal();", 1000);
+            return;
+        }else{
+
     if (window.XMLHttpRequest) {
         obj = new XMLHttpRequest();
     } else if (window.ActiveXObject) {
@@ -228,4 +241,5 @@ function EditRequest(request_id,status) {
         obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         obj.send("resource_id=" + resource_id+   '&availability=' + availability + '&description=' + description + '&capacity=' + capacity +  '&closing_time=' + closing_time + '&dept_name=' + dept_name + '&name=' + name +'&opening_time=' + opening_time +'&venue_type=' + venue_type + '&update-type=' + updateType);
     }
+        }
 }

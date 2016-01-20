@@ -184,6 +184,48 @@ function changePassswordDialog(){
 
 }
 
-function changePassword(){
+function changePassword(id){
+    showLoadingOverlay();
+    var obj;
+
+
+    window.alert("keet");
+    var userID = id;
+    var passwordOld = document.getElementById("passwordOld").value;
+    var passwordOne = document.getElementById("passwordOne").value;
+    var passwordTwo = document.getElementById("passwordTwo").value;
+
+    if (window.XMLHttpRequest) {
+        obj = new XMLHttpRequest();
+    } else if (window.ActiveXObject) {
+        obj = new ActiveXObject("Microsoft.XMLHTTP");
+    } else {
+        alert("Browser Doesn't Support AJAX!");
+    }
+
+    if (passwordOne != passwordTwo){
+        if (obj !== null) {
+            obj.onreadystatechange = function () {
+                if (obj.readyState < 4) {
+                    // progress
+                } else if (obj.readyState === 4) {
+
+                    var res = obj.responseText;
+                    window.alert(res);
+
+                    if (res == "success"){
+                        window.location.href = "../";
+                    }
+                    hideLoadingOverlay();
+                    $('#message-modal').modal('hide');
+                }
+            }
+
+            obj.open("POST", "./changePassword", true);
+            obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            obj.send("userID=" + userID + "& passwordOld=" + passwordOld + "& passwordTwo=" + passwordTwo );
+        }
+    }
+
 
 }
