@@ -103,7 +103,7 @@ function showEditEquipmentModal(resource_id) {
 
         obj.open("POST", "./equipment/getByResourceID", true);
         obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        obj.send('resource_id=' + resource_id);
+        obj.send('resource_id=' + encodeURIComponent(resource_id));
     }
 }
 
@@ -142,7 +142,7 @@ function changeRequest(requestId,department_name,type) {
         obj.open("POST", "./equipment/getByResourceType", true);
         obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-        obj.send('department_name=' + department_name + '&type=' + type );
+        obj.send('department_name=' + encodeURIComponent(department_name) + '&type=' + encodeURIComponent(type) );
     }
 
 }
@@ -170,10 +170,12 @@ function EditRequest(status){
             } else if (obj.readyState === 4) {
                 var res = obj.responseText;
 
+
                 var modalContent = '<div style="margin: 10px;"><p>';
                 if (res == 'success') {
                     modalContent += 'Request with request id ' + request_id + ' was changed successfully</p><button class="btn btn-sm btn-success" onclick=\'$("#message-modal").modal("hide"); \'><span class="glyphicon glyphicon-ok"></span>';
                 }else if(res=='Booked') {
+
                     modalContent += 'Already Booked in the given time.</p><div style="text-align: center;"><button class="btn btn-sm btn-danger" onclick=\'$("#message-modal").modal("hide"); \'><span class="glyphicon glyphicon-warning-sign"></span>';
                 }
                 else {
@@ -182,15 +184,16 @@ function EditRequest(status){
                 modalContent += ' Ok</button><div></div>';
                document.getElementById('message-modal-content').innerHTML = modalContent;
 
-                $('#edit-equipments-modal').modal('hide');
+                $('#accept-equipment-modal').modal('hide');
                 setTimeout("hideLoadingOverlay(); $('#message-modal').modal();", 1000);
-                location.reload();
+                setTimeout("$('#message-modal').modal(); location.reload();", 5000);
+
             }
         }
 
         obj.open("POST", "./equipment/changeRequestStatus", true);
        obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        obj.send("request_id=" + request_id+ '&status=' + status+ '&resource_id=' + resource_id );
+        obj.send("request_id=" + encodeURIComponent(request_id)+ '&status=' + encodeURIComponent(status)+ '&resource_id=' + encodeURIComponent(resource_id) );
     }
 }
 
@@ -231,7 +234,7 @@ function addEditEquipment() {
                     // progress
                 } else if (obj.readyState == 4) {
                     var res = obj.responseText;
-                    
+                    alert(res);
 
                     var modalContent = '<div style="margin: 10px;"><p>';
                     if (res == 'success') {
@@ -250,7 +253,7 @@ function addEditEquipment() {
 
             obj.open("POST", "./equipment/addEdit", true);
             obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            obj.send("resource_id=" + resource_id + '&equipment_type=' + equipment_type + '&department_name=' + department_name + '&availability=' + availability + '&value=' + value + '&description=' + description + '&update-type=' + updateType);
+            obj.send("resource_id=" + encodeURIComponent(resource_id) + '&equipment_type=' + encodeURIComponent(equipment_type) + '&department_name=' + encodeURIComponent(department_name) + '&availability=' + encodeURIComponent(availability) + '&value=' + encodeURIComponent(value) + '&description=' + encodeURIComponent(description) + '&update-type=' + encodeURIComponent(updateType));
         }
     }
 }

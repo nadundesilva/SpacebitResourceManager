@@ -18,7 +18,7 @@ class VenuesController extends Controller
 
         $venues_requests = '';
         $conn->beginTransaction();
-        $equipment_requests ='';
+        $dept_names ='';
         try {
 
         $stmt = $conn->prepare('CREATE OR REPLACE VIEW admin_resource_view  as select venue.resource_id from venue INNER JOIN resource_administration on venue.resource_id = resource_administration.resource_id and resource_administration.user_id = :user_id;');
@@ -29,13 +29,17 @@ class VenuesController extends Controller
 
         $stmt->execute();
         $venues_requests = $stmt->fetchAll();
-            $conn->commit();
+        $stmt1 = $conn->prepare('SELECT dept_name from department ;');
+        $stmt1->execute();
+        $dept_names = $stmt1->fetchAll();
+        $conn->commit();
         }catch (Exception $e){
             $conn->rollBack();
 
         }
         return $this->render('SpacebitAdminBundle:Default:venues.html.twig', array(
             'venues_requests'=>$venues_requests,
+            'dept_names'=>$dept_names,
         ));
     }
 
@@ -100,7 +104,6 @@ class VenuesController extends Controller
         $conn->beginTransaction();
         $response = 'success';
         try {
-
             if ($update_type == 'Add') {
                 $stmt = $conn->prepare('INSERT into resource values(:resource_id, :availability, :description);');
                 $stmt->bindValue(':resource_id', $resource_id);
@@ -110,6 +113,10 @@ class VenuesController extends Controller
                 $response = 'success';
                 if (!$stmt->execute()) {
                     $response = $stmt->errorCode();
+                    $conn->rollBack();
+                    $response = new Response($response);
+                    $response->headers->set('Content-Type', 'application/json');
+                    return $response;
                 } else {
                     if ($update_type == 'Add') {
                         $stmt = $conn->prepare('INSERT INTO resource_administration VAlUES(:user_id, :resource_id)');
@@ -118,6 +125,10 @@ class VenuesController extends Controller
 
                         if (!$stmt->execute()) {
                             $response = $stmt->errorCode();
+                            $conn->rollBack();
+                            $response = new Response($response);
+                            $response->headers->set('Content-Type', 'application/json');
+                            return $response;
                         }
                     }
                 }
@@ -144,6 +155,10 @@ class VenuesController extends Controller
                 $response = 'success';
                 if (!$stmt->execute()) {
                     $response = $stmt->errorCode();
+                    $conn->rollBack();
+                    $response = new Response($response);
+                    $response->headers->set('Content-Type', 'application/json');
+                    return $response;
                 } else {
                     if ($update_type == 'Add') {
                         $stmt = $conn->prepare('UPDATE resource_administration  SET user_id = :user_id WHERE resource_id = :resource_id;');
@@ -152,6 +167,10 @@ class VenuesController extends Controller
 
                         if (!$stmt->execute()) {
                             $response = $stmt->errorCode();
+                            $conn->rollBack();
+                            $response = new Response($response);
+                            $response->headers->set('Content-Type', 'application/json');
+                            return $response;
                         }
                     }
                 }
@@ -167,6 +186,10 @@ class VenuesController extends Controller
                 $response = 'success';
                 if (!$stmt->execute()) {
                     $response = $stmt->errorCode();
+                    $conn->rollBack();
+                    $response = new Response($response);
+                    $response->headers->set('Content-Type', 'application/json');
+                    return $response;
                 }
 
             }

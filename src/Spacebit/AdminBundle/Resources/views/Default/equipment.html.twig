@@ -142,24 +142,19 @@
                             </div>
                             <div class="form-group col-lg-6">
                                 <label for="department_name">Department Name :</label>
-                                <input type="text" id="department_name" class="form-control" name = "department_name"  placeholder="Enter the Department Name" required />
+                                <select id="department_name" class="form-control" name = "department_name" >
+                                    {% for dept_name in dept_names %}
+                                        <option value="{{ dept_name.dept_name }}">{{ dept_name.dept_name }}</option>
+                                    {% endfor %}
+                                </select>
                             </div>
-
-
                         </div>
-
-
-
-
                         <button id="submit-button" type="submit" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-plus"></span> Add</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-
-
-
     <div id="change-equipment-request-modal" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
