@@ -124,17 +124,56 @@ function editUser(id) {
     var organizationAddress;
 
     //window.alert(firstName);
+    if (  String(userID).length>15 || String(userID).length ==0){
+        $('#userID-modal').modal();
+        hideLoadingOverlay();
+        editProfile(id)
+        return;
+    }
+    if (  String(firstName).length>35 || String(middleName).length>35  || String(lastName).length>35 || String(firstName).length ==0 || String(lastName).length ==0){
+        $('#name-modal').modal();
+        hideLoadingOverlay();
+        editProfile(id)
+        return;
+    }
+    if (  String(email).length>255 || String(email).length ==0){
+        $('#email-modal').modal();
+        hideLoadingOverlay();
+        editProfile(id)
+        return;
+    }
+
+    if (  String(telephoneNumber).length>10 || String(telephoneNumber).length<9 ||String(telephoneNumber).length ==0 ){
+        $('#telephoneNumber-modal').modal();
+        hideLoadingOverlay();
+        editProfile(id)
+        return;
+    }
 
 
     if(accessLevel == 1) {
 
         batch = document.getElementById("batch").value;
         department = document.getElementById("department").value;
+
+        if (  String(batch).length != 2 || String(batch).length ==0){
+            $('#batch-modal').modal();
+            hideLoadingOverlay();
+            editProfile(id)
+            return;
+        }
     }
     if(accessLevel >2) {
         //accessLevel = 2;
         designation = document.getElementById("designation").value;
         department = document.getElementById("department").value;
+
+        if (  String(designation).length>50 || String(designation).length ==0){
+            $('#designation-modal').modal();
+            hideLoadingOverlay();
+            editProfile(id)
+            return;
+        }
     }
     if(accessLevel == 0) {
         //accessLevel = 0;
@@ -143,6 +182,43 @@ function editUser(id) {
         organizationTelephone = document.getElementById("organizationTelephone").value;
         nic = document.getElementById("nic").value;
         organizationAddress = document.getElementById("organizationAddress").value;
+
+        if (  String(organizationTelephone).length>10 || String(organizationTelephone).length<9 ||  String(organizationTelephone).length ==0){
+            $('#telephoneNumber-modal').modal();
+            hideLoadingOverlay();
+            editProfile(id)
+            return;
+        }
+        if (  String(organizationEmail).length>255 ||  String(organizationEmail).length ==0){
+            $('#email-modal').modal();
+            hideLoadingOverlay();
+            editProfile(id)
+            return;
+        }
+        if (  String(nic).length != 10 || String(nic).substr((String(nic).length-1)) != "V"  || String(nic).substr((String(nic).length-1)) != "v" || String(nic).substr((String(nic).length-1)) != "X" || String(nic).substr((String(nic).length-1)) != "x"){
+            $('#nic-modal').modal();
+            hideLoadingOverlay();
+            editProfile(id)
+            return;
+        }
+        if (  isNaN(String(nic).substr( 0 ,(String(nic).length-1))) ||  String(nic).length ==0){
+            $('#nic-modal').modal();
+            hideLoadingOverlay();
+            editProfile(id)
+            return;
+        }
+        if (  String(organizationAddress).length>175 ||  String(organizationAddress).length ==0){
+            $('#address-modal').modal();
+            hideLoadingOverlay();
+            editProfile(id)
+            return;
+        }
+        if (  String(title).length>50 ||  String(title).length ==0){
+            $('#title-modal').modal();
+            hideLoadingOverlay();
+            editProfile(id)
+            return;
+        }
     }
 
 

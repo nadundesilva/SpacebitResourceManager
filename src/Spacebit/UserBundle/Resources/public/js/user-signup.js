@@ -71,17 +71,55 @@ function addNewUser() {
     var nic;
     var organizationAddress;
 
-
+    if (  String(userID).length>15 || String(userID).length ==0){
+        $('#userID-modal').modal();
+        hideLoadingOverlay();
+        return;
+    }
+    if (  String(firstName).length>35 || String(middleName).length>35  || String(lastName).length>35 ){
+        $('#name-modal').modal();
+        hideLoadingOverlay();
+        return;
+    }
+    if (  String(email).length>255 ){
+        $('#email-modal').modal();
+        hideLoadingOverlay();
+        return;
+    }
+    if (  String(telephoneNumber).length>10 || String(telephoneNumber).length<9 ){
+        $('#telephoneNumber-modal').modal();
+        hideLoadingOverlay();
+        return;
+    }
+    if (  String(passwordOne) !=  String(passwordTwo) || String(passwordOne).length>128  ){
+        $('#password-modal').modal();
+        hideLoadingOverlay();
+        document.getElementById("passwordOne").value = "";
+        document.getElementById("passwordTwo").value = "";
+        return;
+    }
 
     if(accessLevel == "student") {
         accessLevel = 1;
         batch = document.getElementById("batch").value;
         department = document.getElementById("department").value;
+
+        if (  String(batch).length != 2 ){
+            $('#batch-modal').modal();
+            hideLoadingOverlay();
+            return;
+        }
     }
     if(accessLevel == "staff") {
         accessLevel = 2;
         designation = document.getElementById("designation").value;
         department = document.getElementById("department").value;
+
+        if (  String(designation).length>50 ){
+            $('#designation-modal').modal();
+            hideLoadingOverlay();
+            return;
+        }
     }
     if(accessLevel == "guest") {
         accessLevel = 0;
@@ -90,6 +128,37 @@ function addNewUser() {
         organizationTelephone = document.getElementById("organizationTelephone").value;
         nic = document.getElementById("nic").value;
         organizationAddress = document.getElementById("organizationAddress").value;
+
+        if (  String(organizationTelephone).length>10 || String(organizationTelephone).length<9 ){
+            $('#telephoneNumber-modal').modal();
+            hideLoadingOverlay();
+            return;
+        }
+        if (  String(organizationEmail).length>255 ){
+            $('#email-modal').modal();
+            hideLoadingOverlay();
+            return;
+        }
+        if (  String(nic).length != 10 || String(nic).substr((String(nic).length-1)) != "V"  || String(nic).substr((String(nic).length-1)) != "v" || String(nic).substr((String(nic).length-1)) != "X" || String(nic).substr((String(nic).length-1)) != "x"){
+            $('#nic-modal').modal();
+            hideLoadingOverlay();
+            return;
+        }
+        if (  isNaN(String(nic).substr( 0 ,(String(nic).length-1))) ){
+            $('#nic-modal').modal();
+            hideLoadingOverlay();
+            return;
+        }
+        if (  String(organizationAddress).length>175 ){
+            $('#address-modal').modal();
+            hideLoadingOverlay();
+            return;
+        }
+        if (  String(title).length>50 ){
+            $('#title-modal').modal();
+            hideLoadingOverlay();
+            return;
+        }
     }
 
 
@@ -114,6 +183,11 @@ function addNewUser() {
                     //window.alert(res);
                     if (res == "success"){
                         window.location.href = "../";
+                    }
+                    else{
+                        $('#message-modal').modal();
+                        document.getElementById("passwordOne").value = "";
+                        document.getElementById("passwordTwo").value = "";
                     }
                     hideLoadingOverlay();
 

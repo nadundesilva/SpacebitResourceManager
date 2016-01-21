@@ -106,5 +106,149 @@
         </form>
     </div>
 
+    <div id="message-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div style="margin: 20px;" id="message-modal-content">
+
+                    <h4>"User ID already taken. Please Check conenction and try again"</h4>
+
+
+                    <button class="btn btn-md btn-primary" onclick="$('#message-modal').modal('hide');">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="userID-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div style="margin: 20px;" id="message-modal-content">
+
+                    <h4>"User ID has to be less then 15 characters long"</h4>
+
+
+                    <button class="btn btn-md btn-primary" onclick="$('#userID-modal').modal('hide');">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="name-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div style="margin: 20px;" id="message-modal-content">
+
+                    <h4>"First Name, Middle Name, Last Name have to be less then 35 characters long, each"</h4>
+
+
+                    <button class="btn btn-md btn-primary" onclick="$('#name-modal').modal('hide');">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="email-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div style="margin: 20px;" id="message-modal-content">
+
+                    <h4>"Email has to be less then 255 characters long"</h4>
+
+
+                    <button class="btn btn-md btn-primary" onclick="$('#email-modal').modal('hide');">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="telephoneNumber-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div style="margin: 20px;" id="message-modal-content">
+
+                    <h4>"Telephone Numbers have to be only 10 digits"</h4>
+
+
+                    <button class="btn btn-md btn-primary" onclick="$('#telephoneNumber-modal').modal('hide');">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="password-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div style="margin: 20px;" id="message-modal-content">
+
+                    <h4>"Passwords do not match and passwords have to be less than 128 characters long"</h4>
+
+
+                    <button class="btn btn-md btn-primary" onclick="$('#password-modal').modal('hide');">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="nic-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div style="margin: 20px;" id="message-modal-content">
+
+                    <h4>"Invalid nic"</h4>
+
+
+                    <button class="btn btn-md btn-primary" onclick="$('#nic-modal').modal('hide');">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="address-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div style="margin: 20px;" id="message-modal-content">
+
+                    <h4>"Address has to be less than 175 characters long"</h4>
+
+
+                    <button class="btn btn-md btn-primary" onclick="$('#address-modal').modal('hide');">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="title-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div style="margin: 20px;" id="message-modal-content">
+
+                    <h4>"Title has to be less than 50 characters long"</h4>
+
+
+                    <button class="btn btn-md btn-primary" onclick="$('#title-modal').modal('hide');">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="designation-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div style="margin: 20px;" id="message-modal-content">
+
+                    <h4>"Designation has to be less than 50 characters long"</h4>
+
+
+                    <button class="btn btn-md btn-primary" onclick="$('#designation-modal').modal('hide');">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="batch-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div style="margin: 20px;" id="message-modal-content">
+
+                    <h4>"Batch has to be 2 characters long. Eg : 12,13,99,06 etc"</h4>
+
+
+                    <button class="btn btn-md btn-primary" onclick="$('#batch-modal').modal('hide');">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     {% include 'templates/loading.html.twig' %}
 {% endblock %}
