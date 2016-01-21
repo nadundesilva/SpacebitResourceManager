@@ -373,3 +373,45 @@ function changePassword(){
 
 
 }
+
+function loadDepartments() {
+
+    var obj;
+
+    if (window.XMLHttpRequest) {
+        obj = new XMLHttpRequest();
+    } else if (window.ActiveXObject) {
+        obj = new ActiveXObject("Microsoft.XMLHTTP");
+    } else {
+        alert("Browser Doesn't Support AJAX!");
+    }
+
+    if (obj !== null) {
+
+        obj.onreadystatechange = function () {
+            if (obj.readyState < 4) {
+                // progress
+            } else if (obj.readyState === 4) {
+
+                var res = obj.responseText;
+                var rows = JSON.parse(res).result;
+
+                var currentDept = document.getElementById('department').value;
+
+                var content = '<option disabled selected>Select Department</option>;';
+                for (var i = 0; i < rows.length; i++) {
+                    content += '<option value="' + rows[i].dept_name + '">' + rows[i].dept_name + '</option>';
+                }
+                document.getElementById('department').innerHTML = content;
+
+                document.getElementById('department').disabled = false;
+            }
+        }
+
+
+        obj.open("POST", "./loadDepartments", true);
+        obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        obj.send(); //pass to controller
+
+    }
+}
