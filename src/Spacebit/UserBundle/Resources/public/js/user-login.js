@@ -52,7 +52,7 @@ function validateUser() {
 
         obj.open("POST", "./validateUser", true);
         obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        obj.send("name=" + name + "& password=" + password);
+        obj.send("name=" + encodeURIComponent(name) + "& password=" + encodeURIComponent(password));
     }
 }
 
