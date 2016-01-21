@@ -36,7 +36,7 @@
         </form>
 
 
-        <div id="modalArea" class="modal fade" role="dialog" align="left">
+        <div id="modalArea" class="modal fade" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div style="margin: 5px;" id="venueModalContent">
@@ -72,8 +72,7 @@
 
                             <div class="form-group">
                                 <label for="request-time-From">Time From:</label>
-                                <input type="time" name="request-time-From" class="form-control" onchange="document.getElementById('request-time-To').setAttribute('min', this.value);"
-                                       required />
+                                <input type="time" name="request-time-From" class="form-control" required />
                             </div>
                             <div class="form-group">
                                 <label for="request-time-To">Time To:</label>
@@ -117,7 +116,7 @@
             </div>
         </div>
     {% endif %}
-    </div>
+</div>
 
 
     <div id="past-requests-modal" class="modal fade" role="dialog">
