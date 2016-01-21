@@ -255,33 +255,33 @@ function editUser(id) {
         obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
         if (accessLevel == 0) {
-            var s= "userID=" + userID + "& firstName=" + firstName + "& "+
-                "middleName=" + middleName + "& lastName=" + lastName + "& "+
-                "email=" + email + "& telephoneNumber=" + telephoneNumber + "& "+
-                "accessLevel=" + accessLevel + "& "+
-                "title=" + title + "& organizationEmail=" + organizationEmail + "& "+
-                "organizationTelephone=" + organizationTelephone + "& nic=" + nic + "& "+
-                "organizationAddress=" + organizationAddress;
+            var s= "userID=" + encodeURIComponent(userID) + "& firstName=" + encodeURIComponent(firstName) + "& "+
+                "middleName=" + encodeURIComponent(middleName) + "& lastName=" + encodeURIComponent(lastName) + "& "+
+                "email=" + encodeURIComponent(email) + "& telephoneNumber=" + encodeURIComponent(telephoneNumber) + "& "+
+                "accessLevel=" + encodeURIComponent(accessLevel) + "& "+
+                "title=" + encodeURIComponent(title) + "& organizationEmail=" + encodeURIComponent(organizationEmail) + "& "+
+                "organizationTelephone=" + encodeURIComponent(organizationTelephone) + "& nic=" + encodeURIComponent(nic) + "& "+
+                "organizationAddress=" + encodeURIComponent(organizationAddress);
 
             obj.send(s);
         }
         if (accessLevel == 1) {
-            var s = "userID=" + userID + "& firstName=" + firstName + "& "+
-                "middleName=" + middleName + "& lastName=" + lastName + "& "+
-                "email=" + email + "& telephoneNumber=" + telephoneNumber + "& "+
-                "accessLevel=" + accessLevel + "& "+
-                "batch=" + batch + "& department=" + department;
+            var s = "userID=" + encodeURIComponent(userID) + "& firstName=" + encodeURIComponent(firstName) + "& "+
+                "middleName=" + encodeURIComponent(middleName) + "& lastName=" + encodeURIComponent(lastName) + "& "+
+                "email=" + encodeURIComponent(email) + "& telephoneNumber=" + encodeURIComponent(telephoneNumber) + "& "+
+                "accessLevel=" + encodeURIComponent(accessLevel) + "& "+
+                "batch=" + encodeURIComponent(batch) + "& department=" + encodeURIComponent(department);
 
             obj.send(s);
 
 
         }
         if (accessLevel == 2) {
-            obj.send("userID=" + userID + "& firstName=" + firstName + "& " +
-                "middleName=" + middleName + "& lastName=" + lastName + "& " +
-                "email=" + email + "& telephoneNumber=" + telephoneNumber + "& " +
-                "accessLevel=" + accessLevel + "& " +
-                "designation=" + designation + "& department=" + department);
+            obj.send("userID=" + encodeURIComponent(userID) + "& firstName=" + encodeURIComponent(firstName) + "& " +
+                "middleName=" + encodeURIComponent(middleName) + "& lastName=" + encodeURIComponent(lastName) + "& " +
+                "email=" + encodeURIComponent(email) + "& telephoneNumber=" + encodeURIComponent(telephoneNumber) + "& " +
+                "accessLevel=" + encodeURIComponent(accessLevel) + "& " +
+                "designation=" + encodeURIComponent(designation) + "& department=" + encodeURIComponent(department));
         }
     }
 
@@ -367,7 +367,7 @@ function changePassword(){
 
             obj.open("POST", "./changePassword", true);
             obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            obj.send("passwordOld=" + passwordOld + "& passwordTwo=" + passwordTwo );
+            obj.send("passwordOld=" + encodeURIComponent(passwordOld) + "& passwordTwo=" + encodeURIComponent(passwordTwo) );
         }
 
 
