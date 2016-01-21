@@ -207,7 +207,7 @@ class VehiclesController extends Controller
                 if (!$stmt->execute()) {
                     throw new \Symfony\Component\Config\Definition\Exception\Exception();
                 }
-                $group_id = $stmt->fetch()['group_id'];
+                $group_id = $stmt->fetch()['AUTO_INCREMENT'] - 1;
             } else {
                 $group_id = $request->request->get('group-id');
             }
