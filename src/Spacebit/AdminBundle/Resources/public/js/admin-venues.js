@@ -201,16 +201,7 @@ function EditRequest(request_id,status) {
 
             $('#add-edit-venue-modal').modal('hide');
             setTimeout("hideLoadingOverlay(); $('#message-modal').modal();", 1000);
-            alert('resource-id :' + resource_id +
-                'description : ' + description +
-                'availability : ' + availability +
-                'capacity :' + capacity +
-                'closing_time : ' + closing_time +
-                'dept_name :' + dept_name +
-                'name :' + name +
-                'opening_time :' + opening_time +
-                'venue_type :' + venue_type +
-                'update_type :' + updateType);
+
             return;
         } else {
 

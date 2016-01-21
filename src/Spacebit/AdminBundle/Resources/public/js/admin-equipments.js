@@ -234,9 +234,7 @@ function addEditEquipment() {
                     // progress
                 } else if (obj.readyState == 4) {
                     var res = obj.responseText;
-                    alert(res);
-
-                    var modalContent = '<div style="margin: 10px;"><p>';
+                   var modalContent = '<div style="margin: 10px;"><p>';
                     if (res == 'success') {
                         modalContent += 'Equipment with resource id ' + resource_id + ' was ' + (updateType == "Add" ? "added" : "edited") + ' successfully</p><button class="btn btn-sm btn-success" onclick=\'$("#message-modal").modal("hide"); showManageEquipmentsModal();\'><span class="glyphicon glyphicon-ok"></span>';
                     } else {
