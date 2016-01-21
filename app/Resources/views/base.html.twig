@@ -37,6 +37,9 @@
         }
     ]) %}
 {% endif %}
+{% set pages = pages | merge([
+    {name:'Contact Us', link:'./contactUs', glyphicon:'glyphicon glyphicon-envelope'}
+]) %}
 {% set access_levels_array = [
     {name:'Guest', color_name:'info'},
     {name:'Student', color_name:'info'},

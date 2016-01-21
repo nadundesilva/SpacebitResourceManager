@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% set link_to_home = './' %}
+
+{% block title %}Forgot Password{% endblock %}
+
+{% block javascripts %}
+    <script>
+
+    </script>
+
+{% endblock %}
+
+{% block body %}
+    <div class="col-lg-5" style="margin: 65px 125px 65px 65px;">
+        <style>
+            p {
+                font-size: 17px;
+            }
+        </style>
+        <h2>Contact Us</h2>
+        <p>Spacebit Resource Manager allows an user to access, view and control resources of the University of Moratuwa</p>
+
+        <form role="form">
+
+            <div class="form-group" style="padding: 20px">
+
+            <label for="question" style="padding-right:3em">Please enter your question or concern</label>
+            <input name="question" type="text" class="form-control" id="question" placeholder="Enter your problem" required autofocus >
+
+                <label for="email" style="padding-right:3em">Email :</label>
+                <input name="email" type="email" class="form-control" id="email" placeholder="Enter your email" required autofocus >
+            </div>
+
+
+
+
+
+            <button id="submit-button" type="submit" class="btn btn-sm btn-primary" onclick="sendHandleForgotPasswordRequest(); return false;">Send</button>
+        </form>
+
+        {#<p>University of Moratuwa, a leading technological university in the region welcomes you to witness a truly unique experience!</p>#}
+        <br>
+        <p>Tel: +94 112650301 +94 112650188</p>
+
+        <p>Fax: +94112650622</p>
+        <p>Email: info@mrt.ac.lk</p>
+    </div>
+{% endblock %}

@@ -17,3 +17,7 @@ spacebit_admin:
 spacebit_resources:
     resource: "@SpacebitResourcesBundle/Resources/config/routing.yml"
     prefix:   /resources
+
+spacebit_contact_us:
+    path:     /contactUs
+    defaults: { _controller: AppBundle:Default:contactUs }
