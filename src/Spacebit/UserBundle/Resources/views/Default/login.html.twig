@@ -45,6 +45,19 @@
             </div>
         </div>
     </div>
+    <div id="deactivated-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div style="margin: 20px;" id="message-modal-content">
+
+                    <h4>"Your account has been deactivated."</h4>
+
+
+                    <button class="btn btn-md btn-primary" onclick="$('#deactivated-modal').modal('hide');">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     {% include 'templates/loading.html.twig' %}
 {% endblock %}
