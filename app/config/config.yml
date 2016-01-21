@@ -60,11 +60,11 @@ assetic:
 doctrine:
     dbal:
         driver:   pdo_mysql
-        host:     "db4free.net"
+        host:     "localhost"
         port:     "3306"
-        dbname:   "spacebit"
-        user:     "spacebit"
-        password: "spacebit@mora"
+        dbname:   "spacebit_resource_manager"
+        user:     "root"
+        password: ""
         charset:  UTF8
         # if using pdo_sqlite as your database driver:
         #   1. add the path in parameters.yml
