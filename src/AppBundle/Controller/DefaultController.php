@@ -12,4 +12,9 @@ class DefaultController extends Controller
     {
         return $this->render('default/home.html.twig');
     }
+
+    public function contactUsAction(Request $request)
+    {
+        return $this->render('default/contactUs.html.twig');
+    }
 }
