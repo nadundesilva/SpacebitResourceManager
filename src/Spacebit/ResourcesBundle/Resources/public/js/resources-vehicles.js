@@ -42,7 +42,7 @@ function loadVehiclesByCategory(category) {
 
         obj.open("POST", "./vehicles/getByCategory", true);
         obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        obj.send("category=" + category);
+        obj.send("category=" + encodeURIComponent(category));
     }
 }
 
@@ -122,9 +122,9 @@ function addEditRequest() {
 
         obj.open("POST", "./vehicles/addEditRequest", true);
         obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        var parameters = "date=" + date + '&time=' + time + '&vehicle-type=' + vehicleType + '&passenger-count=' + passengerCount + '&destination=' + destination + '&update-type=' + updateType;
+        var parameters = "date=" + encodeURIComponent(date) + '&time=' + encodeURIComponent(time) + '&vehicle-type=' + encodeURIComponent(vehicleType) + '&passenger-count=' + encodeURIComponent(passengerCount) + '&destination=' + encodeURIComponent(destination) + '&update-type=' + encodeURIComponent(updateType);
         if (updateType == 'Edit') {
-            parameters += '&request-id=' + document.forms["request-form"]["request-id"].value
+            parameters += '&request-id=' + encodeURIComponent(document.forms["request-form"]["request-id"].value);
         }
         obj.send(parameters);
     }

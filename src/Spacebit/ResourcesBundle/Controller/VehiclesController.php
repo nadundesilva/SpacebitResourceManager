@@ -50,6 +50,10 @@ class VehiclesController extends Controller
 
     public function addEditRequestAction()
     {
+        if (!$this->get('login_authenticator')->authenticateStudentLogin()) {
+            return new RedirectResponse($this->generateUrl('spacebit_user_login'));
+        }
+
         $request = Request::createFromGlobals();
         $date = $request->request->get('date');
         $time = $request->request->get('time');
@@ -85,6 +89,10 @@ class VehiclesController extends Controller
 
     public function getPastRequestsAction()
     {
+        if (!$this->get('login_authenticator')->authenticateStudentLogin()) {
+            return new RedirectResponse($this->generateUrl('spacebit_user_login'));
+        }
+
         $conn = $this->get('database_connection');
         $stmt = $conn->prepare('SELECT request_id, date, time, status, number_of_passengers, requested_type, requested_town, vehicle_plate_no FROM vehicle_request LEFT JOIN route ON route_group_id = group_id WHERE user_id = :user_id;');
         $stmt->bindValue(':user_id', $this->get('session')->get('user_id'));
