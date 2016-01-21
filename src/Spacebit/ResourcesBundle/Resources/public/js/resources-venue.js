@@ -148,6 +148,10 @@ function loadModalByCategory(venueCategory) {
 
 function showRequestModal(resourceid) {
     showLoadingOverlay();
+    document.forms['request-form']['request-date-From'].value = "";
+    document.forms['request-form']['request-date-To'].value = "";
+    document.forms['request-form']['request-time-From'].value = "";
+    document.forms['request-form']['request-time-To'].value = "";
     document.forms['request-form']['submit-button'].value = "Add";
     document.forms['request-form']['submit-button'].innerHTML = '<span class="glyphicon glyphicon-plus"></span> Request';
     document.forms['request-form']['resource-request-id'].value = resourceid;
@@ -182,9 +186,11 @@ function addRequest() {
                 } else {
                     modalContent += 'An error occured in ' + (requestType == 'Add' ? 'adding' : 'editing') + ' your request. Sorry for the inconvenience.</p><div style="text-align: center;"><button class="btn btn-sm btn-danger"';
                 }
-                modalContent += ' onclick=\'$("#request-modal").modal("hide");\'>Ok</button><div></div>';
+                modalContent += ' onclick=\'$("#message-modal").modal("hide");\'>Ok</button><div></div>';
                 hideLoadingOverlay();
-                document.getElementById('venueModalContent1').innerHTML = modalContent;
+                document.getElementById('message-modal-content').innerHTML = modalContent;
+                $('#request-modal').modal('hide');
+                setTimeout("hideLoadingOverlay(); $('#message-modal').modal();", 1000);
                // alert(modalContent);
             }
         }

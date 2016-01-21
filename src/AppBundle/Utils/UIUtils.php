@@ -25,7 +25,7 @@ class UIUtils
         $this->equipment_requests_count = $stmt->fetch()['count'];
 
         //Fetching venues requests count
-        $stmt = $conn->prepare('CREATE OR REPLACE VIEW view1  as select venue.resource_id from venue INNER JOIN resource_administration on venue.resource_id = resource_administration.resource_id and resource_administration.user_id = :user_id;');
+        $stmt = $conn->prepare('CREATE OR REPLACE VIEW admin_resource_view  as select venue.resource_id from venue INNER JOIN resource_administration on venue.resource_id = resource_administration.resource_id and resource_administration.user_id = :user_id;');
         $stmt->bindValue(':user_id', $session->get('user_id'));
         $stmt->execute();
 

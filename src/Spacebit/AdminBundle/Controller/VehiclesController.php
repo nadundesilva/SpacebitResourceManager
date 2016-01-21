@@ -109,14 +109,14 @@ class VehiclesController extends Controller
                     $stmt = $conn->prepare('INSERT INTO vehicle_administration VAlUES(:user_id, :plate_no)');
                     $stmt->bindValue(':user_id', $this->get('session')->get('user_id'));
                     $stmt->bindValue(':plate_no', $plate_no);
+                    $conn->commit();
 
                     if (!$stmt->execute()) {
+                        $conn->rollBack();
                         $response = $stmt->errorCode();
                     }
                 }
             }
-
-            $conn->commit();
         } catch (Exception $e) {
             $conn->rollBack();
             $response = $e->getCode();
@@ -202,12 +202,12 @@ class VehiclesController extends Controller
                     throw new \Symfony\Component\Config\Definition\Exception\Exception();
                 }
 
-                $stmt = $conn->prepare('SELECT MAX(group_id) AS group_id FROM route;');
+                $stmt = $conn->prepare('SELECT AUTO_INCREMENT FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = \'spacebit_resource_manager\' AND TABLE_NAME=\'route\';');
                 $stmt->bindValue(':plate_no', $plate_no);
                 if (!$stmt->execute()) {
                     throw new \Symfony\Component\Config\Definition\Exception\Exception();
                 }
-                $group_id = $stmt->fetch()['group_id'];
+                $group_id = $stmt->fetch()['AUTO_INCREMENT'] - 1;
             } else {
                 $group_id = $request->request->get('group-id');
             }
