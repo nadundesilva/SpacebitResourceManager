@@ -292,16 +292,38 @@ function changePassswordDialog(){
 
 }
 
-function changePassword(id){
+function changePassword(){
     showLoadingOverlay();
     var obj;
 
 
-    window.alert("keet");
-    var userID = id;
+    //window.alert("keet");
+    //var userID = id;
     var passwordOld = document.getElementById("passwordOld").value;
     var passwordOne = document.getElementById("passwordOne").value;
     var passwordTwo = document.getElementById("passwordTwo").value;
+
+    if (  String(passwordOne) !=  String(passwordTwo) || String(passwordOne).length>128 || String(passwordOld).length>128 || String(passwordOld).length==0 || String(passwordOne).length==0 || String(passwordTwo).length==0){
+        $('#message-modal').modal('hide');
+        $('#password-modal').modal();
+        hideLoadingOverlay();
+
+        document.getElementById("passwordOld").value = "";
+        document.getElementById("passwordOne").value = "";
+        document.getElementById("passwordTwo").value = "";
+        return;
+    }
+
+    if (  String(passwordOld) == String(passwordTwo)){
+        $('#message-modal').modal('hide');
+        $('#passwordSame-modal').modal();
+        hideLoadingOverlay();
+
+        document.getElementById("passwordOld").value = "";
+        document.getElementById("passwordOne").value = "";
+        document.getElementById("passwordTwo").value = "";
+        return;
+    }
 
     if (window.XMLHttpRequest) {
         obj = new XMLHttpRequest();
@@ -311,7 +333,7 @@ function changePassword(id){
         alert("Browser Doesn't Support AJAX!");
     }
 
-    if (passwordOne != passwordTwo){
+    //window.alert("keet");
         if (obj !== null) {
             obj.onreadystatechange = function () {
                 if (obj.readyState < 4) {
@@ -319,21 +341,35 @@ function changePassword(id){
                 } else if (obj.readyState === 4) {
 
                     var res = obj.responseText;
-                    window.alert(res);
+                    //window.alert(res);
 
                     if (res == "success"){
-                        window.location.href = "../";
+                        //window.location.href = "../";
+                        document.getElementById("passwordOld").value = "";
+                        document.getElementById("passwordOne").value = "";
+                        document.getElementById("passwordTwo").value = "";
+                        $('#message-modal').modal('hide');
+                        $('#passwordSuccess-modal').modal();
                     }
+                    if (res == "incorrect"){
+                        //window.location.href = "../";
+                        //$('#message-modal').modal('hide');
+                        $('#passwordIncorrect-modal').modal();
+                        document.getElementById("passwordOld").value = "";
+                        document.getElementById("passwordOne").value = "";
+                        document.getElementById("passwordTwo").value = "";
+                    }
+
                     hideLoadingOverlay();
-                    $('#message-modal').modal('hide');
+
                 }
             }
 
             obj.open("POST", "./changePassword", true);
             obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            obj.send("userID=" + userID + "& passwordOld=" + passwordOld + "& passwordTwo=" + passwordTwo );
+            obj.send("passwordOld=" + passwordOld + "& passwordTwo=" + passwordTwo );
         }
-    }
+
 
 
 }

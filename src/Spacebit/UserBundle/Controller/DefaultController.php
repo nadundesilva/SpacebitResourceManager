@@ -370,9 +370,11 @@ class DefaultController extends Controller
         }
 
     }
+
     public function changePasswordAction(){
+
         $request = Request::createFromGlobals();
-        $userID = $request->request->get('userID');
+        $userID = $this->get('session')->get('user_id');
         $passwordOld = $request->request->get('passwordOld');
         $passwordTwo = $request->request->get('passwordTwo');
 
@@ -383,25 +385,20 @@ class DefaultController extends Controller
         $stmt->execute();
         $result = $stmt->fetchall();
 
-        if ( $result[0]->password == $passwordOld){
-            $stmt = $conn->prepare('UPDATE login SET user_id= :userID, password= :password WHERE user_id = :userID;');
+        $currentPassword = $result[0]["password"];
+        if ( $result[0]["password"] != md5($passwordOld)){
+            return new Response("incorrect");
+        }
+
+        else{
+            $stmt = $conn->prepare('UPDATE login SET password= :password WHERE user_id = :userID;');
             $stmt->bindValue(':userID', $userID);
-            $stmt->bindValue(':password', $passwordTwo);
+            $stmt->bindValue(':password', md5($passwordTwo));
 
             $stmt->execute();
 
             return new Response("success");
-
-
         }
-        else{
-            return new Response("fail");
-        }
-
-
-
-
-
 
     }
 

@@ -138,7 +138,8 @@
                         <label for="passwordTwo">Re-enter New Password</label>
                         <input type="password" class="form-control" id="passwordTwo" name="passwordTwo" placeholder="Re enter New Password" required />
                     </div>
-                    <input type="button" class="btn btn-md btn-primary" id="submitButton" onclick="changePassword({{ app.session.get('user_id')}})" value="Change Password">
+
+                    <button class="btn btn-md btn-primary" id="submitButton" onclick="changePassword();" >Change Password</button>
 
                     <button class="btn btn-md btn-primary" onclick="$('#message-modal').modal('hide');">Close</button>
                 </div>
@@ -254,6 +255,61 @@
             </div>
         </div>
     </div>
+
+    <div id="passwordSuccess-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div style="margin: 20px;" id="message-modal-content">
+
+                    <h4>"Password Changed Successfully"</h4>
+
+
+                    <button class="btn btn-md btn-primary" onclick="$('#passwordSuccess-modal').modal('hide');">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="passwordIncorrect-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div style="margin: 20px;" id="message-modal-content">
+
+                    <h4>"Current Password in incorrect"</h4>
+
+
+                    <button class="btn btn-md btn-primary" onclick="$('#passwordIncorrect-modal').modal('hide');changePassswordDialog()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="password-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div style="margin: 20px;" id="message-modal-content">
+
+                    <h4>"Passwords do not match and passwords have to be less than 128 characters long"</h4>
+
+
+                    <button class="btn btn-md btn-primary" onclick="$('#password-modal').modal('hide');changePassswordDialog()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="passwordSame-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div style="margin: 20px;" id="message-modal-content">
+
+                    <h4>"New password has to be different from the current password"</h4>
+
+
+                    <button class="btn btn-md btn-primary" onclick="$('#passwordSame-modal').modal('hide');changePassswordDialog()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     {% include 'templates/loading.html.twig' %}
 
 {% endblock %}
