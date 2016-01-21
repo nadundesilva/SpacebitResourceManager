@@ -143,6 +143,10 @@ function loadModalByCategory(equipCategory) {
 
 function showRequestModal(equipCategory) {
     showLoadingOverlay();
+    document.forms['request-form']['request-date-From'].value = "";
+    document.forms['request-form']['request-date-To'].value = "";
+    document.forms['request-form']['request-time-From'].value = "";
+    document.forms['request-form']['request-time-To'].value = "";
     document.forms['request-form']['submit-button'].value = "Add";
     document.forms['request-form']['submit-button'].innerHTML = '<span class="glyphicon glyphicon-plus"></span> Request';
     $('#modalArea').modal('hide');
