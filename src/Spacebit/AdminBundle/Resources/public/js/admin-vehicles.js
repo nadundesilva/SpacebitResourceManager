@@ -100,7 +100,7 @@ function showEditVehicleModal(plateNo) {
 
         obj.open("POST", "./vehicles/getByPlateNo", true);
         obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        obj.send('plate-no=' + plateNo);
+        obj.send('plate-no=' + encodeURIComponent(plateNo));
     }
 }
 
@@ -147,7 +147,7 @@ function addEditVehicle() {
 
         obj.open("POST", "./vehicles/addEdit", true);
         obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        obj.send("plate-no=" + plateNo + '&type=' + type + '&model=' + model + '&capacity=' + capacity + '&driver-first-name=' + driverFirstName + '&driver-last-name=' + driverLastName + '&availability=' + availability + '&value=' + value + '&update-type=' + updateType);
+        obj.send("plate-no=" + encodeURIComponent(plateNo) + '&type=' + encodeURIComponent(type) + '&model=' + encodeURIComponent(model) + '&capacity=' + encodeURIComponent(capacity) + '&driver-first-name=' + encodeURIComponent(driverFirstName) + '&driver-last-name=' + encodeURIComponent(driverLastName) + '&availability=' + encodeURIComponent(availability) + '&value=' + encodeURIComponent(value) + '&update-type=' + encodeURIComponent(updateType));
     }
 }
 
@@ -231,7 +231,7 @@ function showEditVehicleRequestModal(requestID, routeGroupID, requester, request
 
         obj.open("POST", "./vehicles/requests/getAllGroupNamesAndVehicles", true);
         obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        obj.send("requested-type=" + requestedVehicleType + '&requested-date=' + requestedDate);
+        obj.send("requested-type=" + encodeURIComponent(requestedVehicleType) + '&requested-date=' + encodeURIComponent(requestedDate));
     }
 }
 
@@ -290,7 +290,7 @@ function updateRouteTable() {
 
         obj.open("POST", "./vehicles/requests/getRouteByGroupID", true);
         obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        obj.send('group-id=' + document.forms['request-status-form']["route-group-id"].value);
+        obj.send('group-id=' + encodeURIComponent(document.forms['request-status-form']["route-group-id"].value));
     }
 }
 
@@ -331,11 +331,11 @@ function changeVehicleRequest() {
             }
         }
 
-        var parameters = 'request-id=' + requestID + '&status=' + status + '&route-assign-method=' + routeAssignMethod;
+        var parameters = 'request-id=' + encodeURIComponent(requestID) + '&status=' + encodeURIComponent(status) + '&route-assign-method=' + encodeURIComponent(routeAssignMethod);
         if (routeAssignMethod == 'new') {
-            parameters += '&plate-no=' + document.forms['request-status-form']["new-route-vehicle-plate-no"].value;
+            parameters += '&plate-no=' + encodeURIComponent(document.forms['request-status-form']["new-route-vehicle-plate-no"].value);
         } else {
-            parameters += '&group-id=' + document.forms['request-status-form']["route-group-id"].value;
+            parameters += '&group-id=' + encodeURIComponent(document.forms['request-status-form']["route-group-id"].value);
         }
 
         obj.open("POST", "./vehicles/requests/change", true);
@@ -402,7 +402,7 @@ function viewLocation(address) {
             }
         }
 
-        obj.open("GET", "https://maps.googleapis.com/maps/api/geocode/json?address=" + address, true);
+        obj.open("GET", "https://maps.googleapis.com/maps/api/geocode/json?address=" + encodeURIComponent(address), true);
         obj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         obj.send();
     }

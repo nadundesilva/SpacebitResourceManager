@@ -32,6 +32,9 @@ class DefaultController extends Controller
 
     public function forgotPasswordAction()
     {
+        if ($this->get('login_authenticator')->authenticateGuestLogin()) {
+            return new RedirectResponse($this->generateUrl('spacebit_index'));
+        }
         return $this->render('SpacebitUserBundle:Default:forgot-password.html.twig');
     }
 

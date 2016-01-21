@@ -68,7 +68,12 @@ class EquipmentController extends Controller
         return $response;
     }
 
-    public function getFromCategoryAction(){
+    public function getFromCategoryAction()
+    {
+        if (!$this->get('login_authenticator')->authenticateStudentLogin()) {
+            return new RedirectResponse($this->generateUrl('spacebit_user_login'));
+        }
+
         $request = Request::createFromGlobals();
         $equipCategory = $request->request->get('equipCategory'); //query : post //in js what is posted obj.send("department=" + department);
         $deptName = $request->request->get('department');
@@ -88,6 +93,10 @@ class EquipmentController extends Controller
 
     public function addRequestAction()
     {
+        if (!$this->get('login_authenticator')->authenticateStudentLogin()) {
+            return new RedirectResponse($this->generateUrl('spacebit_user_login'));
+        }
+
         $request = Request::createFromGlobals();
         $dateFrom = $request->request->get('dateFrom');
         $dateTo = $request->request->get('dateTo');
@@ -128,6 +137,10 @@ class EquipmentController extends Controller
 
     public function getPastRequestsAction()
     {
+        if (!$this->get('login_authenticator')->authenticateStudentLogin()) {
+            return new RedirectResponse($this->generateUrl('spacebit_user_login'));
+        }
+
         $conn = $this->get('database_connection');
         $stmt = $conn->prepare('SELECT * FROM resource_request WHERE resource_request.type in (SELECT DISTINCT equipment.equipment_type from equipment) AND user_id = :user_id;');
         $stmt->bindValue(':user_id', $this->get('session')->get('user_id'));
