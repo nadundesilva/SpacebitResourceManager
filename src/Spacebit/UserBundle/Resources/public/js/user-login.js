@@ -39,6 +39,11 @@ function validateUser() {
                     document.getElementById("password").value = "";
                     hideLoadingOverlay();
                 }
+                if (res == "deactivated"){
+                    $('#deactivated-modal').modal();
+                    document.getElementById("password").value = "";
+                    hideLoadingOverlay();
+                }
                 if (res == "success"){
                     window.location.href = "../";
                 }

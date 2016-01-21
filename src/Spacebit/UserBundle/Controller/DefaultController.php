@@ -89,6 +89,9 @@ class DefaultController extends Controller
         if ( $result[0]["password"] != md5($password)){
             return new Response("incorrect");
         }
+        if ( $result[0]["active"] == 0 ){
+            return new Response("deactivated");
+        }
 
 
 

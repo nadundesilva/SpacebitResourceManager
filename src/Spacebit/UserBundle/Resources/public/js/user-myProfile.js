@@ -195,7 +195,7 @@ function editUser(id) {
             editProfile(id)
             return;
         }
-        if (  String(nic).length != 10 || String(nic).substr((String(nic).length-1)) != "V"  || String(nic).substr((String(nic).length-1)) != "v" || String(nic).substr((String(nic).length-1)) != "X" || String(nic).substr((String(nic).length-1)) != "x"){
+        if (  String(nic).length != 10 || (String(nic).substr((String(nic).length-1)) != "V"  && String(nic).substr((String(nic).length-1)) != "v" && String(nic).substr((String(nic).length-1)) != "X" && String(nic).substr((String(nic).length-1)) != "x")){
             $('#nic-modal').modal();
             hideLoadingOverlay();
             editProfile(id)
