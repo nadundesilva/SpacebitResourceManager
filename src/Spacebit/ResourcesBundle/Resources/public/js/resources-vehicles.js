@@ -112,7 +112,7 @@ function addEditRequest() {
                 } else {
                     modalContent += 'An error occured in ' + (updateType == 'Add' ? 'adding' : 'editing') + ' your request. Sorry for the inconvenience.</p><div style="text-align: center;"><button class="btn btn-sm btn-danger"';
                 }
-                modalContent += ' onclick=\'$("#vehicles-modal").modal("hide"); setTimeout("showPastRequestsModal();", 1000);\'>Ok</button><div></div>';
+                modalContent += ' onclick=\'$("#vehicles-modal").modal("hide");\'>Ok</button><div></div>';
                 document.getElementById('vehicles-modal-content').innerHTML = modalContent;
 
                 $('#request-modal').modal('hide');

@@ -79,7 +79,7 @@ class VenuesController extends Controller
         $deptName = $request->request->get('department');
 
         $conn = $this->get('database_connection');
-        $stmt = $conn->prepare('SELECT * FROM venue WHERE venue_type = :venueCategory AND dept_name = :department');
+        $stmt = $conn->prepare('SELECT * FROM venue inner JOIN resource USING (resource_id)  WHERE venue_type = :venueCategory AND dept_name = :department');
         $stmt->bindValue(':venueCategory', $venueCategory);
         $stmt->bindValue(':department', $deptName);
         $stmt->execute();

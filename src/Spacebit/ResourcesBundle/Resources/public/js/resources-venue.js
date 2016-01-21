@@ -117,7 +117,7 @@ function loadModalByCategory(venueCategory) {
                 var modalContent = '';
 
                 modalContent = '<h2 id = "venueCategory" style="text-align: center;">' + venueCategory + '</h2><table class="table table-hover">';
-                modalContent += '<tr><th>Equipment ID</th> <th>Name</th><th>Capacity</th><th>Opening Time</th><th>Closing Time</th><th>Resource Request</th></tr>';
+                modalContent += '<tr><th>Equipment ID</th> <th>Name</th><th>Capacity</th><th>Opening Time</th><th>Closing Time</th><th>Discription</th><th>Resource Request</th></tr>';
                 for (var i = 0; i < rows.length; i++) {
                     modalContent += '<tr>';
                     modalContent += '<td id="requstedVenueID">' + rows[i].resource_id + '</td>';
@@ -125,6 +125,7 @@ function loadModalByCategory(venueCategory) {
                     modalContent += '<td>' + rows[i].capacity+ '</td>';
                     modalContent += '<td>' + rows[i].opening_time + '</td>';
                     modalContent += '<td>' + rows[i].closing_time + '</td>';
+                    modalContent += '<td>' + rows[i].description + '</td>';
                     modalContent += '<td>' +'<button type="button" class="btn btn-info btn-xs" onclick="showRequestModal( \'' + rows[i].resource_id + '\' )"><span class="glyphicon glyphicon-pencil"></span> Request</button>'; + '</td>';
                     modalContent += '</tr>';
                 }
